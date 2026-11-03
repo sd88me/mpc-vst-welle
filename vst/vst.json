@@ -1,0 +1,38 @@
+{
+  "name": "Wavicle",
+  "vendor": "sd88me",
+  "uid": "WvCl",
+  "version": 1000,
+  "targets": [
+    "aarch64"
+  ],
+  "so": "wavicle.so",
+  "programs": {
+    "param": "preset"
+  },
+  "params": "params.json",
+  "art": "html",
+  "defines": {
+    "HAS_DISPLAY_REV": 1,
+    "DISPLAY_REV_NO_UPDATE": 1,
+    "MODULE_SUBDIR": "\"wavicle\"",
+    "MODULE_DIR": "\"/sdcard/vst/wavicle\"",
+    "PARAM_TEXT_MAX": 64
+  },
+  "build": {
+    "root": "..",
+    "sources": [],
+    "cflags": [],
+    "libs": [
+      "vst/build/engine/libwavicle_all.a",
+      "-Wl,--exclude-libs,ALL",
+      "-static-libstdc++",
+      "-static-libgcc",
+      "-lstdc++",
+      "-lm",
+      "-ldl"
+    ]
+  },
+  "layout": "layout.conf",
+  "tile": "images/tile.png"
+}

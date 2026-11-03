@@ -1,0 +1,1 @@
+Put your Wave OS 1.700 firmware here: w2sys.bin and wdv.sys (Waldorf publishes them on its legacy Wave page).

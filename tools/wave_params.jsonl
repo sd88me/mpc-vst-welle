@@ -1,0 +1,197 @@
+{"id":"wavetable","name":"Wavetable","kind":"int","min":1,"max":128,"step":1,"skew":1,"def":1,"label":""}
+{"id":"oscillatorLink","name":"Oscillator 2 Link","kind":"bool","min":0,"max":1,"step":1,"skew":1,"def":0,"label":""}
+{"id":"position","name":"Wave Position","kind":"float","min":0,"max":63,"step":0.01,"skew":1,"def":18,"label":""}
+{"id":"scan","name":"Wave Envelope","kind":"float","min":-63,"max":63,"step":0.01,"skew":1,"def":18,"label":""}
+{"id":"position2","name":"Wave 2 Position","kind":"float","min":0,"max":63,"step":0.01,"skew":1,"def":18,"label":""}
+{"id":"scan2","name":"Wave 2 Envelope","kind":"float","min":-63,"max":63,"step":0.01,"skew":1,"def":18,"label":""}
+{"id":"oscillator1Detune","name":"Oscillator 1 Detune","kind":"float","min":-64,"max":63,"step":0.01,"skew":1,"def":0,"label":"ct"}
+{"id":"oscillator1Semitone","name":"Oscillator 1 Semitone","kind":"int","min":-12,"max":12,"step":1,"skew":1,"def":0,"label":""}
+{"id":"wave1Phase","name":"Wave 1 Start Phase","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"wave1EnvelopeVelocity","name":"Wave 1 Envelope Velocity","kind":"float","min":-64,"max":63,"step":0.01,"skew":1,"def":0,"label":""}
+{"id":"wave1Keytrack","name":"Wave 1 Keytrack","kind":"float","min":-64,"max":63,"step":0.01,"skew":1,"def":0,"label":""}
+{"id":"wave1Level","name":"Wave 1 Level","kind":"float","min":0,"max":1.125,"step":0.001,"skew":1,"def":0.5,"label":""}
+{"id":"oscillator2Detune","name":"Oscillator 2 Detune","kind":"float","min":-64,"max":63,"step":0.01,"skew":1,"def":0,"label":"ct"}
+{"id":"oscillator2Semitone","name":"Oscillator 2 Semitone","kind":"int","min":-12,"max":12,"step":1,"skew":1,"def":0,"label":""}
+{"id":"wave2Phase","name":"Wave 2 Start Phase","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"wave2EnvelopeVelocity","name":"Wave 2 Envelope Velocity","kind":"float","min":-64,"max":63,"step":0.01,"skew":1,"def":0,"label":""}
+{"id":"wave2Keytrack","name":"Wave 2 Keytrack","kind":"float","min":-64,"max":63,"step":0.01,"skew":1,"def":0,"label":""}
+{"id":"wave2Level","name":"Wave 2 Level","kind":"float","min":0,"max":1.125,"step":0.001,"skew":1,"def":0.5,"label":""}
+{"id":"waveEnvTime1","name":"Wave Envelope Time 1","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"waveEnvLevel1","name":"Wave Envelope Level 1","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"waveEnvTime2","name":"Wave Envelope Time 2","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"waveEnvLevel2","name":"Wave Envelope Level 2","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"waveEnvTime3","name":"Wave Envelope Time 3","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"waveEnvLevel3","name":"Wave Envelope Level 3","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"waveEnvTime4","name":"Wave Envelope Time 4","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"waveEnvLevel4","name":"Wave Envelope Level 4","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"waveEnvTime5","name":"Wave Envelope Time 5","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"waveEnvLevel5","name":"Wave Envelope Level 5","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"waveEnvTime6","name":"Wave Envelope Time 6","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"waveEnvLevel6","name":"Wave Envelope Level 6","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"waveEnvTime7","name":"Wave Envelope Time 7","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"waveEnvLevel7","name":"Wave Envelope Level 7","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"waveEnvTime8","name":"Wave Envelope Time 8","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"waveEnvLevel8","name":"Wave Envelope Level 8","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"waveEnvKeyOff","name":"Wave Envelope Key Off Point","kind":"int","min":1,"max":8,"step":1,"skew":1,"def":1,"label":""}
+{"id":"waveEnvLoopStart","name":"Wave Envelope Loop Start","kind":"int","min":1,"max":8,"step":1,"skew":1,"def":1,"label":""}
+{"id":"waveEnvLoopEnabled","name":"Wave Envelope Loop","kind":"bool","min":0,"max":1,"step":1,"skew":1,"def":0,"label":""}
+{"id":"performanceFader1","name":"Performance Fader 1","kind":"float","min":0,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
+{"id":"performanceFader2","name":"Performance Fader 2","kind":"float","min":0,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
+{"id":"performanceFader3","name":"Performance Fader 3","kind":"float","min":0,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
+{"id":"performanceFader4","name":"Performance Fader 4","kind":"float","min":0,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
+{"id":"performanceFader5","name":"Performance Fader 5","kind":"float","min":0,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
+{"id":"performanceFader6","name":"Performance Fader 6","kind":"float","min":0,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
+{"id":"performanceFader7","name":"Performance Fader 7","kind":"float","min":0,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
+{"id":"performanceFader8","name":"Performance Fader 8","kind":"float","min":0,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
+{"id":"lfo1Rate","name":"LFO 1 Rate","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"lfo1Shape","name":"LFO 1 Shape","kind":"int","min":0,"max":5,"step":1,"skew":1,"def":0,"label":""}
+{"id":"lfo1Symmetry","name":"LFO 1 Symmetry","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"lfo1Humanize","name":"LFO 1 Humanize","kind":"int","min":0,"max":7,"step":1,"skew":1,"def":0,"label":""}
+{"id":"lfo1Sync","name":"LFO 1 Sync","kind":"int","min":0,"max":2,"step":1,"skew":1,"def":0,"label":""}
+{"id":"lfo1Phase","name":"LFO 1 Phase","kind":"int","min":0,"max":360,"step":1,"skew":1,"def":0,"label":""}
+{"id":"lfo2Rate","name":"LFO 2 Rate","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"lfo2Shape","name":"LFO 2 Shape","kind":"int","min":0,"max":5,"step":1,"skew":1,"def":0,"label":""}
+{"id":"lfo2Symmetry","name":"LFO 2 Symmetry","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"lfo2Humanize","name":"LFO 2 Humanize","kind":"int","min":0,"max":7,"step":1,"skew":1,"def":0,"label":""}
+{"id":"lfo2Sync","name":"LFO 2 Sync","kind":"int","min":0,"max":2,"step":1,"skew":1,"def":0,"label":""}
+{"id":"lfo2Phase","name":"LFO 2 Phase","kind":"int","min":0,"max":360,"step":1,"skew":1,"def":0,"label":""}
+{"id":"glideActive","name":"Glide Active","kind":"bool","min":0,"max":1,"step":1,"skew":1,"def":0,"label":""}
+{"id":"glideType","name":"Glide Type","kind":"int","min":1,"max":6,"step":1,"skew":1,"def":1,"label":""}
+{"id":"glideRate","name":"Glide Rate","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"glideTimeMode","name":"Glide Time/Distance","kind":"int","min":0,"max":1,"step":1,"skew":1,"def":0,"label":""}
+{"id":"glideRateModSource","name":"Glide Rate Mod Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"glideRateModAmount","name":"Glide Rate Mod Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"osc1PitchMod1Source","name":"Modulation 1 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"osc1PitchMod1Control","name":"Modulation 1 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"osc1PitchMod1Amount","name":"Modulation 1 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"osc1PitchMod2Source","name":"Modulation 2 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"osc1PitchMod2Control","name":"Modulation 2 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"osc1PitchMod2Amount","name":"Modulation 2 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"osc2PitchMod1Source","name":"Modulation 3 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"osc2PitchMod1Control","name":"Modulation 3 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"osc2PitchMod1Amount","name":"Modulation 3 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"osc2PitchMod2Source","name":"Modulation 4 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"osc2PitchMod2Control","name":"Modulation 4 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"osc2PitchMod2Amount","name":"Modulation 4 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"wave1StartModSource","name":"Modulation 5 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"wave1StartModControl","name":"Modulation 5 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"wave1StartModAmount","name":"Modulation 5 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"wave1Mod1Source","name":"Modulation 6 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"wave1Mod1Control","name":"Modulation 6 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"wave1Mod1Amount","name":"Modulation 6 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"wave1Mod2Source","name":"Modulation 7 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"wave1Mod2Control","name":"Modulation 7 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"wave1Mod2Amount","name":"Modulation 7 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"wave2StartModSource","name":"Modulation 8 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"wave2StartModControl","name":"Modulation 8 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"wave2StartModAmount","name":"Modulation 8 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"wave2Mod1Source","name":"Modulation 9 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"wave2Mod1Control","name":"Modulation 9 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"wave2Mod1Amount","name":"Modulation 9 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"wave2Mod2Source","name":"Modulation 10 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"wave2Mod2Control","name":"Modulation 10 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"wave2Mod2Amount","name":"Modulation 10 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"wave1VolumeModSource","name":"Modulation 11 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"wave1VolumeModControl","name":"Modulation 11 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"wave1VolumeModAmount","name":"Modulation 11 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"wave2VolumeModSource","name":"Modulation 12 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"wave2VolumeModControl","name":"Modulation 12 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"wave2VolumeModAmount","name":"Modulation 12 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"noiseVolumeModSource","name":"Modulation 13 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"noiseVolumeModControl","name":"Modulation 13 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"noiseVolumeModAmount","name":"Modulation 13 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"amplifierMod1Source","name":"Modulation 14 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"amplifierMod1Control","name":"Modulation 14 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"amplifierMod1Amount","name":"Modulation 14 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"amplifierMod2Source","name":"Modulation 15 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"amplifierMod2Control","name":"Modulation 15 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"amplifierMod2Amount","name":"Modulation 15 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"filterMod1Source","name":"Modulation 16 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"filterMod1Control","name":"Modulation 16 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"filterMod1Amount","name":"Modulation 16 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"filterMod2Source","name":"Modulation 17 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"filterMod2Control","name":"Modulation 17 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"filterMod2Amount","name":"Modulation 17 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"resonanceModSource","name":"Modulation 18 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"resonanceModControl","name":"Modulation 18 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"resonanceModAmount","name":"Modulation 18 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"highpassMod1Source","name":"Modulation 19 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"highpassMod1Control","name":"Modulation 19 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"highpassMod1Amount","name":"Modulation 19 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"highpassMod2Source","name":"Modulation 20 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"highpassMod2Control","name":"Modulation 20 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"highpassMod2Amount","name":"Modulation 20 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"panMod1Source","name":"Modulation 21 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"panMod1Control","name":"Modulation 21 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"panMod1Amount","name":"Modulation 21 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"panMod2Source","name":"Modulation 22 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"panMod2Control","name":"Modulation 22 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"panMod2Amount","name":"Modulation 22 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"lfo1RateModSource","name":"Modulation 23 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"lfo1RateModControl","name":"Modulation 23 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"lfo1RateModAmount","name":"Modulation 23 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"lfo1LevelModSource","name":"Modulation 24 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"lfo1LevelModControl","name":"Modulation 24 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"lfo1LevelModAmount","name":"Modulation 24 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"lfo2RateModSource","name":"Modulation 25 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"lfo2RateModControl","name":"Modulation 25 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"lfo2RateModAmount","name":"Modulation 25 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"lfo2LevelModSource","name":"Modulation 26 Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"lfo2LevelModControl","name":"Modulation 26 Control","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":38,"label":""}
+{"id":"lfo2LevelModAmount","name":"Modulation 26 Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"balance","name":"Oscillator Balance","kind":"float","min":0,"max":1,"step":0.001,"skew":1,"def":0.5,"label":""}
+{"id":"detune","name":"Oscillator Detune","kind":"float","min":-50,"max":50,"step":0.01,"skew":1,"def":7,"label":"ct"}
+{"id":"noise","name":"Noise","kind":"float","min":0,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
+{"id":"cutoff","name":"Cutoff","kind":"float","min":20,"max":30685.3,"step":0,"skew":1,"def":8127.5,"label":"Hz"}
+{"id":"filterMode","name":"Filter Mode","kind":"int","min":0,"max":3,"step":1,"skew":1,"def":0,"label":""}
+{"id":"resonance","name":"Resonance","kind":"float","min":0,"max":1,"step":0.001,"skew":1,"def":0.18,"label":""}
+{"id":"filterEnv","name":"Filter Envelope","kind":"float","min":-64,"max":63,"step":0.01,"skew":1,"def":28,"label":""}
+{"id":"filterVelocity","name":"Filter Velocity","kind":"float","min":-64,"max":63,"step":0.01,"skew":1,"def":0,"label":""}
+{"id":"filterKeytrack","name":"Filter Keytrack","kind":"float","min":-64,"max":63,"step":0.01,"skew":1,"def":0,"label":""}
+{"id":"filterKeyCenter","name":"Filter Key Center","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":60,"label":""}
+{"id":"drive","name":"Circuit Drive","kind":"float","min":0,"max":18,"step":0.01,"skew":1,"def":2,"label":"dB"}
+{"id":"attack","name":"Attack","kind":"float","min":0.001,"max":130,"step":0,"skew":0.2,"def":0.008,"label":"s"}
+{"id":"decay","name":"Decay","kind":"float","min":0.001,"max":130,"step":0,"skew":0.2,"def":0.45,"label":"s"}
+{"id":"sustain","name":"Sustain","kind":"float","min":0,"max":1,"step":0.001,"skew":1,"def":0.72,"label":""}
+{"id":"release","name":"Release","kind":"float","min":0.001,"max":130,"step":0,"skew":0.2,"def":0.65,"label":"s"}
+{"id":"filterDelay","name":"Filter Envelope Delay","kind":"float","min":0,"max":130,"step":0,"skew":0.2,"def":0,"label":"s"}
+{"id":"filterAttack","name":"Filter Envelope Attack","kind":"float","min":0.001,"max":130,"step":0,"skew":0.2,"def":0.008,"label":"s"}
+{"id":"filterDecay","name":"Filter Envelope Decay","kind":"float","min":0.001,"max":130,"step":0,"skew":0.2,"def":0.45,"label":"s"}
+{"id":"filterSustain","name":"Filter Envelope Sustain","kind":"float","min":0,"max":1,"step":0.001,"skew":1,"def":0.72,"label":""}
+{"id":"filterRelease","name":"Filter Envelope Release","kind":"float","min":0.001,"max":130,"step":0,"skew":0.2,"def":0.65,"label":"s"}
+{"id":"filterEnvAttackModSource","name":"Filter Envelope Stage 1 Mod Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"filterEnvAttackModAmount","name":"Filter Envelope Stage 1 Mod Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"filterEnvDecayModSource","name":"Filter Envelope Stage 2 Mod Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"filterEnvDecayModAmount","name":"Filter Envelope Stage 2 Mod Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"filterEnvSustainModSource","name":"Filter Envelope Stage 3 Mod Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"filterEnvSustainModAmount","name":"Filter Envelope Stage 3 Mod Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"filterEnvReleaseModSource","name":"Filter Envelope Stage 4 Mod Source","kind":"int","min":0,"max":39,"step":1,"skew":1,"def":37,"label":""}
+{"id":"filterEnvReleaseModAmount","name":"Filter Envelope Stage 4 Mod Amount","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"highpassCutoff","name":"High-pass Cutoff","kind":"float","min":20,"max":30685.3,"step":0,"skew":1,"def":20,"label":"Hz"}
+{"id":"highpassEnvelopeSelect","name":"High-pass Envelope","kind":"int","min":0,"max":3,"step":1,"skew":1,"def":1,"label":""}
+{"id":"highpassEnvelopeAmount","name":"High-pass Envelope Amount","kind":"float","min":-64,"max":63,"step":0.01,"skew":1,"def":0,"label":""}
+{"id":"highpassVelocity","name":"High-pass Velocity","kind":"float","min":-64,"max":63,"step":0.01,"skew":1,"def":0,"label":""}
+{"id":"highpassKeytrack","name":"High-pass Keytrack","kind":"float","min":-64,"max":63,"step":0.01,"skew":1,"def":0,"label":""}
+{"id":"highpassKeyCenter","name":"High-pass Key Center","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":60,"label":""}
+{"id":"bandpassBandwidth","name":"Band-pass Bandwidth","kind":"float","min":0,"max":127,"step":0.01,"skew":1,"def":0,"label":""}
+{"id":"freeEnvTime1","name":"Free Envelope Time 1","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"freeEnvLevel1","name":"Free Envelope Level 1","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"freeEnvTime2","name":"Free Envelope Time 2","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"freeEnvLevel2","name":"Free Envelope Level 2","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"freeEnvTime3","name":"Free Envelope Time 3","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"freeEnvLevel3","name":"Free Envelope Level 3","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"freeEnvTime4","name":"Free Envelope Time 4","kind":"int","min":0,"max":127,"step":1,"skew":1,"def":0,"label":""}
+{"id":"freeEnvLevel4","name":"Free Envelope Level 4","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"freeEnvZeroAxis","name":"Free Envelope Zero Axis","kind":"int","min":-64,"max":63,"step":1,"skew":1,"def":0,"label":""}
+{"id":"quickAttack","name":"Quick Attack","kind":"float","min":-1,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
+{"id":"quickDecay","name":"Quick Decay","kind":"float","min":-1,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
+{"id":"quickSustain","name":"Quick Sustain","kind":"float","min":-1,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
+{"id":"quickRelease","name":"Quick Release","kind":"float","min":-1,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
+{"id":"quickPitchMod","name":"Quick Pitch Mod","kind":"float","min":-1,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
+{"id":"quickTimbre","name":"Quick Timbre","kind":"float","min":-1,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
+{"id":"quickTimbreMod","name":"Quick Timbre Mod","kind":"float","min":-1,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
+{"id":"quickWavescan","name":"Quick Wavescan","kind":"float","min":-1,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
+{"id":"pan","name":"Pan","kind":"float","min":-1,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
+{"id":"panMode","name":"Pan Modulation Mode","kind":"int","min":0,"max":2,"step":1,"skew":1,"def":1,"label":""}
+{"id":"output","name":"Output","kind":"float","min":-30,"max":6,"step":0.01,"skew":1,"def":-7,"label":"dB"}
+{"id":"circuitAge","name":"Circuit Age","kind":"float","min":0,"max":1,"step":0.001,"skew":1,"def":0.18,"label":""}
