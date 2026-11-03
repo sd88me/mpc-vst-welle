@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The WELLE wordmark: skin/wordmark/welle.svg (drawn for this project: monoline Bezier letters on one slant, the first E's middle stroke
+"""The WELLE wordmark: skin/wordmark/welle.svg (written by skin/wordmark/gen.py; drawn for this project: monoline Bezier letters on one slant, the first E's middle stroke
 running on through the tan double L) rendered with rsvg-convert (in Docker, as tools/make_assets.py) to
 skin/parts/wordmark.png (4x) and vst/images/wordmark.png (57 px tall, for the pages and the browser tile). Outputs are committed."""
 import os, subprocess

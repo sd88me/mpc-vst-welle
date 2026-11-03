@@ -1,17 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="240" height="80" viewBox="0 0 240 80">
-  <!-- WELLE wordmark: monoline, one stroke weight, a common slant. Round pale W and E's; the double L one tan swoosh;
-       one pale stroke is both E's middle bar and runs through the L's between them (the interlock). Drawn for Welle for MPC. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="80" viewBox="0 0 220 80">
+  <!-- WELLE wordmark (tools: skin/wordmark/gen.py). Monoline, one stroke weight, a common slant: round W and E's, tan L's,
+       one pale stroke through both E's and the L's. Drawn for Welle for MPC. -->
   <g transform="translate(14,0) skewX(-12)" fill="none" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round">
-    <!-- W: two round bowls -->
     <path stroke="#BBC8DB" d="M11,18 C9,46 15,62 26,62 C35,62 38,50 38.5,36 C39,50 42,62 51,62 C62,62 68,46 66,18"/>
-    <!-- E: a round C -->
     <path stroke="#BBC8DB" d="M101,24 C97,18 92,16 87,16 C77,16 73,28 73,39 C73,51 78,62 88,62 C93,62 98,60 102,55"/>
-    <!-- LL -->
-    <path stroke="#D1AE88" d="M106,61 C116,56 124,38 127,24 C129,15 126,12 123,14 C118,18 118,42 118,53 C118,61 123,63 129,61
-                              C138,57 146,38 149,24 C151,15 148,12 145,14 C140,18 140,42 140,53 C140,61 145,63 152,61 C156,60 159,58 161,56"/>
-    <!-- E: a round C -->
-    <path stroke="#BBC8DB" d="M195,24 C191,18 186,16 181,16 C171,16 167,28 167,39 C167,51 172,62 182,62 C187,62 192,60 196,55"/>
-    <!-- one middle stroke: the first E's bar, on through the L's, into the last E's bar -->
-    <path stroke="#BBC8DB" d="M75,39 C110,38.6 150,38.2 186,38"/>
+    <path stroke="#D1AE88" d="M114,14 L114,50 C114,58 118,62 125,62 L129,62"/>
+    <path stroke="#D1AE88" d="M137,14 L137,50 C137,58 141,62 148,62 L152,62"/>
+    <path stroke="#BBC8DB" d="M188,24 C184,18 179,16 174,16 C164,16 160,28 160,39 C160,51 165,62 175,62 C180,62 185,60 189,55"/>
+    <path stroke="#BBC8DB" stroke-width="4.6" d="M75,39 L178,39"/>
   </g>
 </svg>
