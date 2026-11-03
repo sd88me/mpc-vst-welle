@@ -6191,6 +6191,15 @@
    "default": 0,
    "display": "int",
    "poll": true
+  },
+  {
+   "key": "midi_mode",
+   "name": "MIDI",
+   "options": [
+    "All parts",
+    "As sent"
+   ],
+   "default": "All parts"
   }
  ],
  "sections": [
@@ -6470,7 +6479,8 @@
     "engine_stats",
     "gain",
     "voices",
-    "init_patch"
+    "init_patch",
+    "midi_mode"
    ]
   },
   {

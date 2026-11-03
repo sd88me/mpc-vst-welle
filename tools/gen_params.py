@@ -155,6 +155,8 @@ for ln in range(1, 9):
     for c in range(1, 9):
         add(dict(key="lcdst_%d_%d" % (ln, c), name="LCD CELL %d.%d" % (ln, c), min=0, max=31, default=0, display="int", poll=True), "LCD")
 
+add(dict(key="midi_mode", name="MIDI", options=["All parts", "As sent"], default="All parts"), "System")
+
 order = ["Browse", "LCD", "Banks", "System", "Waves", "Wave Env", "Filter", "Amp", "LFO", "Mod", "Free Env", "Quick", "Faders"]
 sections = [{"label": s, "keys": sec_keys[s]} for s in order if s in sec_keys]
 json.dump({"name": "Wavicle", "params": params, "sections": sections}, open(OUT, "w"), indent=1)

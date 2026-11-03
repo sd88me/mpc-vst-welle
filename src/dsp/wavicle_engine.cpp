@@ -104,6 +104,8 @@ struct Inst {
     std::atomic<uint32_t> wr{0}, rd{0};
     std::atomic<uint32_t> underruns{0};
     std::atomic<int> emu_cpu{0}, active{0};
+    std::atomic<int> midi_all{1};                    // 1: play every part of a multi-channel performance from one channel
+    std::atomic<uint16_t> part_channels{1};          // the MIDI channels (bits 0-15) the current performance's instruments listen on
     std::atomic<long long> loading_until{0};       // a program / bank load in progress: its silence is not a dropout
 
     std::mutex qm;
@@ -425,9 +427,13 @@ void emu_main(Inst *in) {
         midi.clear();
         for (const auto &c : cmds) {
             switch (c.type) {
-            case C_MIDI:
-                midi.addEvent(c.m, c.b, 0);
+            case C_MIDI: {
+                const uint16_t chans = in->midi_all.load() ? in->part_channels.load() : 0;
+                if (!chans || c.m[0] < 0x80 || c.m[0] >= 0xf0) { midi.addEvent(c.m, c.b, 0); break; }
+                for (int ch = 0; ch < 16; ch++)             // the same message on each part's channel
+                    if (chans >> ch & 1) { uint8_t m2[3] = {(uint8_t)((c.m[0] & 0xf0) | ch), c.m[1], c.m[2]}; midi.addEvent(m2, c.b, 0); }
                 break;
+            }
             case C_PARAM:
                 if (c.a >= 0 && c.a < WV_NUM_PARAMS) pending[c.a] = c.b;
                 break;
@@ -477,6 +483,13 @@ void emu_main(Inst *in) {
         in->active.store(proc->getActiveVoiceCount(), std::memory_order_relaxed);
         block_no++;
         if ((block_no & 7) == 0) refresh_values(false);    // ~23 ms
+        if ((block_no & 31) == 4) {                        // the channels the performance's instruments listen on (0 = the base channel 1)
+            const auto perf = proc->getCurrentPerformanceSnapshot();
+            uint16_t m = 0;
+            for (const auto &layer : perf.layers)
+                if (layer.enabled) m |= (uint16_t)(1u << std::max(0, std::min(15, layer.midiChannel - 1)));
+            in->part_channels = m ? m : 1;
+        }
         if (mono_ms() - last_names > 2000) { last_names = mono_ms(); if (in->loaded_bank >= 0 || in->names.empty()) refresh_names(); }
 
         const float g = in->gain.load() / 100.0f * 32767.0f;
@@ -639,6 +652,7 @@ void restore_state(Inst *in, const char *s) {
         return q ? atoi(q + strlen(k)) : def;
     };
     in->gain = clampi(num("\"gain\":", 100), 10, 400);
+    in->midi_all = num("\"midi_all\":", 1) ? 1 : 0;
     const int nv = num("\"voices\":", 8), v = nv >= 12 ? 12 : nv >= 8 ? 8 : 6;
     in->voices = v;
     in->push(Cmd{C_VOICES, {0, 0, 0}, v, 0});
@@ -666,8 +680,8 @@ int put(char *buf, int n, const char *fmt, ...);
 std::string state_string(Inst *in) {
     std::string s;
     char b[256];
-    snprintf(b, sizeof b, "{\"state_version\":1,\"bank\":%d,\"bank_name\":\"%s\",\"preset\":%d,\"gain\":%d,\"voices\":%d,\"values\":\"",
-             in->bank.load(), bank_name(in, in->bank).c_str(), in->preset.load(), in->gain.load(), in->voices.load());
+    snprintf(b, sizeof b, "{\"state_version\":1,\"bank\":%d,\"bank_name\":\"%s\",\"preset\":%d,\"gain\":%d,\"voices\":%d,\"midi_all\":%d,\"values\":\"",
+             in->bank.load(), bank_name(in, in->bank).c_str(), in->preset.load(), in->gain.load(), in->voices.load(), in->midi_all.load());
     s = b;
     for (int i = 0; i < WV_NUM_PARAMS; i++) { snprintf(b, sizeof b, "%d=%d;", i, in->val[i].load()); s += b; }
     s += "\"}";
@@ -782,6 +796,7 @@ void eng_set(void *p, const char *key, const char *val) {
     if (!strcmp(key, "all_notes_off")) { if (press) in->push(Cmd{C_PANIC}); return; }
     if (!strcmp(key, "init_patch")) { if (press) select_program(in, in->preset); return; }   // the stored performance again
     if (!strcmp(key, "gain")) { in->gain = clampi(atoi(val), 10, 400); return; }
+    if (!strcmp(key, "midi_mode")) { in->midi_all = atoi(val) == 0 ? 1 : 0; return; }
     if (!strcmp(key, "voices")) {
         static const int kVoices[3] = {6, 8, 12};             // option index -> voices
         const int v = getenv("WV_VOICES") ? atoi(getenv("WV_VOICES")) : kVoices[clampi(atoi(val), 0, 2)];
@@ -874,6 +889,7 @@ int eng_get(void *p, const char *key, char *buf, int n) {
     }
     if (!strcmp(key, "active_voices")) return put(buf, n, "%d", in->active.load());
     if (!strcmp(key, "gain")) return put(buf, n, "%d", in->gain.load());
+    if (!strcmp(key, "midi_mode")) return put(buf, n, "%d", in->midi_all.load() ? 0 : 1);
     if (!strcmp(key, "voices")) return put(buf, n, "%d", in->voices.load() >= 12 ? 2 : in->voices.load() >= 8 ? 1 : 0);
     if (!strcmp(key, "display_rev")) return put(buf, n, "%u", in->rev.load());
     if (!strcmp(key, "state")) return put(buf, n, "%s", state_string(in).c_str());
