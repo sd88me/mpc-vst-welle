@@ -54,8 +54,8 @@ constexpr int kBoostFill = 2048;        // ~46 ms, for 500 ms after a program or
 constexpr int kPrograms = 256;          // a Wave setup: two banks of 128 performances
 constexpr int kFavSlots = 64;
 // the MAIN faders in Quick Edit mode: whole-performance offsets (the Wave's Quick Edit, and the port's filter / start-wave ones)
-const char *const kQuickKeys[8] = {"quickCutoff", "quickResonance", "quickFilterEnv", "quickWavePosition", "quickWavescan", "quickAttack", "quickDecay", "quickRelease"};
-const char *const kQuickNames[8] = {"CUTOFF", "RESONANCE", "FILTER ENV", "WAVE POS", "WAVESCAN", "ATTACK", "DECAY", "RELEASE"};
+const char *const kQuickKeys[8] = {"quickCutoff", "quickResonance", "quickFilterEnv", "quickTimbre", "quickTimbreMod", "quickWavescan", "quickAttack", "quickRelease"};
+const char *const kQuickNames[8] = {"CUTOFF", "RESONANCE", "FILTER ENV", "TIMBRE", "TIMBRE MOD", "WAVESCAN", "ATTACK", "RELEASE"};
 const char *const kPerfNames[8] = {"FADER 1", "FADER 2", "FADER 3", "FADER 4", "FADER 5", "FADER 6", "FADER 7", "FADER 8"};
 
 FILE *g_log = nullptr;
