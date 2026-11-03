@@ -99,6 +99,20 @@ add(dict(key="voices", name="VOICES", options=["6", "8", "12"], default="8"), "S
 add(dict(key="init_patch", name="RELOAD", min=0, max=1, default=0, momentary=True), "System")
 
 # --- every Wave parameter ---
+# Wave parameters added after the first release of the port (new upstream or MPC-port ones): appended after everything, so the VST
+# indices saved projects bind to never move (vst/params.lock)
+LATE = ["quickCutoff", "quickResonance", "quickFilterEnv", "quickWavePosition"]
+late_entries = []
+_add = add
+
+
+def add(p, sec):
+    if p["key"] in LATE:
+        late_entries.append((p, sec))
+    else:
+        _add(p, sec)
+
+
 ROWS = []   # (key, kind, lo, hi, def)  kind 0: whole number (native range), 1: float as 0..127 of the normalised range
 for w in W:
     pid, kind = w["id"], w["kind"]
@@ -162,6 +176,10 @@ for i in range(1, 9):
     add(dict(key="fader_%d" % i, name="FADER %d" % i, min=0, max=127, default=64, display="int"), "System")
 for i in range(1, 9):
     add(dict(key="fader_label_%d" % i, name="FADER %d NAME" % i, min=0, max=0, default=0, display="string", poll=True), "System")
+
+add = _add
+for p_, sec_ in sorted(late_entries, key=lambda e: LATE.index(e[0]["key"])):
+    add(p_, sec_)
 
 order = ["Browse", "LCD", "Banks", "System", "Waves", "Wave Env", "Filter", "Amp", "LFO", "Mod", "Free Env", "Quick", "Faders"]
 sections = [{"label": s, "keys": sec_keys[s]} for s in order if s in sec_keys]

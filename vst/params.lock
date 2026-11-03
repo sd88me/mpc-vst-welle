@@ -472,3 +472,7 @@ fader_label_5
 fader_label_6
 fader_label_7
 fader_label_8
+quickCutoff
+quickResonance
+quickFilterEnv
+quickWavePosition
