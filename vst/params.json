@@ -3927,6 +3927,38 @@
    "display": "int"
   },
   {
+   "key": "quickCutoff",
+   "name": "Quick Cutoff",
+   "min": 0,
+   "max": 127,
+   "default": 64,
+   "display": "int"
+  },
+  {
+   "key": "quickResonance",
+   "name": "Quick Resonance",
+   "min": 0,
+   "max": 127,
+   "default": 64,
+   "display": "int"
+  },
+  {
+   "key": "quickFilterEnv",
+   "name": "Quick Filter Env",
+   "min": 0,
+   "max": 127,
+   "default": 64,
+   "display": "int"
+  },
+  {
+   "key": "quickWavePosition",
+   "name": "Quick Wave Pos",
+   "min": 0,
+   "max": 127,
+   "default": 64,
+   "display": "int"
+  },
+  {
    "key": "pan",
    "name": "Pan",
    "min": 0,
@@ -6871,7 +6903,11 @@
     "quickPitchMod",
     "quickTimbre",
     "quickTimbreMod",
-    "quickWavescan"
+    "quickWavescan",
+    "quickCutoff",
+    "quickResonance",
+    "quickFilterEnv",
+    "quickWavePosition"
    ]
   },
   {

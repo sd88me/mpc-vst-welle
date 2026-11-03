@@ -191,6 +191,10 @@
 {"id":"quickTimbre","name":"Quick Timbre","kind":"float","min":-1,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
 {"id":"quickTimbreMod","name":"Quick Timbre Mod","kind":"float","min":-1,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
 {"id":"quickWavescan","name":"Quick Wavescan","kind":"float","min":-1,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
+{"id":"quickCutoff","name":"Quick Cutoff","kind":"float","min":-1,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
+{"id":"quickResonance","name":"Quick Resonance","kind":"float","min":-1,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
+{"id":"quickFilterEnv","name":"Quick Filter Env","kind":"float","min":-1,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
+{"id":"quickWavePosition","name":"Quick Wave Position","kind":"float","min":-1,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
 {"id":"pan","name":"Pan","kind":"float","min":-1,"max":1,"step":0.001,"skew":1,"def":0,"label":""}
 {"id":"panMode","name":"Pan Modulation Mode","kind":"int","min":0,"max":2,"step":1,"skew":1,"def":1,"label":""}
 {"id":"output","name":"Output","kind":"float","min":-30,"max":6,"step":0.01,"skew":1,"def":-7,"label":"dB"}

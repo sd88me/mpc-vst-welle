@@ -1,5 +1,6 @@
 #include "WaveParameters.h"
 
+#include <algorithm>
 #include <cmath>
 
 namespace wave::parameters
@@ -234,7 +235,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout()
                                      "Free Envelope Zero Axis", -64, 63, 0));
     constexpr std::array<const char*, quickEditCount> quickEditNames {
         "Quick Attack", "Quick Decay", "Quick Sustain", "Quick Release",
-        "Quick Pitch Mod", "Quick Timbre", "Quick Timbre Mod", "Quick Wavescan"
+        "Quick Pitch Mod", "Quick Timbre", "Quick Timbre Mod", "Quick Wavescan",
+        "Quick Cutoff", "Quick Resonance", "Quick Filter Env", "Quick Wave Position"
     };
     for (size_t index = 0; index < quickEdit.size(); ++index)
         layout.add(makeFloat(quickEdit[index], quickEditNames[index],
@@ -540,5 +542,22 @@ void applyQuickEdit(Snapshot& snapshot) noexcept
     const auto wavescanAmount = snapshot.quickEditAmounts[quickWavescan];
     snapshot.waveScan = scaleAmount(snapshot.waveScan, wavescanAmount);
     snapshot.waveScan2 = scaleAmount(snapshot.waveScan2, wavescanAmount);
+
+    // MPC port: the filter and the start wave on their own (Timbre moves all three at once)
+    const auto cutoffAmount = snapshot.quickEditAmounts[quickCutoff];
+    if (cutoffAmount != 0.0f)                          // +-48 cutoff steps: about four octaves either way
+        snapshot.cutoffHz = cutoffFrequencyForStep(cutoffStepForFrequency(snapshot.cutoffHz) + cutoffAmount * 48.0f);
+    snapshot.resonanceAmount = juce::jlimit(
+        0.0f, 1.0f, snapshot.resonanceAmount + snapshot.quickEditAmounts[quickResonance] * 0.6f);
+    const auto filterEnvAmount = snapshot.quickEditAmounts[quickFilterEnv];
+    snapshot.filterEnvelopeSemitones = juce::jlimit(       // up: deeper (to twice the stored depth, at least 24); down: to none
+        -64.0f, 63.0f, filterEnvAmount >= 0.0f
+                           ? snapshot.filterEnvelopeSemitones
+                                 + filterEnvAmount * std::max(std::abs(snapshot.filterEnvelopeSemitones), 24.0f)
+                                       * (snapshot.filterEnvelopeSemitones < 0.0f ? -1.0f : 1.0f)
+                           : snapshot.filterEnvelopeSemitones * (1.0f + filterEnvAmount));
+    const auto positionAmount = snapshot.quickEditAmounts[quickWavePosition];
+    snapshot.wavePosition = juce::jlimit(0.0f, 63.0f, snapshot.wavePosition + positionAmount * 32.0f);
+    snapshot.wavePosition2 = juce::jlimit(0.0f, 63.0f, snapshot.wavePosition2 + positionAmount * 32.0f);
 }
 } // namespace wave::parameters

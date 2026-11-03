@@ -168,11 +168,17 @@ enum QuickEditIndex
     quickTimbre,
     quickTimbreMod,
     quickWavescan,
+    // MPC port: four more whole-performance offsets for the MPC's MAIN faders
+    quickCutoff,
+    quickResonance,
+    quickFilterEnv,
+    quickWavePosition,
     quickEditCount
 };
 inline constexpr std::array<const char*, quickEditCount> quickEdit {
     "quickAttack", "quickDecay", "quickSustain", "quickRelease",
-    "quickPitchMod", "quickTimbre", "quickTimbreMod", "quickWavescan"
+    "quickPitchMod", "quickTimbre", "quickTimbreMod", "quickWavescan",
+    "quickCutoff", "quickResonance", "quickFilterEnv", "quickWavePosition"
 };
 inline constexpr auto drive = "drive";
 inline constexpr auto attack = "attack";

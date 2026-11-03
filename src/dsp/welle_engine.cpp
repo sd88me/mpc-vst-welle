@@ -53,9 +53,9 @@ constexpr int kTargetFill = 768;        // frames the emulator thread keeps queu
 constexpr int kBoostFill = 2048;        // ~46 ms, for 500 ms after a program or bank load (the firmware does its work then)
 constexpr int kPrograms = 256;          // a Wave setup: two banks of 128 performances
 constexpr int kFavSlots = 64;
-// the MAIN faders in Quick Edit mode: the Wave's eight Quick Edit offsets, in its own order
-const char *const kQuickKeys[8] = {"quickAttack", "quickDecay", "quickSustain", "quickRelease", "quickPitchMod", "quickTimbre", "quickTimbreMod", "quickWavescan"};
-const char *const kQuickNames[8] = {"ATTACK", "DECAY", "SUSTAIN", "RELEASE", "PITCH MOD", "TIMBRE", "TIMBRE MOD", "WAVESCAN"};
+// the MAIN faders in Quick Edit mode: whole-performance offsets (the Wave's Quick Edit, and the port's filter / start-wave ones)
+const char *const kQuickKeys[8] = {"quickCutoff", "quickResonance", "quickFilterEnv", "quickWavePosition", "quickWavescan", "quickAttack", "quickDecay", "quickRelease"};
+const char *const kQuickNames[8] = {"CUTOFF", "RESONANCE", "FILTER ENV", "WAVE POS", "WAVESCAN", "ATTACK", "DECAY", "RELEASE"};
 const char *const kPerfNames[8] = {"FADER 1", "FADER 2", "FADER 3", "FADER 4", "FADER 5", "FADER 6", "FADER 7", "FADER 8"};
 
 FILE *g_log = nullptr;
@@ -453,6 +453,12 @@ void emu_main(Inst *in) {
                 if (c.a < proc->getNumPrograms()) proc->setCurrentProgram(c.a);
                 in->loading_until = mono_ms() + 1000;    // the firmware loads the performance over the next blocks
                 for (auto &v : pending) v = INT32_MIN;     // the program's own values win over edits made before it
+                for (int q = 0; q < WV_NUM_PARAMS; q++)    // and every Quick Edit offset back to the centre: a program sounds as stored
+                    if (!strncmp(g_wv_params[q].key, "quick", 5) && P[q]) {
+                        P[q]->setValueNotifyingHost(P[q]->convertTo0to1(0.0f));
+                        in->val[q] = from_norm(P[q], g_wv_params[q], P[q]->getValue());
+                    }
+                in->bump();
                 boost_until = mono_ms() + 500;
                 break;
             case C_RESTORE:

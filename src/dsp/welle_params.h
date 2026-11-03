@@ -197,11 +197,15 @@ static const wv_param_t g_wv_params[] = {
     {"quickTimbre", 1, 0, 127, 64},
     {"quickTimbreMod", 1, 0, 127, 64},
     {"quickWavescan", 1, 0, 127, 64},
+    {"quickCutoff", 1, 0, 127, 64},
+    {"quickResonance", 1, 0, 127, 64},
+    {"quickFilterEnv", 1, 0, 127, 64},
+    {"quickWavePosition", 1, 0, 127, 64},
     {"pan", 1, 0, 127, 64},
     {"panMode", 2, 0, 2, 1},
     {"output", 1, 0, 127, 81},
     {"circuitAge", 1, 0, 127, 23},
 };
-static const int WV_NUM_PARAMS = 197;
+static const int WV_NUM_PARAMS = 201;
 #define WV_PATCH_TILES 32
 #define WV_BANK_TILES 10

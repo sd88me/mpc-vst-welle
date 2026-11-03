@@ -41,7 +41,7 @@ SHORT = {   # names for the MPC screen (the processor's own are long)
     "highpassEnvelopeAmount": "HP Env Amt", "highpassVelocity": "HP Velocity", "highpassKeytrack": "HP Keytrack",
     "highpassKeyCenter": "HP Key Center", "bandpassBandwidth": "BP Width", "panMode": "Pan Mod Mode", "circuitAge": "Circuit Age",
     "freeEnvZeroAxis": "Free Env Zero", "waveEnvKeyOff": "Key Off Point", "waveEnvLoopStart": "Loop Start",
-    "waveEnvLoopEnabled": "Env Loop", "glideTimeMode": "Glide Mode", "glideRateModSource": "Glide Mod Src",
+    "waveEnvLoopEnabled": "Env Loop", "glideTimeMode": "Glide Mode", "quickWavePosition": "Quick Wave Pos", "glideRateModSource": "Glide Mod Src",
     "glideRateModAmount": "Glide Mod Amt",
 }
 

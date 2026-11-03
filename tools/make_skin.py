@@ -358,12 +358,11 @@ p.done()
 
 # ---------------------------------------------------------------- QUICK / FADERS
 QK = [k for k in PARAMS if k.startswith("quick")]
-FD = ["performanceFader%d" % i for i in range(1, 9)]
-p = Page("QUICK", QK, ("FADERS", FD))
-p.panel(8, 8, 1264, 300, "QUICK EDIT (THE WAVE'S OFFSETS)")
-p.row(8, 1272, 170, [(k, PARAMS[k]["name"].replace("Quick ", "")) for k in QK])
-p.panel(8, 320, 1264, 300, "PERFORMANCE FADERS")
-p.row(8, 1272, 470, [(k, "Fader %d" % (i + 1)) for i, k in enumerate(FD)])
+p = Page("QUICK", QK[:8], ("QUICK 2", QK[8:]))
+p.panel(8, 8, 1264, 300, "QUICK EDIT: OFFSETS ON THE WHOLE PERFORMANCE (CENTRED ON A PROGRAM CHANGE)")
+p.row(8, 1272, 170, [(k, PARAMS[k]["name"].replace("Quick ", "")) for k in QK[:6]])
+p.panel(8, 320, 1264, 300)
+p.row(8, 1272, 470, [(k, PARAMS[k]["name"].replace("Quick ", "")) for k in QK[6:]])
 p.done()
 
 open(os.path.join(OUT, "layout.conf"), "w").write("\n".join(lines) + "\n")
