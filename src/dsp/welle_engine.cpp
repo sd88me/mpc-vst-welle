@@ -1,4 +1,4 @@
-/* Wavicle for MPC: mo0kid's Wave Emulation (a model of the Waldorf Wave's voice circuits, driven by the instrument's own OS 1.700
+/* Welle for MPC: mo0kid's Wave Emulation (a model of the Waldorf Wave's voice circuits, driven by the instrument's own OS 1.700
  * running on emulated 68000s) as an mpc-vst-plugins engine (wrapper/engine.h). GPL-3.0.
  *
  * Wave Emulation's JUCE AudioProcessor (src/wave, vendored with small patches: src/VENDORED.md) runs headless: no editor, no JUCE
@@ -6,7 +6,7 @@
  * in, renders 128-frame blocks into a ring of int16 stereo, and does the processor's "message thread" work (serviceAsyncUpdate).
  * render() only drains the ring.
  *
- * Parameters: every one of the processor's (APVTS) parameters, keyed by its ID (tools/gen_params.py -> wavicle_params.h). The
+ * Parameters: every one of the processor's (APVTS) parameters, keyed by its ID (tools/gen_params.py -> welle_params.h). The
  * values the screen reads are cached here and refreshed from the processor, so a program change or the firmware's own edits show.
  * Sounds: the Wave keeps them on floppy disk. Each disk image (.img) or Wave setup file in <data_dir>/banks/ is a bank of 256
  * performances. A setup file is first written into a disk image under <data_dir>/cache/.
@@ -41,7 +41,7 @@ extern "C" {
 #include "engine.h"
 }
 
-#include "wavicle_params.h"
+#include "welle_params.h"
 #include "wave_lcd.h"
 #include "UI/WaveLcdModel.h"
 
@@ -324,7 +324,7 @@ void emu_main(Inst *in) {
         const auto report = proc->loadFirmware(juce::File(juce::String(in->dir + "/roms")), false);
         (void)report;
         if (!proc->getMasterFirmwareRuntime().isLoaded()) {
-            in->set_status("No Wave OS 1.700 in wavicle/roms/ (w2sys.bin + wdv.sys)");
+            in->set_status("No Wave OS 1.700 in welle/roms/ (w2sys.bin + wdv.sys)");
             in->failed = true;
         } else {
             std::lock_guard<std::mutex> l(in->sm);
@@ -521,7 +521,7 @@ void emu_main(Inst *in) {
     if (!in->failed) lcd_th = std::thread(lcd_main, in, proc.get(), &lcd_quit);
     in->P = P;
     in->ready = true;
-    if (!in->failed) in->set_status(in->banks.empty() ? "Ready - no sound disks in wavicle/banks/" : "Ready");
+    if (!in->failed) in->set_status(in->banks.empty() ? "Ready - no sound disks in welle/banks/" : "Ready");
     xlog("[wv] ready after %.1f s", std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count());
 
     static const bool bench = getenv("WV_BENCH") != nullptr;
@@ -569,7 +569,7 @@ void emu_main(Inst *in) {
 void fav_load(Inst *in);
 
 void *eng_create(const char *dir) {
-    if (!g_log) g_log = fopen(getenv("WV_LOG") ? getenv("WV_LOG") : "/tmp/wavicle.log", "a");
+    if (!g_log) g_log = fopen(getenv("WV_LOG") ? getenv("WV_LOG") : "/tmp/welle.log", "a");
     Inst *in = new Inst();
     in->dir = dir ? dir : "";
     for (int i = 0; i < WV_NUM_PARAMS; i++) {

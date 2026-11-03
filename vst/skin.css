@@ -1,4 +1,4 @@
-/* Wavicle: the look of Wave Emulation's panel (mo0kid): navy, tan section bars, the light centre section, a teal display.
+/* Welle: the look of Wave Emulation's panel (mo0kid): navy, tan section bars, the light centre section, a teal display.
    Colours come from the layout's theme_* lines; live text uses Liberation Sans (SIL OFL 1.1, vst/fonts/). */
 @font-face { font-family: "Liberation Sans"; font-weight: 700; src: url("fonts/LiberationSans-Bold.ttf"); }
 :root { --font: "Liberation Sans", "Titillium Web", sans-serif; --title-font: "Liberation Sans", sans-serif;

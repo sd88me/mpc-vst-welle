@@ -1,6 +1,6 @@
 // Engine-level test through the interface the wrapper uses (mpc_engine): boots Wave OS 1.700 from <dir>/roms, plays notes, moves
 // parameters (they must change the sound), changes the voice limit, checks the state chunk round trip and a second instance.
-// usage: wavicle_engine_test <data dir with roms/> [seconds of audio per phase] [wav out]
+// usage: welle_engine_test <data dir with roms/> [seconds of audio per phase] [wav out]
 extern "C" {
 #include "engine.h"
 }

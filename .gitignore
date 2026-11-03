@@ -7,6 +7,6 @@ third_party/Musashi/
 *.sys
 *.img
 !src/wave-data/BlankWave.img
-release/wavicle/cache/
+release/welle/cache/
 !src/wave-data/ppg-v6-wavetables.bin
 *.set

@@ -1,12 +1,12 @@
 {
-  "name": "Wavicle",
+  "name": "Welle",
   "vendor": "sd88me",
-  "uid": "WvCl",
+  "uid": "WeLe",
   "version": 1000,
   "targets": [
     "aarch64"
   ],
-  "so": "wavicle.so",
+  "so": "welle.so",
   "programs": {
     "param": "favourite"
   },
@@ -15,8 +15,8 @@
   "defines": {
     "HAS_DISPLAY_REV": 1,
     "DISPLAY_REV_NO_UPDATE": 1,
-    "MODULE_SUBDIR": "\"wavicle\"",
-    "MODULE_DIR": "\"/sdcard/vst/wavicle\"",
+    "MODULE_SUBDIR": "\"welle\"",
+    "MODULE_DIR": "\"/sdcard/vst/welle\"",
     "PARAM_TEXT_MAX": 64
   },
   "build": {
@@ -24,7 +24,7 @@
     "sources": [],
     "cflags": [],
     "libs": [
-      "vst/build/engine/libwavicle_all.a",
+      "vst/build/engine/libwelle_all.a",
       "-Wl,--exclude-libs,ALL",
       "-static-libstdc++",
       "-static-libgcc",

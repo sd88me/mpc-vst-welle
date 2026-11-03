@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# Build Wavicle. The engine (Wave Emulation + JUCE (headless) + Musashi + src/dsp glue) is built with CMake into one static archive,
-# vst/build/engine/libwavicle_all.a, which vst/vst.json links into the plugin through tools/build_port.sh.
+# Build Welle. The engine (Wave Emulation + JUCE (headless) + Musashi + src/dsp glue) is built with CMake into one static archive,
+# vst/build/engine/libwelle_all.a, which vst/vst.json links into the plugin through tools/build_port.sh.
 #   ./build.sh engine [x86|aarch64]   just the archive for that architecture (default aarch64, cross-compiled in Docker)
 #   ./build.sh test                   x86 engine + the offline host test (tools/test_port.sh, ASan/UBSan)
-#   ./build.sh [all]                  aarch64 engine + skin + wavicle.so in vst/build/aarch64/ (Gen2)
+#   ./build.sh [all]                  aarch64 engine + skin + welle.so in vst/build/aarch64/ (Gen2)
 # MPC_VST: checkout of mpc-vst-plugins (default ~/mpc-vst-plugins).
 set -euo pipefail
 cd "$(dirname "$0")"
@@ -11,10 +11,10 @@ MPC_VST="${MPC_VST:-$HOME/mpc-vst-plugins}"
 IMAGE=xenia-a64-builder
 
 merge() {   # merge <ar> <build dir>
-  local AR="$1" B="$2" out="vst/build/engine/libwavicle_all.a"
+  local AR="$1" B="$2" out="vst/build/engine/libwelle_all.a"
   mkdir -p vst/build/engine
   { echo "CREATE $out"
-    for l in libwavicle_dsp.a libWaveCore.a libwave_juce.a libWaveM68k.a; do
+    for l in libwelle_dsp.a libWaveCore.a libwave_juce.a libWaveM68k.a; do
       [ -f "$B/$l" ] || { echo "missing $B/$l" >&2; exit 1; }
       echo "ADDLIB $B/$l"
     done
@@ -41,13 +41,13 @@ engine() {
   case "${1:-aarch64}" in
     x86)
       cmake -S . -B build/x86 -G Ninja -DCMAKE_BUILD_TYPE=Release -DMPC_VST="$MPC_VST" >/dev/null
-      cmake --build build/x86 --target wavicle_dsp -j"$(nproc)"
+      cmake --build build/x86 --target welle_dsp -j"$(nproc)"
       merge ar build/x86 ;;
     aarch64)
       docker image inspect $IMAGE >/dev/null 2>&1 || docker build -q -t $IMAGE -f scripts/Dockerfile scripts
       docker run --rm -u "$(id -u):$(id -g)" -v "$PWD":/b -v "$MPC_VST":/mv:ro -w /b $IMAGE bash -euc '
         cmake -S . -B build/a64 -G Ninja -DCMAKE_TOOLCHAIN_FILE=cmake/aarch64-toolchain.cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-mcpu=cortex-a76 -DCMAKE_C_FLAGS=-mcpu=cortex-a76 -DMPC_VST=/mv >/dev/null
-        cmake --build build/a64 --target wavicle_dsp -j"$(nproc)"'
+        cmake --build build/a64 --target welle_dsp -j"$(nproc)"'
       merge "docker run --rm -i -u $(id -u):$(id -g) -v $PWD:/b -w /b $IMAGE aarch64-linux-gnu-ar" build/a64 ;;
     *) echo "unknown arch $1" >&2; exit 1 ;;
   esac

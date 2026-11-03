@@ -1,5 +1,5 @@
 // Hold <notes> notes for <seconds> with the voice option <0|1> (8|16), pulling audio in real time as MPC would; report dropouts.
-// usage: wavicle_hold_bench <data dir> <notes> <voices option> [seconds]
+// usage: welle_hold_bench <data dir> <notes> <voices option> [seconds]
 extern "C" {
 #include "engine.h"
 }
