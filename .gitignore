@@ -10,3 +10,4 @@ third_party/Musashi/
 release/welle/cache/
 !src/wave-data/ppg-v6-wavetables.bin
 *.set
+skin/wordmark/local/
