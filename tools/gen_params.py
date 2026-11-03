@@ -156,6 +156,12 @@ for ln in range(1, 9):
         add(dict(key="lcdst_%d_%d" % (ln, c), name="LCD CELL %d.%d" % (ln, c), min=0, max=31, default=0, display="int", poll=True), "LCD")
 
 add(dict(key="midi_mode", name="MIDI", options=["All parts", "As sent"], default="All parts"), "System")
+# the MAIN faders: the Wave's Quick Edit offsets (default) or the Performance faders as each performance assigns them
+add(dict(key="fader_mode", name="FADERS", options=["Quick Edit", "Performance"], default="Quick Edit"), "System")
+for i in range(1, 9):
+    add(dict(key="fader_%d" % i, name="FADER %d" % i, min=0, max=127, default=64, display="int"), "System")
+for i in range(1, 9):
+    add(dict(key="fader_label_%d" % i, name="FADER %d NAME" % i, min=0, max=0, default=0, display="string", poll=True), "System")
 
 order = ["Browse", "LCD", "Banks", "System", "Waves", "Wave Env", "Filter", "Amp", "LFO", "Mod", "Free Env", "Quick", "Faders"]
 sections = [{"label": s, "keys": sec_keys[s]} for s in order if s in sec_keys]

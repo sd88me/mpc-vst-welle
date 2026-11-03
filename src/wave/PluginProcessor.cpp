@@ -1774,6 +1774,18 @@ void WaveEmulationAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
             renderedSound.quickEditAmounts = editedSound.quickEditAmounts;
             wave::parameters::applyQuickEdit(renderedSound);
             performance.layers[static_cast<size_t>(editable)].sound = renderedSound;
+            // MPC port: Quick Edit acts on the whole Performance (every playing Instrument), so the MPC's faders in Quick Edit
+            // mode move layered Performances as one. The copy above is fresh each block, so this never accumulates.
+            const auto quickActive = std::any_of(editedSound.quickEditAmounts.begin(), editedSound.quickEditAmounts.end(),
+                                                 [](float amount) { return amount != 0.0f; });
+            if (quickActive)
+                for (size_t layer = 0; layer < performance.layers.size(); ++layer)
+                    if (static_cast<int>(layer) != editable && performance.layers[layer].enabled)
+                    {
+                        auto& sound = performance.layers[layer].sound;
+                        sound.quickEditAmounts = editedSound.quickEditAmounts;
+                        wave::parameters::applyQuickEdit(sound);
+                    }
         }
         else if (!masterFirmware.isLoaded() && selectionWasStable
                  && editable >= 0 && editable < 8)

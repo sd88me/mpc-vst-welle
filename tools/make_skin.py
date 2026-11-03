@@ -163,7 +163,7 @@ def header(p):
 # ---------------------------------------------------------------- MAIN: the Wave's centre section. Its LCD read back as text on the
 # instrument's 8-pixel rows and eight columns (src/dsp/wave_lcd.h), each cell's background (bar, box sides) a frame of a filmstrip,
 # the eight performance faders in the panel's own fader slots under it
-FADERS = ["performanceFader%d" % i for i in range(1, 9)]
+FADERS = ["fader_%d" % i for i in range(1, 9)]   # Quick Edit offsets or Performance faders (FADERS switch)
 p = Page("MAIN", FADERS + ["gain"])
 header(p)
 LX0, LX1, LY0, LH = 32, 1028, 116, 27
@@ -222,6 +222,8 @@ for i, k in enumerate(FADERS):
     nx, ny = sx + int(14 * K), SY + int(330 * K)
     p.d.rectangle((nx - 2, ny - 2, nx + 24, ny + 18), fill=(30, 30, 38))
     p.d.text((nx + 11, ny + 1), str(i + 1), font=F(15), fill=WHITE, anchor="ma")
+    p.widgets.append('readout cx=%d cy=%d w=%d h=20 label="" key=fader_label_%d box=0 tsize=13 tcolor=24232d tweight=700'
+                     % (cx + 14, ny + 8 + Y86, CW - 40, i + 1))
     top, bot = SY + int(54 * K), SY + int(300 * K)
     p.widgets.append('slider_v cx=%d cy=%d w=%d h=%d label="" key=%s img=images/fader_cap.png base=images/clear.png ns=0 vs=0'
                      % (cx, (top + bot) // 2 + Y86, thumb.width, bot - top + thumb.height, k))
@@ -231,8 +233,10 @@ stamp_ring(p, 1166, 180, 32)
 p.widgets.append('knob cx=1166 cy=%d r=32 label="" key=gain ns=0 vs=18 vy=20 bw=120' % (180 + Y86))
 p.d.text((1166, 262), "VOICES", font=F(17, TITLE), fill=TAN, anchor="ma")
 p.widgets.append('enum_v cx=1166 cy=%d label="" key=voices sw=110 sh=36' % (346 + Y86))
-p.d.text((1166, 404), "MIDI", font=F(17, TITLE), fill=TAN, anchor="ma")
-p.widgets.append('enum_v cx=1166 cy=%d label="" key=midi_mode sw=130 sh=34' % (464 + Y86))
+p.d.text((1110, 396), "MIDI", font=F(15, TITLE), fill=TAN, anchor="ma")
+p.widgets.append('enum_v cx=1110 cy=%d label="" key=midi_mode sw=104 sh=32' % (450 + Y86))
+p.d.text((1222, 396), "FADERS", font=F(15, TITLE), fill=TAN, anchor="ma")
+p.widgets.append('enum_v cx=1222 cy=%d label="" key=fader_mode sw=104 sh=32' % (450 + Y86))
 p.widgets.append('button cx=1110 cy=%d w=104 h=40 label="PANIC" key=all_notes_off' % (550 + Y86))
 p.widgets.append('button cx=1222 cy=%d w=104 h=40 label="RELOAD" key=init_patch' % (550 + Y86))
 p.widgets.append('readout cx=1166 cy=%d w=200 h=26 label="" key=engine_stats box=0 tsize=13 tcolor=bbc8db tweight=700' % (600 + Y86))

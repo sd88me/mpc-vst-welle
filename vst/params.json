@@ -6200,6 +6200,151 @@
     "As sent"
    ],
    "default": "All parts"
+  },
+  {
+   "key": "fader_mode",
+   "name": "FADERS",
+   "options": [
+    "Quick Edit",
+    "Performance"
+   ],
+   "default": "Quick Edit"
+  },
+  {
+   "key": "fader_1",
+   "name": "FADER 1",
+   "min": 0,
+   "max": 127,
+   "default": 64,
+   "display": "int"
+  },
+  {
+   "key": "fader_2",
+   "name": "FADER 2",
+   "min": 0,
+   "max": 127,
+   "default": 64,
+   "display": "int"
+  },
+  {
+   "key": "fader_3",
+   "name": "FADER 3",
+   "min": 0,
+   "max": 127,
+   "default": 64,
+   "display": "int"
+  },
+  {
+   "key": "fader_4",
+   "name": "FADER 4",
+   "min": 0,
+   "max": 127,
+   "default": 64,
+   "display": "int"
+  },
+  {
+   "key": "fader_5",
+   "name": "FADER 5",
+   "min": 0,
+   "max": 127,
+   "default": 64,
+   "display": "int"
+  },
+  {
+   "key": "fader_6",
+   "name": "FADER 6",
+   "min": 0,
+   "max": 127,
+   "default": 64,
+   "display": "int"
+  },
+  {
+   "key": "fader_7",
+   "name": "FADER 7",
+   "min": 0,
+   "max": 127,
+   "default": 64,
+   "display": "int"
+  },
+  {
+   "key": "fader_8",
+   "name": "FADER 8",
+   "min": 0,
+   "max": 127,
+   "default": 64,
+   "display": "int"
+  },
+  {
+   "key": "fader_label_1",
+   "name": "FADER 1 NAME",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "fader_label_2",
+   "name": "FADER 2 NAME",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "fader_label_3",
+   "name": "FADER 3 NAME",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "fader_label_4",
+   "name": "FADER 4 NAME",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "fader_label_5",
+   "name": "FADER 5 NAME",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "fader_label_6",
+   "name": "FADER 6 NAME",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "fader_label_7",
+   "name": "FADER 7 NAME",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "fader_label_8",
+   "name": "FADER 8 NAME",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
   }
  ],
  "sections": [
@@ -6480,7 +6625,24 @@
     "gain",
     "voices",
     "init_patch",
-    "midi_mode"
+    "midi_mode",
+    "fader_mode",
+    "fader_1",
+    "fader_2",
+    "fader_3",
+    "fader_4",
+    "fader_5",
+    "fader_6",
+    "fader_7",
+    "fader_8",
+    "fader_label_1",
+    "fader_label_2",
+    "fader_label_3",
+    "fader_label_4",
+    "fader_label_5",
+    "fader_label_6",
+    "fader_label_7",
+    "fader_label_8"
    ]
   },
   {

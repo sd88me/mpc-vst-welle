@@ -53,6 +53,10 @@ constexpr int kTargetFill = 768;        // frames the emulator thread keeps queu
 constexpr int kBoostFill = 2048;        // ~46 ms, for 500 ms after a program or bank load (the firmware does its work then)
 constexpr int kPrograms = 256;          // a Wave setup: two banks of 128 performances
 constexpr int kFavSlots = 64;
+// the MAIN faders in Quick Edit mode: the Wave's eight Quick Edit offsets, in its own order
+const char *const kQuickKeys[8] = {"quickAttack", "quickDecay", "quickSustain", "quickRelease", "quickPitchMod", "quickTimbre", "quickTimbreMod", "quickWavescan"};
+const char *const kQuickNames[8] = {"ATTACK", "DECAY", "SUSTAIN", "RELEASE", "PITCH MOD", "TIMBRE", "TIMBRE MOD", "WAVESCAN"};
+const char *const kPerfNames[8] = {"FADER 1", "FADER 2", "FADER 3", "FADER 4", "FADER 5", "FADER 6", "FADER 7", "FADER 8"};
 
 FILE *g_log = nullptr;
 void xlog(const char *fmt, ...) {
@@ -104,7 +108,8 @@ struct Inst {
     std::atomic<uint32_t> wr{0}, rd{0};
     std::atomic<uint32_t> underruns{0};
     std::atomic<int> emu_cpu{0}, active{0};
-    std::atomic<int> midi_all{1};                    // 1: play every part of a multi-channel performance from one channel
+    std::atomic<int> midi_all{1};
+    std::atomic<int> fader_quick{1};                 // MAIN faders: 1 Quick Edit offsets, 0 the Performance faders                    // 1: play every part of a multi-channel performance from one channel
     std::atomic<uint16_t> part_channels{1};          // the MIDI channels (bits 0-15) the current performance's instruments listen on
     std::atomic<long long> loading_until{0};       // a program / bank load in progress: its silence is not a dropout
 
@@ -653,6 +658,7 @@ void restore_state(Inst *in, const char *s) {
     };
     in->gain = clampi(num("\"gain\":", 100), 10, 400);
     in->midi_all = num("\"midi_all\":", 1) ? 1 : 0;
+    in->fader_quick = num("\"fader_quick\":", 1) ? 1 : 0;
     const int nv = num("\"voices\":", 8), v = nv >= 12 ? 12 : nv >= 8 ? 8 : 6;
     in->voices = v;
     in->push(Cmd{C_VOICES, {0, 0, 0}, v, 0});
@@ -680,8 +686,9 @@ int put(char *buf, int n, const char *fmt, ...);
 std::string state_string(Inst *in) {
     std::string s;
     char b[256];
-    snprintf(b, sizeof b, "{\"state_version\":1,\"bank\":%d,\"bank_name\":\"%s\",\"preset\":%d,\"gain\":%d,\"voices\":%d,\"midi_all\":%d,\"values\":\"",
-             in->bank.load(), bank_name(in, in->bank).c_str(), in->preset.load(), in->gain.load(), in->voices.load(), in->midi_all.load());
+    snprintf(b, sizeof b, "{\"state_version\":1,\"bank\":%d,\"bank_name\":\"%s\",\"preset\":%d,\"gain\":%d,\"voices\":%d,\"midi_all\":%d,\"fader_quick\":%d,\"values\":\"",
+             in->bank.load(), bank_name(in, in->bank).c_str(), in->preset.load(), in->gain.load(), in->voices.load(), in->midi_all.load(),
+             in->fader_quick.load());
     s = b;
     for (int i = 0; i < WV_NUM_PARAMS; i++) { snprintf(b, sizeof b, "%d=%d;", i, in->val[i].load()); s += b; }
     s += "\"}";
@@ -797,6 +804,15 @@ void eng_set(void *p, const char *key, const char *val) {
     if (!strcmp(key, "init_patch")) { if (press) select_program(in, in->preset); return; }   // the stored performance again
     if (!strcmp(key, "gain")) { in->gain = clampi(atoi(val), 10, 400); return; }
     if (!strcmp(key, "midi_mode")) { in->midi_all = atoi(val) == 0 ? 1 : 0; return; }
+    if (!strcmp(key, "fader_mode")) { in->fader_quick = atoi(val) == 0 ? 1 : 0; in->bump(); return; }
+    if (!strncmp(key, "fader_", 6) && key[6] >= '1' && key[6] <= '8' && !key[7]) {      // one of the MAIN faders: route by mode
+        char k[40];
+        if (in->fader_quick) snprintf(k, sizeof k, "%s", kQuickKeys[key[6] - '1']);
+        else snprintf(k, sizeof k, "performanceFader%d", key[6] - '0');
+        auto f = param_index().find(k);
+        if (f != param_index().end()) { const int v = clampi(atoi(val), 0, 127); in->val[f->second] = v; in->push(Cmd{C_PARAM, {0, 0, 0}, f->second, v}); }
+        return;
+    }
     if (!strcmp(key, "voices")) {
         static const int kVoices[3] = {6, 8, 12};             // option index -> voices
         const int v = getenv("WV_VOICES") ? atoi(getenv("WV_VOICES")) : kVoices[clampi(atoi(val), 0, 2)];
@@ -890,6 +906,16 @@ int eng_get(void *p, const char *key, char *buf, int n) {
     if (!strcmp(key, "active_voices")) return put(buf, n, "%d", in->active.load());
     if (!strcmp(key, "gain")) return put(buf, n, "%d", in->gain.load());
     if (!strcmp(key, "midi_mode")) return put(buf, n, "%d", in->midi_all.load() ? 0 : 1);
+    if (!strcmp(key, "fader_mode")) return put(buf, n, "%d", in->fader_quick.load() ? 0 : 1);
+    if (!strncmp(key, "fader_label_", 12) && key[12] >= '1' && key[12] <= '8' && !key[13])
+        return put(buf, n, "%s", in->fader_quick ? kQuickNames[key[12] - '1'] : kPerfNames[key[12] - '1']);
+    if (!strncmp(key, "fader_", 6) && key[6] >= '1' && key[6] <= '8' && !key[7]) {
+        char k[40];
+        if (in->fader_quick) snprintf(k, sizeof k, "%s", kQuickKeys[key[6] - '1']);
+        else snprintf(k, sizeof k, "performanceFader%d", key[6] - '0');
+        auto f = param_index().find(k);
+        return f == param_index().end() ? -1 : put(buf, n, "%d", in->val[f->second].load());
+    }
     if (!strcmp(key, "voices")) return put(buf, n, "%d", in->voices.load() >= 12 ? 2 : in->voices.load() >= 8 ? 1 : 0);
     if (!strcmp(key, "display_rev")) return put(buf, n, "%u", in->rev.load());
     if (!strcmp(key, "state")) return put(buf, n, "%s", state_string(in).c_str());
