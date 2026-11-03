@@ -25,7 +25,7 @@ cat > "$OUT/plugin.json" <<JSON
   "numInputs": 0,
   "numOutputs": 2,
   "file64": "VST/wavicle-arm64.so",
-  "description": "Waldorf Wave emulation (mo0kid Wave Emulation) running the Wave OS. Needs your own Wave OS 1.700 in VST/wavicle/roms/.",,
+  "description": "Waldorf Wave emulation (mo0kid Wave Emulation) running the Wave OS. Needs your own Wave OS 1.700 in VST/wavicle/roms/.",
   "license": "GPL-3.0-only",
   "url": "https://github.com/sd88me/mpc-vst-wavicle"
 }
