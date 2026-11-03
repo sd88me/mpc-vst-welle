@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="260" height="80" viewBox="0 0 260 80">
+  <!-- WELLE wordmark: monoline, one stroke weight, a common slant. Pale W and E's; the double L one tan swoosh;
+       the first E's middle stroke runs on through the L's (the interlock). Drawn for Welle for MPC. -->
+  <g transform="translate(14,0) skewX(-12)" fill="none" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round">
+    <!-- W -->
+    <path stroke="#BBC8DB" d="M12,18 C12,44 16,62 25,62 C33,62 36,46 37,32 C38,46 41,62 49,62 C58,62 63,44 63,18"/>
+    <!-- E -->
+    <path stroke="#BBC8DB" d="M100,22 C96,17 89,16 84,18 C77,21 76,32 85,37 C75,39 71,46 72,53 C74,62 88,64 97,60 C99,59 101,57 102,55"/>
+    <!-- LL -->
+    <path stroke="#D1AE88" d="M106,61 C116,56 124,38 127,24 C129,15 126,12 123,14 C118,18 118,42 118,53 C118,61 123,63 129,61
+                              C138,57 146,38 149,24 C151,15 148,12 145,14 C140,18 140,42 140,53 C140,61 145,63 152,61 C156,60 159,58 161,56"/>
+    <!-- the E's middle stroke, on through the L's -->
+    <path stroke="#BBC8DB" stroke-width="3.4" d="M85,37 C108,36 134,35 158,34"/>
+    <!-- E -->
+    <path stroke="#BBC8DB" d="M208,22 C204,17 197,16 192,18 C185,21 184,32 193,37 C183,39 179,46 180,53 C182,62 196,64 205,60 C207,59 209,57 210,55"/>
+  </g>
+</svg>

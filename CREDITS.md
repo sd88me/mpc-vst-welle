@@ -17,7 +17,7 @@ Welle for MPC stands on the work of others. Each licence applies to its own part
 - **Liberation Sans** (Red Hat / Google, **SIL OFL 1.1**) for the page text (`vst/fonts/`).
 - **[mpc-vst-plugins](https://github.com/open-mpc/mpc-vst-plugins)**: the plugin wrapper (`wrapper/vst2_wrap.c`), `fast_cores.h` and the skin tools.
 
-The WELLE wordmark (`tools/make_wordmark.py`) is drawn for this project in the manner of the Wave's own.
+The WELLE wordmark (`skin/wordmark/welle.svg`, `tools/make_wordmark.py`) is original to this project.
 
 Welle for MPC is an independent project, not affiliated with or endorsed by Waldorf. No firmware or sound sets are included; the LCD fonts
 are read at run time from the user's own OS file.
