@@ -8,11 +8,11 @@ from PIL import Image, ImageDraw
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 PALE, TAN = (187, 200, 219, 255), (209, 174, 136, 255)
-S = 4                       # supersampling
-W, H = 260, 70              # design units (the strokes below)
+S = 8                       # supersampling
+W, H = 200, 70              # design units (the strokes below)
 
 
-def spline(pts, n=24):
+def spline(pts, n=48):
     """Catmull-Rom through the points (ends repeated)"""
     p = [pts[0]] + pts + [pts[-1]]
     out = []
@@ -35,19 +35,28 @@ def stroke(d, pts, col, w=3.2):
         d.ellipse((x - r, y - r, x + r, y + r), fill=col)
 
 
+SLANT = 0.22                # forward lean: x += SLANT * (baseline - y)
+BASE = 60
+
+
+def lean(pts):
+    return [(x + SLANT * (BASE - y), y) for x, y in pts]
+
+
 im = Image.new("RGBA", (W * S, H * S), (0, 0, 0, 0))
 d = ImageDraw.Draw(im)
-# W: a loose script W, its first stroke rising from a curl at the left (as the Wave's)
-stroke(d, [(8, 52), (12, 30), (22, 12), (24, 18), (20, 40), (24, 58), (34, 44), (42, 26), (44, 40), (50, 58), (58, 44), (66, 22), (72, 10)], PALE)
-# E: open, three strokes in one, like the Wave's E
-stroke(d, [(106, 14), (92, 12), (84, 22), (86, 34), (98, 35), (86, 38), (80, 50), (86, 59), (104, 58), (112, 54)], PALE)
-# LL: one tan swoosh, two tall loops sweeping up and right (the Wave's A/V)
-stroke(d, [(116, 58), (126, 44), (134, 22), (138, 8), (134, 12), (130, 34), (132, 56), (142, 56), (154, 40), (162, 18), (166, 6),
-           (162, 10), (158, 34), (160, 56), (172, 57), (182, 52)], TAN)
-# the pale stroke run through the swoosh (the Wave's crossbar)
-stroke(d, [(118, 38), (140, 37), (164, 35), (186, 34)], PALE, 2.6)
+LW = 2.4
+# W: two smooth Vs, rounded at the foot
+stroke(d, lean([(6, 16), (9, 40), (15, 59), (21, 46), (27, 30), (33, 46), (39, 59), (46, 40), (52, 14)]), PALE, LW)
+# E: a small top bowl into a fuller lower one
+stroke(d, lean([(86, 18), (78, 14), (70, 18), (70, 29), (79, 36), (68, 40), (65, 52), (73, 59), (84, 58), (91, 53)]), PALE, LW)
+# LL: one tan swoosh, two tall looped l's
+stroke(d, lean([(100, 58), (108, 46), (116, 26), (120, 12), (116, 9), (112, 20), (110, 42), (112, 56), (118, 59), (126, 48),
+                (134, 26), (138, 12), (134, 9), (130, 20), (128, 42), (130, 56), (136, 59), (144, 54)]), TAN, LW)
+# the pale stroke through the swoosh, as the Wave's crossbar
+stroke(d, lean([(102, 38), (122, 36.5), (144, 35)]), PALE, LW * 0.85)
 # E
-stroke(d, [(232, 16), (216, 12), (206, 22), (209, 34), (222, 35), (209, 38), (202, 50), (210, 59), (230, 58), (240, 53)], PALE)
+stroke(d, lean([(176, 18), (168, 14), (160, 18), (160, 29), (169, 36), (158, 40), (155, 52), (163, 59), (174, 58), (181, 53)]), PALE, LW)
 
 im = im.crop(im.getbbox())
 os.makedirs(os.path.join(ROOT, "skin", "parts"), exist_ok=True)
