@@ -382,14 +382,14 @@ private:
     std::shared_ptr<const UserTuningBank> userTuningBank;
     std::array<Voice, voiceCount> voices;
     int voiceLimit = voiceCount; // MPC port: polyphony cap
-    // MPC port: the cap is spread over the three voice cards (each renders on its own thread): card c may use its first
-    // ceil(limit / 3) voices, and fewer for the last cards when the limit is not a multiple of three.
+    // MPC port: the cap is spread over the three voice cards (each renders on its own thread). Card 1 renders on the
+    // thread that also runs the firmware, so the voices left over after an even split go to cards 3 and 2 first.
     [[nodiscard]] bool voiceAllowed(const Voice& voice) const noexcept
     {
         const auto index = static_cast<int>(&voice - voices.data());
         const auto card = index / voicesPerBoard, slot = index % voicesPerBoard;
         const auto base = voiceLimit / voiceBoardCount, extra = voiceLimit % voiceBoardCount;
-        return slot < base + (card < extra ? 1 : 0);
+        return slot < base + (voiceBoardCount - 1 - card < extra ? 1 : 0);
     }
     std::array<RenderingVoice, voiceCount> renderingVoices{};
     int renderingVoiceCount = 0;

@@ -15,6 +15,13 @@ int main(int argc, char** argv)
     void* i = e->create(argv[1]);
     while (get(e, i, "loading_status").rfind("Ready", 0) != 0) std::this_thread::sleep_for(std::chrono::milliseconds(100));
     e->set_param(i, "voices", argv[3]);
+    if (argc > 6) {   // bank, program
+        e->set_param(i, "bank_index", argv[5]);
+        int16_t z[256]; for (int k = 0; k < 44100 * 3 / 128; k++) e->render(i, z, 128), std::this_thread::sleep_for(std::chrono::microseconds(2900));
+        e->set_param(i, "preset", argv[6]);
+        for (int k = 0; k < 44100 * 2 / 128; k++) e->render(i, z, 128), std::this_thread::sleep_for(std::chrono::microseconds(2900));
+        printf("%s / %s\n", get(e, i, "bank_name").c_str(), get(e, i, "preset_name").c_str());
+    }
     const int notes = atoi(argv[2]);
     const double secs = argc > 4 ? atof(argv[4]) : 10;
     int16_t buf[256];

@@ -13,6 +13,7 @@
  * Firmware: <data_dir>/roms/ (w2sys.bin + wdv.sys, OS 1.700). None ships. */
 #include "fast_cores.h"
 #include "PluginProcessor.h"
+#include "PanelWiring.h"
 
 #include <algorithm>
 #include <array>
@@ -103,6 +104,7 @@ struct Inst {
     std::atomic<uint32_t> wr{0}, rd{0};
     std::atomic<uint32_t> underruns{0};
     std::atomic<int> emu_cpu{0}, active{0};
+    std::atomic<long long> loading_until{0};       // a program / bank load in progress: its silence is not a dropout
 
     std::mutex qm;
     std::vector<Cmd> q;
@@ -260,6 +262,18 @@ std::vector<uint8_t> read_file(const std::string &path) {
  * reads the firmware's video RAM whenever the firmware has drawn something, at most 8 times a second, and turns it into text. */
 void lcd_main(Inst *in, const WaveEmulationAudioProcessor *proc, std::atomic<bool> *quit) {
     pthread_setname_np(pthread_self(), "WVlcd");
+    {   // off the fast cores (the emulator's), and below everyone else
+        const auto fast = fastcores::usable();
+        if (!fast.empty()) {
+            cpu_set_t set;
+            CPU_ZERO(&set);
+            const int n = (int)sysconf(_SC_NPROCESSORS_ONLN);
+            for (int c = 0; c < n; c++)
+                if (std::find(fast.begin(), fast.end(), c) == fast.end() && c != n - 1) CPU_SET(c, &set);
+            if (CPU_COUNT(&set)) sched_setaffinity(0, sizeof set, &set);
+        }
+        setpriority(PRIO_PROCESS, (id_t)syscall(SYS_gettid), 10);
+    }
     wavelcd::Decoder dec;
     if (!dec.load(read_file(in->dir + "/roms/w2sys.bin"))) { xlog("[wv] LCD fonts not found in roms/w2sys.bin"); return; }
     const auto &rt = proc->getMasterFirmwareRuntime();
@@ -300,6 +314,8 @@ void emu_main(Inst *in) {
         proc->setPlayConfigDetails(0, 2, kRate, kBlock);
         proc->prepareToPlay(kRate, kBlock);
         proc->setVoiceLimit(in->voices.load());
+        if (getenv("WV_SERIAL")) proc->setVoiceCardThreading(false);
+        if (getenv("WV_VOICES")) { in->voices = atoi(getenv("WV_VOICES")); proc->setVoiceLimit(in->voices); }
         for (pid_t t : all_threads())
             if (std::find(before.begin(), before.end(), t) == before.end()) mine.push_back(t);
         std::sort(mine.begin() + 1, mine.end());
@@ -329,6 +345,11 @@ void emu_main(Inst *in) {
     }
     (void)plist;
     std::vector<int> pending(WV_NUM_PARAMS, INT32_MIN);   // the latest screen value per parameter, not yet sent
+    std::vector<int> fader_of(WV_NUM_PARAMS, -1);         // parameter -> performance fader 0-7
+    for (int i = 0; i < WV_NUM_PARAMS; i++)
+        if (!strncmp(g_wv_params[i].key, "performanceFader", 16)) fader_of[i] = atoi(g_wv_params[i].key + 16) - 1;
+    bool fader_held[8] = {};
+    long long fader_ms[8] = {};
 
     auto refresh_values = [&](bool force) {               // the processor's values -> the screen's
         bool changed = false;
@@ -411,11 +432,15 @@ void emu_main(Inst *in) {
                 if (c.a >= 0 && c.a < WV_NUM_PARAMS) pending[c.a] = c.b;
                 break;
             case C_BANK:
+                in->loading_until = mono_ms() + 3000;
                 if (c.a != in->loaded_bank.load()) mount_bank(c.a);
+                in->loading_until = mono_ms() + 300;
                 boost_until = mono_ms() + 500;
                 break;
             case C_PROGRAM:
+                in->loading_until = mono_ms() + 3000;
                 if (c.a < proc->getNumPrograms()) proc->setCurrentProgram(c.a);
+                in->loading_until = mono_ms() + 1000;    // the firmware loads the performance over the next blocks
                 for (auto &v : pending) v = INT32_MIN;     // the program's own values win over edits made before it
                 boost_until = mono_ms() + 500;
                 break;
@@ -436,9 +461,16 @@ void emu_main(Inst *in) {
         }
         for (int i = 0; i < WV_NUM_PARAMS; i++) {
             if (pending[i] == INT32_MIN) continue;
-            if (P[i]) P[i]->setValueNotifyingHost(to_norm(P[i], g_wv_params[i], pending[i]));
+            const int f = fader_of[i];
+            if (f >= 0) {                                 // a performance fader: moved as the panel's, so the firmware sees it
+                if (!fader_held[f]) { proc->beginPanelFaderGesture(f, true); fader_held[f] = true; }
+                proc->setPanelFader(f, wave::panel::performanceFaderAdcChannels[(size_t)f], to_norm(P[i], g_wv_params[i], pending[i]), true);
+                fader_ms[f] = mono_ms();
+            } else if (P[i]) P[i]->setValueNotifyingHost(to_norm(P[i], g_wv_params[i], pending[i]));
             pending[i] = INT32_MIN;
         }
+        for (int f = 0; f < 8; f++)                       // a gesture ends when the fader has been still for a moment
+            if (fader_held[f] && mono_ms() - fader_ms[f] > 400) { proc->endPanelFaderGesture(f, true); fader_held[f] = false; }
         buf.clear();
         proc->processBlock(buf, midi);
         proc->serviceAsyncUpdate();
@@ -607,7 +639,7 @@ void restore_state(Inst *in, const char *s) {
         return q ? atoi(q + strlen(k)) : def;
     };
     in->gain = clampi(num("\"gain\":", 100), 10, 400);
-    const int v = num("\"voices\":", 8) >= 16 ? 16 : num("\"voices\":", 8) >= 12 ? 12 : 8;
+    const int nv = num("\"voices\":", 8), v = nv >= 12 ? 12 : nv >= 8 ? 8 : 6;
     in->voices = v;
     in->push(Cmd{C_VOICES, {0, 0, 0}, v, 0});
     // the bank by name (the banks/ folder may have changed since), else by number
@@ -751,8 +783,8 @@ void eng_set(void *p, const char *key, const char *val) {
     if (!strcmp(key, "init_patch")) { if (press) select_program(in, in->preset); return; }   // the stored performance again
     if (!strcmp(key, "gain")) { in->gain = clampi(atoi(val), 10, 400); return; }
     if (!strcmp(key, "voices")) {
-        static const int kVoices[3] = {8, 12, 16};             // option index -> voices
-        const int v = kVoices[clampi(atoi(val), 0, 2)];
+        static const int kVoices[3] = {6, 8, 12};             // option index -> voices
+        const int v = getenv("WV_VOICES") ? atoi(getenv("WV_VOICES")) : kVoices[clampi(atoi(val), 0, 2)];
         in->voices = v;
         in->push(Cmd{C_VOICES, {0, 0, 0}, v, 0});
         return;
@@ -842,7 +874,7 @@ int eng_get(void *p, const char *key, char *buf, int n) {
     }
     if (!strcmp(key, "active_voices")) return put(buf, n, "%d", in->active.load());
     if (!strcmp(key, "gain")) return put(buf, n, "%d", in->gain.load());
-    if (!strcmp(key, "voices")) return put(buf, n, "%d", in->voices.load() >= 16 ? 2 : in->voices.load() >= 12 ? 1 : 0);
+    if (!strcmp(key, "voices")) return put(buf, n, "%d", in->voices.load() >= 12 ? 2 : in->voices.load() >= 8 ? 1 : 0);
     if (!strcmp(key, "display_rev")) return put(buf, n, "%u", in->rev.load());
     if (!strcmp(key, "state")) return put(buf, n, "%s", state_string(in).c_str());
     if (!strcmp(key, "favourite")) {      // the picked favourite while it is the sound, else the first empty slot
@@ -887,7 +919,7 @@ void eng_render(void *p, int16_t *out, int frames) {
     in->rd.store(r, std::memory_order_release);
     if (got < frames) {
         memset(out + got * 2, 0, (size_t)(frames - got) * 4);
-        in->underruns.fetch_add(1, std::memory_order_relaxed);
+        if (mono_ms() > in->loading_until.load(std::memory_order_relaxed)) in->underruns.fetch_add(1, std::memory_order_relaxed);
     }
 }
 

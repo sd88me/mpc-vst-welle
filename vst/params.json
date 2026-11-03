@@ -116,9 +116,9 @@
    "key": "voices",
    "name": "VOICES",
    "options": [
+    "6",
     "8",
-    "12",
-    "16"
+    "12"
    ],
    "default": "8"
   },

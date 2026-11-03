@@ -95,7 +95,7 @@ add(dict(key="rom_name", name="FIRMWARE", min=0, max=0, default=0, display="stri
 add(dict(key="loading_status", name="STATUS", min=0, max=0, default=0, display="string", poll=True), "System")
 add(dict(key="engine_stats", name="STATS", min=0, max=0, default=0, display="string", poll=True), "System")
 add(dict(key="gain", name="GAIN %", min=10, max=400, default=100, display="int"), "System")
-add(dict(key="voices", name="VOICES", options=["8", "12", "16"], default="8"), "System")
+add(dict(key="voices", name="VOICES", options=["6", "8", "12"], default="8"), "System")
 add(dict(key="init_patch", name="RELOAD", min=0, max=1, default=0, momentary=True), "System")
 
 # --- every Wave parameter ---

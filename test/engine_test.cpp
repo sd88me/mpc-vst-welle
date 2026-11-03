@@ -137,7 +137,7 @@ int main(int argc, char **argv) {
         e->set_param(i, "voices", "2");
         render_rms(e, i, 0.1);
         note_rms(e, i, secs, 12);
-        CHECK(a8 == 8 && g_active == 12, "12 notes: %d voices with the 8 limit, %d with 16", a8, g_active);
+        CHECK(a8 == 8 && g_active == 12, "12 notes: %d voices with the 8 limit, %d with 12", a8, g_active);
         e->set_param(i, "gain", "150");
         e->set_param(i, "resonance", "90");
         render_rms(e, i, 0.2);
