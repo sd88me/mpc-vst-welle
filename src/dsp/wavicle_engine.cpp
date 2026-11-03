@@ -51,6 +51,7 @@ constexpr int kRingFrames = 16384;      // power of two
 constexpr int kTargetFill = 768;        // frames the emulator thread keeps queued (~17 ms)
 constexpr int kBoostFill = 2048;        // ~46 ms, for 500 ms after a program or bank load (the firmware does its work then)
 constexpr int kPrograms = 256;          // a Wave setup: two banks of 128 performances
+constexpr int kFavSlots = 64;
 
 FILE *g_log = nullptr;
 void xlog(const char *fmt, ...) {
@@ -119,6 +120,12 @@ struct Inst {
     std::string restore;                             // parameter values from a saved project, applied after its program loads
     std::mutex lm;                                   // the LCD as text (wave_lcd.h), what the lcd_<line>_<column> parameters read
     std::array<std::array<std::string, wavelcd::COLS>, wavelcd::LINES> lcd{};
+    std::mutex fm;                                   // favourites: a name and a saved state each (favourites.txt)
+    std::vector<std::pair<std::string, std::string>> favs;
+    int fav_current = -1;
+    uint32_t fav_stamp = 0;
+    std::atomic<uint32_t> load_gen{0};               // bumped by every program / bank / state load: an edit keeps a favourite picked
+    std::atomic<long long> fav_list_ms{-100000};
     std::mutex stm;
     char stats_cache[96] = "";
     int stats_cpu = -1;
@@ -175,7 +182,12 @@ void scan_banks(Inst *in) {
         }
         closedir(d);
     }
-    std::sort(found.begin(), found.end(), [](const Bank &a, const Bank &b) { return strcasecmp(a.name.c_str(), b.name.c_str()) < 0; });
+    // alphabetical, with the factory set first
+    auto factory = [](const Bank &b) { return strncasecmp(b.name.c_str(), "factory", 7) == 0 || strcasecmp(b.name.c_str(), "wave") == 0; };
+    std::sort(found.begin(), found.end(), [&](const Bank &a, const Bank &b) {
+        if (factory(a) != factory(b)) return factory(a);
+        return strcasecmp(a.name.c_str(), b.name.c_str()) < 0;
+    });
     in->banks = std::move(found);
 }
 int bank_count(Inst *in) { return std::max(1, (int)in->banks.size()); }
@@ -509,6 +521,8 @@ void emu_main(Inst *in) {
     proc.reset();
 }
 
+void fav_load(Inst *in);
+
 void *eng_create(const char *dir) {
     if (!g_log) g_log = fopen(getenv("WV_LOG") ? getenv("WV_LOG") : "/tmp/wavicle.log", "a");
     Inst *in = new Inst();
@@ -518,6 +532,7 @@ void *eng_create(const char *dir) {
         in->val[i].store(d.kind == 2 ? d.def - d.lo : d.def);
     }
     scan_banks(in);
+    fav_load(in);
     in->th = std::thread(emu_main, in);
     return in;
 }
@@ -544,6 +559,7 @@ void select_program(Inst *in, int prog) {
     in->preset = prog;
     in->page = prog / WV_PATCH_TILES;
     in->push(Cmd{C_PROGRAM, {0, 0, 0}, prog, 0});
+    in->load_gen++;
     in->bump();
 }
 void select_bank(Inst *in, int bank, int prog) {
@@ -613,6 +629,93 @@ void restore_state(Inst *in, const char *s) {
     in->push(Cmd{C_RESTORE});
 }
 
+int put(char *buf, int n, const char *fmt, ...);
+
+std::string state_string(Inst *in) {
+    std::string s;
+    char b[256];
+    snprintf(b, sizeof b, "{\"state_version\":1,\"bank\":%d,\"bank_name\":\"%s\",\"preset\":%d,\"gain\":%d,\"voices\":%d,\"values\":\"",
+             in->bank.load(), bank_name(in, in->bank).c_str(), in->preset.load(), in->gain.load(), in->voices.load());
+    s = b;
+    for (int i = 0; i < WV_NUM_PARAMS; i++) { snprintf(b, sizeof b, "%d=%d;", i, in->val[i].load()); s += b; }
+    s += "\"}";
+    return s;
+}
+
+/* ------------------------------------------------------------------ favourites: <data_dir>/favourites.txt, "name<TAB>state" a line */
+std::string fav_path(Inst *in) { return in->dir + "/favourites.txt"; }
+
+void fav_load(Inst *in) {
+    std::lock_guard<std::mutex> l(in->fm);
+    in->favs.clear();
+    FILE *f = fopen(fav_path(in).c_str(), "rb");
+    if (!f) return;
+    static char line[16384];
+    while ((int)in->favs.size() < kFavSlots && fgets(line, sizeof line, f)) {
+        char *tab = strchr(line, '\t');
+        if (!tab) continue;
+        *tab = 0;
+        std::string st(tab + 1);
+        while (!st.empty() && (st.back() == '\n' || st.back() == '\r')) st.pop_back();
+        in->favs.emplace_back(line, st);
+    }
+    fclose(f);
+}
+
+bool fav_write(Inst *in) {            // under fm
+    const std::string path = fav_path(in), tmp = path + ".tmp";
+    FILE *f = fopen(tmp.c_str(), "wb");
+    if (!f) return false;
+    bool ok = true;
+    for (auto &fv : in->favs) ok = ok && fprintf(f, "%s\t%s\n", fv.first.c_str(), fv.second.c_str()) > 0;
+    ok = (fclose(f) == 0) && ok;
+    return ok && rename(tmp.c_str(), path.c_str()) == 0;
+}
+
+std::string prog_label(Inst *in, int i);
+void restore_state(Inst *in, const char *s);
+
+void fav_save(Inst *in) {
+    const std::string st = state_string(in);
+    std::string nm = program_name(in, in->preset);
+    while (!nm.empty() && nm.back() == ' ') nm.pop_back();
+    std::lock_guard<std::mutex> l(in->fm);
+    if ((int)in->favs.size() >= kFavSlots) return;
+    for (auto &fv : in->favs) if (fv.second == st) return;
+    // the same name twice: number it, so the PRESET menu tells them apart
+    std::string name = nm.empty() ? "Favourite" : nm;
+    int dup = 1;
+    for (auto &fv : in->favs) if (fv.first == name || fv.first.rfind(name + " ", 0) == 0) dup++;
+    if (dup > 1) name += " " + std::to_string(dup);
+    in->favs.emplace_back(name, st);
+    if (!fav_write(in)) { in->favs.pop_back(); return; }
+    in->fav_current = (int)in->favs.size() - 1;
+    in->fav_stamp = in->load_gen;
+}
+
+void fav_delete(Inst *in) {           // only the favourite that is the current sound
+    std::lock_guard<std::mutex> l(in->fm);
+    const int d = in->fav_current;
+    if (d < 0 || d >= (int)in->favs.size() || in->fav_stamp != in->load_gen) return;
+    in->favs.erase(in->favs.begin() + d);
+    fav_write(in);
+    in->fav_current = -1;
+}
+
+void fav_pick(Inst *in, int idx) {
+    std::string st;
+    {
+        std::lock_guard<std::mutex> l(in->fm);
+        if (idx < 0 || idx >= kFavSlots) return;
+        if (idx < (int)in->favs.size()) st = in->favs[idx].second;
+    }
+    if (!st.empty()) restore_state(in, st.c_str());
+    std::lock_guard<std::mutex> l(in->fm);
+    in->fav_current = idx;            // an empty slot shows as picked, nothing loads
+    in->fav_stamp = in->load_gen;
+    in->bump();
+}
+
 void eng_set(void *p, const char *key, const char *val) {
     Inst *in = (Inst *)p;
     if (!in || !key || !val) return;
@@ -654,7 +757,10 @@ void eng_set(void *p, const char *key, const char *val) {
         in->push(Cmd{C_VOICES, {0, 0, 0}, v, 0});
         return;
     }
-    if (!strcmp(key, "state")) { restore_state(in, val); return; }
+    if (!strcmp(key, "state")) { restore_state(in, val); in->load_gen++; return; }
+    if (!strcmp(key, "fav_save")) { if (press) { fav_save(in); in->bump(); } return; }
+    if (!strcmp(key, "fav_delete")) { if (press) { fav_delete(in); in->bump(); } return; }
+    if (!strcmp(key, "favourite")) { fav_pick(in, atoi(val)); return; }
     auto it = param_index().find(key);
     if (it == param_index().end()) return;
     const wv_param_t &d = g_wv_params[it->second];
@@ -673,7 +779,9 @@ int put(char *buf, int n, const char *fmt, ...) {
 }
 
 std::string prog_label(Inst *in, int i) {
-    const std::string nm = program_name(in, i);
+    std::string nm;                                   // the name with its padding runs closed up ("Land of Oz    NT")
+    for (char c : program_name(in, i)) if (c != ' ' || (!nm.empty() && nm.back() != ' ')) nm.push_back(c);
+    while (!nm.empty() && nm.back() == ' ') nm.pop_back();
     char b[64];
     snprintf(b, sizeof b, "%c%03d %s", i < 128 ? 'A' : 'B', i % 128 + 1, nm.c_str());
     return b;
@@ -708,7 +816,9 @@ int eng_get(void *p, const char *key, char *buf, int n) {
     if (!strcmp(key, "rom_name")) { std::lock_guard<std::mutex> l(in->sm); return put(buf, n, "%s", in->rom_name[0] ? in->rom_name : "-"); }
     if (!strcmp(key, "loading_status")) { std::lock_guard<std::mutex> l(in->sm); return put(buf, n, "%s", in->status); }
     if (!strcmp(key, "engine_stats")) {
+        /* any change of a polled text makes MPC re-list its menus: hold it while the PRESET menu is in use */
         std::lock_guard<std::mutex> l(in->stm);
+        if (mono_ms() - in->fav_list_ms < 15000 && in->stats_cache[0]) return put(buf, n, "%s", in->stats_cache);
         const int cpu = in->emu_cpu.load();
         if (in->stats_cpu < 0 || abs(cpu - in->stats_cpu) >= 10) in->stats_cpu = cpu / 10 * 10;
         snprintf(in->stats_cache, sizeof in->stats_cache, "DROPOUTS %u   CPU %d%%", in->underruns.load(), in->stats_cpu);
@@ -722,13 +832,19 @@ int eng_get(void *p, const char *key, char *buf, int n) {
     if (!strcmp(key, "gain")) return put(buf, n, "%d", in->gain.load());
     if (!strcmp(key, "voices")) return put(buf, n, "%d", in->voices.load() >= 16 ? 2 : in->voices.load() >= 12 ? 1 : 0);
     if (!strcmp(key, "display_rev")) return put(buf, n, "%u", in->rev.load());
-    if (!strcmp(key, "state")) {
-        int off = put(buf, n, "{\"state_version\":1,\"bank\":%d,\"bank_name\":\"%s\",\"preset\":%d,\"gain\":%d,\"voices\":%d,\"values\":\"",
-                      in->bank.load(), bank_name(in, in->bank).c_str(), in->preset.load(), in->gain.load(), in->voices.load());
-        for (int i = 0; i < WV_NUM_PARAMS && off < n - 32; i++) off += put(buf + off, n - off, "%d=%d;", i, in->val[i].load());
-        off += put(buf + off, n - off, "\"}");
-        return off;
+    if (!strcmp(key, "state")) return put(buf, n, "%s", state_string(in).c_str());
+    if (!strcmp(key, "favourite")) {      // the picked favourite while it is the sound, else the first empty slot
+        std::lock_guard<std::mutex> l(in->fm);
+        const bool cur = in->fav_current >= 0 && in->fav_stamp == in->load_gen;
+        return put(buf, n, "%d", cur ? in->fav_current : std::min((int)in->favs.size(), kFavSlots - 1));
     }
+    if (!strncmp(key, "favourite:", 10)) {
+        in->fav_list_ms = mono_ms();
+        std::lock_guard<std::mutex> l(in->fm);
+        const int i = atoi(key + 10);
+        return put(buf, n, "%s", i >= 0 && i < (int)in->favs.size() ? in->favs[i].first.c_str() : "-");
+    }
+    if (!strcmp(key, "fav_text")) { std::lock_guard<std::mutex> l(in->fm); return put(buf, n, "FAVOURITES %d / %d", (int)in->favs.size(), kFavSlots); }
     // "<key>_display": a float parameter's value in the processor's own words (Hz, s, ...)
     const size_t kl = strlen(key);
     if (kl > 8 && !strcmp(key + kl - 8, "_display")) {

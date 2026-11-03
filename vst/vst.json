@@ -8,7 +8,7 @@
   ],
   "so": "wavicle.so",
   "programs": {
-    "param": "preset"
+    "param": "favourite"
   },
   "params": "params.json",
   "art": "html",

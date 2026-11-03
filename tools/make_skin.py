@@ -157,30 +157,39 @@ def header(p):
 
 
 # ---------------------------------------------------------------- MAIN: the light centre section with the Wave's LCD read back as text
-# (8 columns x 8 lines, src/dsp/wave_lcd.h), the 8 quick knobs under its columns, system controls on the right
-QUICK = ["cutoff", "resonance", "filterEnv", "position", "attack", "decay", "sustain", "release"]
-p = Page("MAIN", QUICK + ["gain"])
+# (8 columns x 8 lines, src/dsp/wave_lcd.h) on a dot-matrix screen, the 8 performance faders under its columns as on the Wave
+FADERS = ["performanceFader%d" % i for i in range(1, 9)]
+p = Page("MAIN", FADERS + ["gain"])
 header(p)
-LX0, LX1, LY0, LH = 30, 1030, 112, 27
+LX0, LX1, LY0, LH = 30, 1030, 110, 28
 p.d.rounded_rectangle((8, 96, 1052, 620), 10, fill=CENTRE)
-p.d.rounded_rectangle((LX0 - 10, LY0 - 8, LX1 + 10, LY0 + 8 * LH + 8), 6, fill=(30, 40, 46))
-p.d.rectangle((LX0 - 4, LY0 - 2, LX1 + 4, LY0 + 8 * LH + 2), fill=(38, 137, 160))
+p.d.rounded_rectangle((LX0 - 12, LY0 - 10, LX1 + 12, LY0 + 8 * LH + 10), 6, fill=(30, 40, 46))
+# the screen: the Wave's 480 x 64 pixel grid as unlit dots on the teal glass (about 2 px per LCD pixel)
+GLASS, DOT = (52, 150, 168), (44, 132, 150)
+p.d.rectangle((LX0 - 6, LY0 - 4, LX1 + 6, LY0 + 8 * LH + 4), fill=GLASS)
+py = LY0 - 2
+while py < LY0 + 8 * LH + 2:
+    px = LX0 - 4
+    while px < LX1 + 4:
+        p.d.rectangle((px, py, px + 1, py + 1), fill=DOT)
+        px += 3
+    py += 3
 for ln in range(8):
     for c in range(8):
         x = LX0 + c * (LX1 - LX0) // 8
         w = LX1 - x - 2
-        p.widgets.append('readout cx=%d cy=%d w=%d h=%d label="" key=lcd_%d_%d box=0 tsize=19 tcolor=0b1e24 tweight=700 talign=left'
+        p.widgets.append('readout cx=%d cy=%d w=%d h=%d label="" key=lcd_%d_%d box=0 tsize=22 tcolor=06161b tweight=900 tfont=Roboto talign=left'
                          % (x + 2 + w // 2, LY0 + ln * LH + LH // 2 + Y86, w, LH, ln + 1, c + 1))
-p.d.text((530, 352), "STATUS", font=F(14, TITLE), fill=INK, anchor="ma")
-p.widgets.append('readout cx=530 cy=%d w=1000 h=30 label="" key=loading_status box=0 tsize=20 tcolor=24232d tweight=700' % (380 + Y86))
-p.d.rounded_rectangle((LX0 - 10, 420, LX1 + 10, 606), 8, fill=NAVY)
-for i, k in enumerate(QUICK):
+p.widgets.append('readout cx=530 cy=%d w=1000 h=26 label="" key=loading_status box=0 tsize=17 tcolor=24232d tweight=700' % (362 + Y86))
+# the performance faders, under the LCD columns as on the instrument
+p.d.rounded_rectangle((LX0 - 12, 384, LX1 + 12, 612), 8, fill=NAVY)
+for i, k in enumerate(FADERS):
     cx = LX0 + (2 * i + 1) * (LX1 - LX0) // 16
-    stamp_ring(p, cx, 506, 30)
-    nm = {"filterEnv": "Filter Env", "position": "Wave Pos"}.get(k, k.title())
-    p.d.text((cx, 434), nm, font=F(16), fill=WHITE, anchor="ma")
-    strip = " strip=images/knob_red.png" if k in RED_KNOBS else ""
-    p.widgets.append('knob cx=%d cy=%d r=30 label="" key=%s ns=0 vs=18 vy=20 bw=110%s' % (cx, 506 + Y86, k, strip))
+    p.d.text((cx, 392), str(i + 1), font=F(16, TITLE), fill=TAN, anchor="ma")
+    for t in range(9):                                     # the scale printed beside each fader
+        ty = 422 + t * 19
+        p.d.line((cx - 34, ty, cx - 24, ty), fill=LINE, width=2 if t % 4 == 0 else 1)
+    p.widgets.append('slider_v cx=%d cy=%d w=40 h=170 label="" key=%s look=fader ns=0 vs=16' % (cx, 498 + Y86, k))
 # system column
 p.d.text((1166, 104), "VOLUME", font=F(17, TITLE), fill=TAN, anchor="ma")
 stamp_ring(p, 1166, 180, 32)
@@ -197,9 +206,12 @@ p = Page("BANKS", ["preset", "bank_index"])
 p.panel(8, 8, 250, 612, "DISKS")
 p.panel(270, 8, 1002, 612, "PERFORMANCES")
 p.widgets.append('list x=20 y=%d w=226 h=454 cols=1 rows=10 gap=6 th=40 key=bank_slot' % (46 + Y86))
-p.widgets.append('stepper w=226 h=40 cx=133 cy=%d label="" key=bank_page_text get=bank_page_text prev=bank_page_prev next=bank_page_next style=dotmatrix' % (560 + Y86))
-p.widgets.append('stepper w=560 h=40 cx=580 cy=%d label="" key=preset get=preset_name prev=preset_prev next=preset_next style=dotmatrix persistent=1' % (62 + Y86))
-p.widgets.append('stepper w=260 h=40 cx=1126 cy=%d label="" key=patch_page_text get=patch_page_text prev=patch_page_prev next=patch_page_next style=dotmatrix' % (62 + Y86))
+p.widgets.append('stepper w=226 h=40 cx=133 cy=%d label="" key=bank_page_text get=bank_page_text prev=bank_page_prev next=bank_page_next style=dotmatrix' % (556 + Y86))
+p.widgets.append('stepper w=440 h=40 cx=510 cy=%d label="" key=preset get=preset_name prev=preset_prev next=preset_next style=dotmatrix persistent=1' % (62 + Y86))
+p.widgets.append('button cx=790 cy=%d w=96 h=40 label="+FAV" key=fav_save' % (62 + Y86))
+p.widgets.append('button cx=896 cy=%d w=96 h=40 label="-FAV" key=fav_delete' % (62 + Y86))
+p.widgets.append('readout cx=133 cy=%d w=226 h=30 label="" key=fav_text style=plain' % (606 + Y86))
+p.widgets.append('stepper w=240 h=40 cx=1136 cy=%d label="" key=patch_page_text get=patch_page_text prev=patch_page_prev next=patch_page_next style=dotmatrix' % (62 + Y86))
 p.widgets.append('list x=284 y=%d w=974 h=500 cols=4 rows=8 gap=6 th=56 key=patch_slot order=cols' % (100 + Y86))
 p.done()
 

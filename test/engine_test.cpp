@@ -9,6 +9,7 @@ extern "C" {
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <cstdlib>
 #include <string>
 #include <thread>
 #include <vector>
@@ -77,6 +78,23 @@ int main(int argc, char **argv) {
     if (argc < 2) { fprintf(stderr, "usage: %s <data dir> [seconds] [out.wav]\n", argv[0]); return 2; }
     const double secs = argc > 2 ? atof(argv[2]) : 1.5;
     const mpc_engine_t *e = mpc_engine();
+    if (getenv("WV_TEST_BANKS")) {     // every bank in <dir>/banks/: its name, three program names, a note's level
+        void *i = e->create(argv[1]);
+        if (!wait_ready(e, i, 120)) { printf("FAILED boot\n"); return 1; }
+        for (int b = 0; b < 64; b++) {
+            e->set_param(i, "bank_index", std::to_string(b).c_str());
+            render_rms(e, i, 1.5);
+            if (atoi(get(e, i, "bank_index").c_str()) != b) break;
+            const double r = note_rms(e, i, 1.0);
+            printf("bank %2d %-24s %-26s %-26s %-26s rms %.3f  %s\n", b, get(e, i, "bank_name").c_str(), get(e, i, "patch_slot_1").c_str(),
+                   get(e, i, "patch_slot_2").c_str(), get(e, i, "patch_slot_32").c_str(), r, get(e, i, "loading_status").c_str());
+            CHECK(r > 0.003, "bank %d plays", b);
+            if (b + 1 >= atoi(get(e, i, "bank_page_text").c_str() + 4) * 10 && get(e, i, "bank_slot_10").empty() && b >= 9) break;
+        }
+        e->destroy(i);
+        printf(fails ? "FAILED (%d)\n" : "ALL OK\n", fails);
+        return fails ? 1 : 0;
+    }
     for (int round = 0; round < 2; round++) {
         void *i = e->create(argv[1]);
         CHECK(i != nullptr, "create");
@@ -133,6 +151,21 @@ int main(int argc, char **argv) {
         CHECK(get(e, i, "resonance") == "90" && get(e, i, "gain") == "150" && get(e, i, "voices") == "2",
               "state restores (resonance %s, gain %s, voices %s)", get(e, i, "resonance").c_str(), get(e, i, "gain").c_str(), get(e, i, "voices").c_str());
         printf("stats: %s\n", get(e, i, "engine_stats").c_str());
+        {   // favourites: save the edited sound, change it, pick the favourite back
+            const std::string before = get(e, i, "fav_text");
+            e->set_param(i, "resonance", "77");
+            render_rms(e, i, 0.1);
+            e->set_param(i, "fav_save", "1");
+            const std::string slot = get(e, i, "favourite");
+            printf("favourites: %s -> %s, slot %s \"%s\"\n", before.c_str(), get(e, i, "fav_text").c_str(), slot.c_str(),
+                   get(e, i, ("favourite:" + slot).c_str()).c_str());
+            e->set_param(i, "resonance", "5");
+            e->set_param(i, "favourite", slot.c_str());
+            render_rms(e, i, 0.5);
+            CHECK(get(e, i, "resonance") == "77", "a favourite restores its sound (resonance %s)", get(e, i, "resonance").c_str());
+            e->set_param(i, "fav_delete", "1");
+            CHECK(get(e, i, "fav_text") == before, "-FAV removes it (%s)", get(e, i, "fav_text").c_str());
+        }
         e->destroy(i);
     }
     if (argc > 3) write_wav(argv[3]);

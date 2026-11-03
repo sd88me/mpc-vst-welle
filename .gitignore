@@ -9,3 +9,4 @@ third_party/Musashi/
 !src/wave-data/BlankWave.img
 release/wavicle/cache/
 !src/wave-data/ppg-v6-wavetables.bin
+*.set
