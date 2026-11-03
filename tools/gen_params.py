@@ -84,8 +84,8 @@ def short(w):
 
 
 # --- the port's own controls ---
-add(dict(key="bank_index", name="BANK", min=0, max=63, default=0, display="int"), "Browse")
-add(dict(key="preset", name="PROGRAM", min=0, max=255, default=0, display="int"), "Browse")
+add(dict(key="bank_index", name="BANK", min=0, max=63, default=0, display="int", nudge_pct=10), "Browse")
+add(dict(key="preset", name="PROGRAM", min=0, max=255, default=0, display="int", nudge_pct=10), "Browse")
 add(dict(key="bank_name", name="BANK NAME", min=0, max=0, default=0, display="string", poll=True), "Browse")
 add(dict(key="preset_name", name="PROGRAM NAME", min=0, max=0, default=0, display="string", poll=True), "Browse")
 for k, n in (("bank_prev", "BANK -"), ("bank_next", "BANK +"), ("preset_prev", "PROGRAM -"), ("preset_next", "PROGRAM +"),
@@ -143,10 +143,17 @@ for ln in range(1, 9):     # the Wave's LCD read back as text (src/dsp/wave_lcd.
     for c in range(1, 9):
         add(dict(key="lcd_%d_%d" % (ln, c), name="LCD %d.%d" % (ln, c), min=0, max=0, default=0, display="string", poll=True), "LCD")
 
-add(dict(key="favourite", name="FAVOURITE", min=0, max=63, default=63, display="int"), "Banks")
+add(dict(key="favourite", name="FAVOURITE", min=0, max=63, default=63, display="int", nudge_pct=10), "Banks")
 add(dict(key="fav_save", name="SAVE FAV", min=0, max=1, default=0, momentary=True), "Banks")
 add(dict(key="fav_delete", name="DEL FAV", min=0, max=1, default=0, momentary=True), "Banks")
 add(dict(key="fav_text", name="FAVOURITES", min=0, max=0, default=0, display="string", poll=True), "Banks")
+
+for ln in range(1, 9):     # the LCD's inverted text and each cell's background (wave_lcd.h S_* bits)
+    for c in range(1, 9):
+        add(dict(key="lcdi_%d_%d" % (ln, c), name="LCD INV %d.%d" % (ln, c), min=0, max=0, default=0, display="string", poll=True), "LCD")
+for ln in range(1, 9):
+    for c in range(1, 9):
+        add(dict(key="lcdst_%d_%d" % (ln, c), name="LCD CELL %d.%d" % (ln, c), min=0, max=31, default=0, display="int", poll=True), "LCD")
 
 order = ["Browse", "LCD", "Banks", "System", "Waves", "Wave Env", "Filter", "Amp", "LFO", "Mod", "Free Env", "Quick", "Faders"]
 sections = [{"label": s, "keys": sec_keys[s]} for s in order if s in sec_keys]

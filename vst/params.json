@@ -7,7 +7,8 @@
    "min": 0,
    "max": 63,
    "default": 0,
-   "display": "int"
+   "display": "int",
+   "nudge_pct": 10
   },
   {
    "key": "preset",
@@ -15,7 +16,8 @@
    "min": 0,
    "max": 255,
    "default": 0,
-   "display": "int"
+   "display": "int",
+   "nudge_pct": 10
   },
   {
    "key": "bank_name",
@@ -5010,7 +5012,8 @@
    "min": 0,
    "max": 63,
    "default": 63,
-   "display": "int"
+   "display": "int",
+   "nudge_pct": 10
   },
   {
    "key": "fav_save",
@@ -5035,6 +5038,1158 @@
    "max": 0,
    "default": 0,
    "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_1_1",
+   "name": "LCD INV 1.1",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_1_2",
+   "name": "LCD INV 1.2",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_1_3",
+   "name": "LCD INV 1.3",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_1_4",
+   "name": "LCD INV 1.4",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_1_5",
+   "name": "LCD INV 1.5",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_1_6",
+   "name": "LCD INV 1.6",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_1_7",
+   "name": "LCD INV 1.7",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_1_8",
+   "name": "LCD INV 1.8",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_2_1",
+   "name": "LCD INV 2.1",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_2_2",
+   "name": "LCD INV 2.2",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_2_3",
+   "name": "LCD INV 2.3",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_2_4",
+   "name": "LCD INV 2.4",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_2_5",
+   "name": "LCD INV 2.5",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_2_6",
+   "name": "LCD INV 2.6",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_2_7",
+   "name": "LCD INV 2.7",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_2_8",
+   "name": "LCD INV 2.8",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_3_1",
+   "name": "LCD INV 3.1",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_3_2",
+   "name": "LCD INV 3.2",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_3_3",
+   "name": "LCD INV 3.3",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_3_4",
+   "name": "LCD INV 3.4",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_3_5",
+   "name": "LCD INV 3.5",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_3_6",
+   "name": "LCD INV 3.6",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_3_7",
+   "name": "LCD INV 3.7",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_3_8",
+   "name": "LCD INV 3.8",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_4_1",
+   "name": "LCD INV 4.1",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_4_2",
+   "name": "LCD INV 4.2",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_4_3",
+   "name": "LCD INV 4.3",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_4_4",
+   "name": "LCD INV 4.4",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_4_5",
+   "name": "LCD INV 4.5",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_4_6",
+   "name": "LCD INV 4.6",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_4_7",
+   "name": "LCD INV 4.7",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_4_8",
+   "name": "LCD INV 4.8",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_5_1",
+   "name": "LCD INV 5.1",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_5_2",
+   "name": "LCD INV 5.2",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_5_3",
+   "name": "LCD INV 5.3",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_5_4",
+   "name": "LCD INV 5.4",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_5_5",
+   "name": "LCD INV 5.5",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_5_6",
+   "name": "LCD INV 5.6",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_5_7",
+   "name": "LCD INV 5.7",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_5_8",
+   "name": "LCD INV 5.8",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_6_1",
+   "name": "LCD INV 6.1",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_6_2",
+   "name": "LCD INV 6.2",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_6_3",
+   "name": "LCD INV 6.3",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_6_4",
+   "name": "LCD INV 6.4",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_6_5",
+   "name": "LCD INV 6.5",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_6_6",
+   "name": "LCD INV 6.6",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_6_7",
+   "name": "LCD INV 6.7",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_6_8",
+   "name": "LCD INV 6.8",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_7_1",
+   "name": "LCD INV 7.1",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_7_2",
+   "name": "LCD INV 7.2",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_7_3",
+   "name": "LCD INV 7.3",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_7_4",
+   "name": "LCD INV 7.4",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_7_5",
+   "name": "LCD INV 7.5",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_7_6",
+   "name": "LCD INV 7.6",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_7_7",
+   "name": "LCD INV 7.7",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_7_8",
+   "name": "LCD INV 7.8",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_8_1",
+   "name": "LCD INV 8.1",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_8_2",
+   "name": "LCD INV 8.2",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_8_3",
+   "name": "LCD INV 8.3",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_8_4",
+   "name": "LCD INV 8.4",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_8_5",
+   "name": "LCD INV 8.5",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_8_6",
+   "name": "LCD INV 8.6",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_8_7",
+   "name": "LCD INV 8.7",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdi_8_8",
+   "name": "LCD INV 8.8",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcdst_1_1",
+   "name": "LCD CELL 1.1",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_1_2",
+   "name": "LCD CELL 1.2",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_1_3",
+   "name": "LCD CELL 1.3",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_1_4",
+   "name": "LCD CELL 1.4",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_1_5",
+   "name": "LCD CELL 1.5",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_1_6",
+   "name": "LCD CELL 1.6",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_1_7",
+   "name": "LCD CELL 1.7",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_1_8",
+   "name": "LCD CELL 1.8",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_2_1",
+   "name": "LCD CELL 2.1",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_2_2",
+   "name": "LCD CELL 2.2",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_2_3",
+   "name": "LCD CELL 2.3",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_2_4",
+   "name": "LCD CELL 2.4",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_2_5",
+   "name": "LCD CELL 2.5",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_2_6",
+   "name": "LCD CELL 2.6",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_2_7",
+   "name": "LCD CELL 2.7",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_2_8",
+   "name": "LCD CELL 2.8",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_3_1",
+   "name": "LCD CELL 3.1",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_3_2",
+   "name": "LCD CELL 3.2",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_3_3",
+   "name": "LCD CELL 3.3",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_3_4",
+   "name": "LCD CELL 3.4",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_3_5",
+   "name": "LCD CELL 3.5",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_3_6",
+   "name": "LCD CELL 3.6",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_3_7",
+   "name": "LCD CELL 3.7",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_3_8",
+   "name": "LCD CELL 3.8",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_4_1",
+   "name": "LCD CELL 4.1",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_4_2",
+   "name": "LCD CELL 4.2",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_4_3",
+   "name": "LCD CELL 4.3",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_4_4",
+   "name": "LCD CELL 4.4",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_4_5",
+   "name": "LCD CELL 4.5",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_4_6",
+   "name": "LCD CELL 4.6",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_4_7",
+   "name": "LCD CELL 4.7",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_4_8",
+   "name": "LCD CELL 4.8",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_5_1",
+   "name": "LCD CELL 5.1",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_5_2",
+   "name": "LCD CELL 5.2",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_5_3",
+   "name": "LCD CELL 5.3",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_5_4",
+   "name": "LCD CELL 5.4",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_5_5",
+   "name": "LCD CELL 5.5",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_5_6",
+   "name": "LCD CELL 5.6",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_5_7",
+   "name": "LCD CELL 5.7",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_5_8",
+   "name": "LCD CELL 5.8",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_6_1",
+   "name": "LCD CELL 6.1",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_6_2",
+   "name": "LCD CELL 6.2",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_6_3",
+   "name": "LCD CELL 6.3",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_6_4",
+   "name": "LCD CELL 6.4",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_6_5",
+   "name": "LCD CELL 6.5",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_6_6",
+   "name": "LCD CELL 6.6",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_6_7",
+   "name": "LCD CELL 6.7",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_6_8",
+   "name": "LCD CELL 6.8",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_7_1",
+   "name": "LCD CELL 7.1",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_7_2",
+   "name": "LCD CELL 7.2",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_7_3",
+   "name": "LCD CELL 7.3",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_7_4",
+   "name": "LCD CELL 7.4",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_7_5",
+   "name": "LCD CELL 7.5",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_7_6",
+   "name": "LCD CELL 7.6",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_7_7",
+   "name": "LCD CELL 7.7",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_7_8",
+   "name": "LCD CELL 7.8",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_8_1",
+   "name": "LCD CELL 8.1",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_8_2",
+   "name": "LCD CELL 8.2",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_8_3",
+   "name": "LCD CELL 8.3",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_8_4",
+   "name": "LCD CELL 8.4",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_8_5",
+   "name": "LCD CELL 8.5",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_8_6",
+   "name": "LCD CELL 8.6",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_8_7",
+   "name": "LCD CELL 8.7",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
+   "poll": true
+  },
+  {
+   "key": "lcdst_8_8",
+   "name": "LCD CELL 8.8",
+   "min": 0,
+   "max": 31,
+   "default": 0,
+   "display": "int",
    "poll": true
   }
  ],
@@ -5119,7 +6274,135 @@
     "lcd_8_5",
     "lcd_8_6",
     "lcd_8_7",
-    "lcd_8_8"
+    "lcd_8_8",
+    "lcdi_1_1",
+    "lcdi_1_2",
+    "lcdi_1_3",
+    "lcdi_1_4",
+    "lcdi_1_5",
+    "lcdi_1_6",
+    "lcdi_1_7",
+    "lcdi_1_8",
+    "lcdi_2_1",
+    "lcdi_2_2",
+    "lcdi_2_3",
+    "lcdi_2_4",
+    "lcdi_2_5",
+    "lcdi_2_6",
+    "lcdi_2_7",
+    "lcdi_2_8",
+    "lcdi_3_1",
+    "lcdi_3_2",
+    "lcdi_3_3",
+    "lcdi_3_4",
+    "lcdi_3_5",
+    "lcdi_3_6",
+    "lcdi_3_7",
+    "lcdi_3_8",
+    "lcdi_4_1",
+    "lcdi_4_2",
+    "lcdi_4_3",
+    "lcdi_4_4",
+    "lcdi_4_5",
+    "lcdi_4_6",
+    "lcdi_4_7",
+    "lcdi_4_8",
+    "lcdi_5_1",
+    "lcdi_5_2",
+    "lcdi_5_3",
+    "lcdi_5_4",
+    "lcdi_5_5",
+    "lcdi_5_6",
+    "lcdi_5_7",
+    "lcdi_5_8",
+    "lcdi_6_1",
+    "lcdi_6_2",
+    "lcdi_6_3",
+    "lcdi_6_4",
+    "lcdi_6_5",
+    "lcdi_6_6",
+    "lcdi_6_7",
+    "lcdi_6_8",
+    "lcdi_7_1",
+    "lcdi_7_2",
+    "lcdi_7_3",
+    "lcdi_7_4",
+    "lcdi_7_5",
+    "lcdi_7_6",
+    "lcdi_7_7",
+    "lcdi_7_8",
+    "lcdi_8_1",
+    "lcdi_8_2",
+    "lcdi_8_3",
+    "lcdi_8_4",
+    "lcdi_8_5",
+    "lcdi_8_6",
+    "lcdi_8_7",
+    "lcdi_8_8",
+    "lcdst_1_1",
+    "lcdst_1_2",
+    "lcdst_1_3",
+    "lcdst_1_4",
+    "lcdst_1_5",
+    "lcdst_1_6",
+    "lcdst_1_7",
+    "lcdst_1_8",
+    "lcdst_2_1",
+    "lcdst_2_2",
+    "lcdst_2_3",
+    "lcdst_2_4",
+    "lcdst_2_5",
+    "lcdst_2_6",
+    "lcdst_2_7",
+    "lcdst_2_8",
+    "lcdst_3_1",
+    "lcdst_3_2",
+    "lcdst_3_3",
+    "lcdst_3_4",
+    "lcdst_3_5",
+    "lcdst_3_6",
+    "lcdst_3_7",
+    "lcdst_3_8",
+    "lcdst_4_1",
+    "lcdst_4_2",
+    "lcdst_4_3",
+    "lcdst_4_4",
+    "lcdst_4_5",
+    "lcdst_4_6",
+    "lcdst_4_7",
+    "lcdst_4_8",
+    "lcdst_5_1",
+    "lcdst_5_2",
+    "lcdst_5_3",
+    "lcdst_5_4",
+    "lcdst_5_5",
+    "lcdst_5_6",
+    "lcdst_5_7",
+    "lcdst_5_8",
+    "lcdst_6_1",
+    "lcdst_6_2",
+    "lcdst_6_3",
+    "lcdst_6_4",
+    "lcdst_6_5",
+    "lcdst_6_6",
+    "lcdst_6_7",
+    "lcdst_6_8",
+    "lcdst_7_1",
+    "lcdst_7_2",
+    "lcdst_7_3",
+    "lcdst_7_4",
+    "lcdst_7_5",
+    "lcdst_7_6",
+    "lcdst_7_7",
+    "lcdst_7_8",
+    "lcdst_8_1",
+    "lcdst_8_2",
+    "lcdst_8_3",
+    "lcdst_8_4",
+    "lcdst_8_5",
+    "lcdst_8_6",
+    "lcdst_8_7",
+    "lcdst_8_8"
    ]
   },
   {

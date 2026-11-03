@@ -13,11 +13,12 @@ int main(int argc, char** argv)
     char hdr[32]; if (!fgets(hdr, sizeof hdr, f)) return 1;
     for (auto& p : px) p = fgetc(f) == 0;
     fclose(f);
-    auto t = d.decode(px.data());
-    for (auto& line : t) {
-        bool any = false; for (auto& c : line) any |= !c.empty();
-        if (!any) continue;
-        for (auto& c : line) printf("[%-10s]", c.c_str());
+    auto sc = d.decode_screen(px.data());
+    for (int r = 0; r < 8; r++) {
+        for (int c = 0; c < 8; c++) {
+            const int st = sc.style[r][c];
+            printf("%c%c%c%c%c%-10.10s", st & 1 ? '#' : ' ', st & 2 ? '|' : ' ', st & 8 ? '^' : ' ', st & 16 ? '_' : ' ', st & 4 ? '|' : ' ', sc.text[r][c].c_str());
+        }
         printf("\n");
     }
 }

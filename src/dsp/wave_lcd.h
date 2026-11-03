@@ -67,8 +67,21 @@ struct Decoder {
 
     struct Hit { int x, y, w, h, ink; char c; };
 
-    /* px: 480 x 64, one byte per pixel (nonzero = lit). Returns cells[line][column]. */
+    /* px: 480 x 64, one byte per pixel (nonzero = lit). Returns cells[line][column]. Line r is the LCD's pixel rows 8r..8r+7. */
     std::array<std::array<std::string, COLS>, LINES> decode(const uint8_t *px) const {
+        Screen sc = decode_screen(px);
+        return sc.text;
+    }
+
+    enum : uint8_t { S_INV = 1, S_LEFT = 2, S_RIGHT = 4, S_TOP = 8, S_BOTTOM = 16 };
+    struct Screen {
+        std::array<std::array<std::string, COLS>, LINES> text{};
+        std::array<std::array<uint8_t, COLS>, LINES> style{};      // S_* bits: the cell's background as the firmware drew it
+        bool operator!=(const Screen &o) const { return text != o.text || style != o.style; }
+    };
+
+    Screen decode_screen(const uint8_t *px) const {
+        Screen sc;
         std::vector<Hit> hits;
         auto pixel = [&](int x, int y) -> bool { return x >= 0 && x < W && y >= 0 && y < H && px[y * W + x]; };
         auto scan = [&](const Font &f) {
@@ -100,15 +113,10 @@ struct Decoder {
                 if (h.x < k.x + k.w - 1 && k.x < h.x + h.w - 1 && h.y < k.y + k.h - 1 && k.y < h.y + h.h - 1) { clash = true; break; }
             if (!clash) kept.push_back(h);
         }
-        // lines: glyph rows by their top, merged within 3 px
-        std::sort(kept.begin(), kept.end(), [](const Hit &a, const Hit &b) { return a.y != b.y ? a.y < b.y : a.x < b.x; });
-        std::vector<std::vector<Hit>> lines;
-        std::vector<int> tops;
-        for (const Hit &h : kept) {
-            if (tops.empty() || h.y - tops.back() > 3) { tops.push_back(h.y); lines.emplace_back(); }
-            lines.back().push_back(h);
-        }
-        std::array<std::array<std::string, COLS>, LINES> out{};
+        // lines: the LCD's 8-pixel text rows, by each glyph's middle (the bold font's 10-pixel cells fall in one of them)
+        std::vector<std::vector<Hit>> lines(LINES);
+        for (const Hit &h : kept) lines[std::min(LINES - 1, std::max(0, (h.y + h.h / 2) / 8))].push_back(h);
+        auto &out = sc.text;
         for (size_t li = 0; li < lines.size() && li < (size_t)LINES; li++) {
             auto &l = lines[li];
             std::sort(l.begin(), l.end(), [](const Hit &a, const Hit &b) { return a.x < b.x; });
@@ -129,7 +137,25 @@ struct Decoder {
                 prev_end = h.x + h.w;
             }
         }
-        return out;
+        // each cell's background: mostly lit = an inverted bar; a lit edge most of its length = a box side
+        for (int r = 0; r < LINES; r++)
+            for (int c = 0; c < COLS; c++) {
+                const int x0 = c * COLW, y0 = r * 8;
+                int lit = 0;
+                for (int y = y0; y < y0 + 8; y++)
+                    for (int x = x0; x < x0 + COLW; x++) lit += pixel(x, y);
+                uint8_t st = lit * 2 > COLW * 8 ? S_INV : 0;
+                const bool inv = st & S_INV;
+                auto col_lit = [&](int x) { int n = 0; for (int y = y0; y < y0 + 8; y++) n += pixel(x, y) != inv; return n >= 7; };
+                auto row_lit = [&](int y) { int n = 0; for (int x = x0; x < x0 + COLW; x++) n += pixel(x, y) != inv; return n >= COLW * 3 / 4; };
+                if (inv) { sc.style[r][c] = st; continue; }     // inside a bar, letter strokes look like edges
+                if (col_lit(x0) || col_lit(x0 + 1)) st |= S_LEFT;
+                if (col_lit(x0 + COLW - 1) || col_lit(x0 + COLW - 2)) st |= S_RIGHT;
+                if (row_lit(y0) || row_lit(y0 + 1)) st |= S_TOP;
+                if (row_lit(y0 + 7) || row_lit(y0 + 6)) st |= S_BOTTOM;
+                sc.style[r][c] = st;
+            }
+        return sc;
     }
 };
 

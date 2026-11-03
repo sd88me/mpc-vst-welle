@@ -111,8 +111,8 @@ int main(int argc, char **argv) {
         for (int ln = 1; ln <= 8; ln++) {
             std::string row;
             for (int c = 1; c <= 8; c++) {
-                char k[16]; snprintf(k, sizeof k, "lcd_%d_%d", ln, c);
-                const std::string t = get(e, i, k);
+                char k[16], ki[16]; snprintf(k, sizeof k, "lcd_%d_%d", ln, c); snprintf(ki, sizeof ki, "lcdi_%d_%d", ln, c);
+                const std::string t = get(e, i, k) + get(e, i, ki);
                 if (!t.empty()) lit++;
                 char cell[64]; snprintf(cell, sizeof cell, "[%-10s]", t.c_str()); row += cell;
             }

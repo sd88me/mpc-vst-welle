@@ -119,7 +119,7 @@ struct Inst {
     std::vector<juce::RangedAudioParameter *> P;     // the processor's parameters (published before ready, for value texts)
     std::string restore;                             // parameter values from a saved project, applied after its program loads
     std::mutex lm;                                   // the LCD as text (wave_lcd.h), what the lcd_<line>_<column> parameters read
-    std::array<std::array<std::string, wavelcd::COLS>, wavelcd::LINES> lcd{};
+    wavelcd::Decoder::Screen lcd{};
     std::mutex fm;                                   // favourites: a name and a saved state each (favourites.txt)
     std::vector<std::pair<std::string, std::string>> favs;
     int fav_current = -1;
@@ -277,11 +277,11 @@ void lcd_main(Inst *in, const WaveEmulationAudioProcessor *proc, std::atomic<boo
         fb.loadHardwareVideoRam(video.data(), video.size(), page);
         for (int y = 0; y < wavelcd::H; y++)
             for (int x = 0; x < wavelcd::W; x++) px[(size_t)y * wavelcd::W + x] = fb.pixel(x, y) ? 1 : 0;
-        auto cells = dec.decode(px.data());
+        auto screen = dec.decode_screen(px.data());
         bool changed = false;
         {
             std::lock_guard<std::mutex> l(in->lm);
-            if (cells != in->lcd) { in->lcd = cells; changed = true; }
+            if (screen != in->lcd) { in->lcd = screen; changed = true; }
         }
         if (changed) in->bump();
     }
@@ -824,9 +824,21 @@ int eng_get(void *p, const char *key, char *buf, int n) {
         snprintf(in->stats_cache, sizeof in->stats_cache, "DROPOUTS %u   CPU %d%%", in->underruns.load(), in->stats_cpu);
         return put(buf, n, "%s", in->stats_cache);
     }
-    if (!strncmp(key, "lcd_", 4) && key[4] >= '1' && key[4] <= '8' && key[5] == '_' && key[6] >= '1' && key[6] <= '8' && !key[7]) {
-        std::lock_guard<std::mutex> l(in->lm);
-        return put(buf, n, "%s", in->lcd[key[4] - '1'][key[6] - '1'].c_str());
+    /* the LCD: lcd_<line>_<col> its text on the glass, lcdi_<line>_<col> its text on an inverted bar, lcdst_<line>_<col> the cell's
+     * background (wave_lcd.h S_* bits, a frame of the skin's cell filmstrip) */
+    if (!strncmp(key, "lcd", 3)) {
+        const char *q = key + 3;
+        const int kind = *q == '_' ? 0 : !strncmp(q, "i_", 2) ? 1 : !strncmp(q, "st_", 3) ? 2 : -1;
+        if (kind >= 0) {
+            q += kind == 0 ? 1 : kind == 1 ? 2 : 3;
+            if (q[0] >= '1' && q[0] <= '8' && q[1] == '_' && q[2] >= '1' && q[2] <= '8' && !q[3]) {
+                const int r = q[0] - '1', c = q[2] - '1';
+                std::lock_guard<std::mutex> l(in->lm);
+                const bool inv = in->lcd.style[r][c] & wavelcd::Decoder::S_INV;
+                if (kind == 2) return put(buf, n, "%d", in->lcd.style[r][c]);
+                return put(buf, n, "%s", (kind == 1) == inv ? in->lcd.text[r][c].c_str() : "");
+            }
+        }
     }
     if (!strcmp(key, "active_voices")) return put(buf, n, "%d", in->active.load());
     if (!strcmp(key, "gain")) return put(buf, n, "%d", in->gain.load());
