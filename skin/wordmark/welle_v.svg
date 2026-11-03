@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="80" viewBox="0 0 220 80">
+  <!-- WELLE wordmark (tools: skin/wordmark/gen.py). Monoline, one stroke weight, a common slant: round W and E's, tan L's,
+       one pale stroke through both E's and the L's. Drawn for Welle for MPC. -->
+  <g transform="translate(14,0) skewX(-12)" fill="none" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round">
+    <path stroke="#BBC8DB" d="M11,18 C9,46 15,62 26,62 C35,62 38,50 38.5,36 C39,50 42,62 51,62 C62,62 68,46 66,18"/>
+    <path stroke="#BBC8DB" d="M101,24 C97,18 92,16 87,16 C77,16 73,28 73,39 C73,51 78,62 88,62 C93,62 98,60 102,55"/>
+    <path stroke="#D1AE88" d="M112,14 C111,32 113,50 116,58 C118,62 122,62 125,58 C128,54 131,48 134,42"/>
+    <path stroke="#D1AE88" d="M137,14 C136,32 138,50 141,58 C143,62 147,62 150,58 C153,54 156,48 159,42"/>
+    <path stroke="#BBC8DB" d="M188,24 C184,18 179,16 174,16 C164,16 160,28 160,39 C160,51 165,62 175,62 C180,62 185,60 189,55"/>
+    <path stroke="#BBC8DB" stroke-width="4.6" d="M75,39 L178,39"/>
+  </g>
+</svg>

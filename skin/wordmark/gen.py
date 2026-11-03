@@ -14,6 +14,8 @@ def L(x):   # an upright stem, a round foot
     return "M%g,14 L%g,50 C%g,58 %g,62 %g,62 L%g,62" % (x, x, x, x + 4, x + 11, x + 15)
 E1, L1, L2, E2 = 73, 114, 137, 160
 BAR = (75, 39, E2 + 18)
+def LV(x):  # an L as one V-like sweep: a long stroke down from the top, a round turn, a rising tail
+    return "M%g,14 C%g,32 %g,50 %g,58 C%g,62 %g,62 %g,58 C%g,54 %g,48 %g,42" % (x, x - 1, x + 1, x + 4, x + 6, x + 10, x + 13, x + 16, x + 19, x + 22)
 def straight():
     return "M%g,%g L%g,%g" % (BAR[0], BAR[1], BAR[2], BAR[1])
 def scan():
@@ -47,4 +49,6 @@ def svg(bar, w):
 </svg>
 '''
 open(os.path.join(HERE, "welle.svg"), "w").write(svg(straight(), False))
+lv = svg(straight(), False).replace('d="%s"' % L(L1), 'd="%s"' % LV(L1 - 2)).replace('d="%s"' % L(L2), 'd="%s"' % LV(L2))
+open(os.path.join(HERE, "welle_v.svg"), "w").write(lv)
 open(os.path.join(HERE, "welle_wave.svg"), "w").write(svg(scan(), True))
