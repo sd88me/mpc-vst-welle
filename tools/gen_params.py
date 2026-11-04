@@ -84,11 +84,11 @@ def short(w):
 
 
 # --- the port's own controls ---
-add(dict(key="bank_index", name="BANK", min=0, max=63, default=0, display="int", nudge_pct=10), "Browse")
-add(dict(key="preset", name="PATCH", min=0, max=255, default=0, display="int", nudge_pct=10), "Browse")
-add(dict(key="bank_name", name="BANK NAME", min=0, max=0, default=0, display="string", poll=True), "Browse")
-add(dict(key="preset_name", name="PATCH NAME", min=0, max=0, default=0, display="string", poll=True), "Browse")
-for k, n in (("bank_prev", "BANK -"), ("bank_next", "BANK +"), ("preset_prev", "PATCH -"), ("preset_next", "PATCH +"),
+add(dict(key="bank_index", name="DISK", min=0, max=63, default=0, display="int", nudge_pct=10), "Browse")
+add(dict(key="preset", name="PERFORMANCE", min=0, max=255, default=0, display="int", nudge_pct=10), "Browse")
+add(dict(key="bank_name", name="DISK NAME", min=0, max=0, default=0, display="string", poll=True), "Browse")
+add(dict(key="preset_name", name="PERFORMANCE NAME", min=0, max=0, default=0, display="string", poll=True), "Browse")
+for k, n in (("bank_prev", "DISK -"), ("bank_next", "DISK +"), ("preset_prev", "PERF -"), ("preset_next", "PERF +"),
              ("all_notes_off", "PANIC")):
     add(dict(key=k, name=n, min=0, max=1, default=0, momentary=True), "Browse")
 add(dict(key="rom_name", name="FIRMWARE", min=0, max=0, default=0, display="string", poll=True), "System")
@@ -143,9 +143,9 @@ for w in W:
 # --- browser ---
 N_BANK_TILES, N_TILES = 10, 32
 for i in range(1, N_BANK_TILES + 1):
-    add(dict(key="bank_slot_%d" % i, name="BANK %d" % i, min=0, max=1, default=0, momentary=True, display="string", poll=True), "Banks")
+    add(dict(key="bank_slot_%d" % i, name="DISK %d" % i, min=0, max=1, default=0, momentary=True, display="string", poll=True), "Banks")
 for i in range(1, N_TILES + 1):
-    add(dict(key="patch_slot_%d" % i, name="PATCH %d" % i, min=0, max=1, default=0, momentary=True, display="string", poll=True), "Banks")
+    add(dict(key="patch_slot_%d" % i, name="PERFORMANCE %d" % i, min=0, max=1, default=0, momentary=True, display="string", poll=True), "Banks")
 add(dict(key="patch_page_text", name="PAGE", min=0, max=0, default=0, display="string", poll=True), "Banks")
 add(dict(key="patch_page_prev", name="PAGE -", min=0, max=1, default=0, momentary=True), "Banks")
 add(dict(key="patch_page_next", name="PAGE +", min=0, max=1, default=0, momentary=True), "Banks")
