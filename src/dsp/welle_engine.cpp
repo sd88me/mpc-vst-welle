@@ -55,7 +55,7 @@ constexpr int kPrograms = 256;          // a Wave setup: two banks of 128 perfor
 constexpr int kFavSlots = 64;
 // the MAIN faders in Quick Edit mode: whole-performance offsets (the Wave's Quick Edit, and the port's filter / start-wave ones)
 const char *const kQuickKeys[8] = {"quickCutoff", "quickResonance", "quickFilterEnv", "quickTimbre", "quickTimbreMod", "quickWavescan", "quickAttack", "quickRelease"};
-const char *const kQuickNames[8] = {"CUTOFF", "RESONANCE", "FILTER ENV", "TIMBRE", "TIMBRE MOD", "WAVESCAN", "ATTACK", "RELEASE"};
+const char *const kQuickNames[8] = {"Cutoff", "Resonance", "Filter Env", "Timbre", "Timbre Mod", "Wavescan", "Attack", "Release"};
 const char *const kPerfNames[8] = {"FADER 1", "FADER 2", "FADER 3", "FADER 4", "FADER 5", "FADER 6", "FADER 7", "FADER 8"};
 
 FILE *g_log = nullptr;
@@ -816,7 +816,7 @@ void eng_set(void *p, const char *key, const char *val) {
         if (in->fader_quick) snprintf(k, sizeof k, "%s", kQuickKeys[key[6] - '1']);
         else snprintf(k, sizeof k, "performanceFader%d", key[6] - '0');
         auto f = param_index().find(k);
-        if (f != param_index().end()) { const int v = clampi(atoi(val), 0, 127); in->val[f->second] = v; in->push(Cmd{C_PARAM, {0, 0, 0}, f->second, v}); }
+        if (f != param_index().end()) { const int v = clampi(atoi(val), 0, 127); in->val[f->second] = v; in->push(Cmd{C_PARAM, {0, 0, 0}, f->second, v}); in->bump(); }
         return;
     }
     if (!strcmp(key, "voices")) {
@@ -902,6 +902,14 @@ int eng_get(void *p, const char *key, char *buf, int n) {
             q += kind == 0 ? 1 : kind == 1 ? 2 : 3;
             if (q[0] >= '1' && q[0] <= '8' && q[1] == '_' && q[2] >= '1' && q[2] <= '8' && !q[3]) {
                 const int r = q[0] - '1', c = q[2] - '1';
+                if (in->fader_quick && r >= 6) {       // Quick Edit faders: their names and offsets on the LCD's fader rows
+                    if (kind == 2) return put(buf, n, "%d", r == 6 ? 2 | 4 | 8 | 16 : 0);
+                    if (kind == 1) return put(buf, n, "%s", "");
+                    if (r == 6) return put(buf, n, "%s", kQuickNames[c]);
+                    auto f = param_index().find(kQuickKeys[c]);
+                    const int v = f == param_index().end() ? 64 : in->val[f->second].load();
+                    return put(buf, n, v == 64 ? "0" : "%+d", v - 64);
+                }
                 std::lock_guard<std::mutex> l(in->lm);
                 const bool inv = in->lcd.style[r][c] & wavelcd::Decoder::S_INV;
                 if (kind == 2) return put(buf, n, "%d", in->lcd.style[r][c]);

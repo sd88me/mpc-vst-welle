@@ -131,11 +131,11 @@ theme_seg_active_tx=24232d
 theme_btn_bg=607ea7
 theme_btn_text=ffffff
 theme_btn_text_plain=ffffff
-theme_display_bg=0e3a33
-theme_display_cell=124640
-theme_display_off=0c312b
-theme_display_bezel=bbc8db
-theme_display_ink=7cf2dc
+theme_display_bg=2689a0
+theme_display_cell=2b93ab
+theme_display_off=21798f
+theme_display_bezel=1e282e
+theme_display_ink=081e24
 theme_tile_on=607ea7
 label_scale=1.25
 style=td3
@@ -205,7 +205,6 @@ for ln in range(8):
         for key, col in (("lcd", "081e24"), ("lcdi", "c8f2f8")):
             p.widgets.append('readout cx=%d cy=%d w=%d h=%d label="" key=%s_%d_%d box=0 tsize=21 tcolor=%s tweight=900 tfont=Roboto talign=left'
                              % (x + 6 + w // 2, LY0 + ln * LH + LH // 2 + Y86, w, LH, key, ln + 1, c + 1, col))
-p.widgets.append('readout cx=530 cy=%d w=1000 h=24 label="" key=loading_status box=0 tsize=16 tcolor=24232d tweight=700' % (358 + Y86))
 # the performance faders in the panel's fader slots (cut from the Wave Emulation panel), its Slider.svg as the cap
 SLOT = Image.open(os.path.join(PARTS, "fader_slot.png")).convert("RGB")
 K = 0.58
@@ -222,8 +221,6 @@ for i, k in enumerate(FADERS):
     nx, ny = sx + int(14 * K), SY + int(330 * K)
     p.d.rectangle((nx - 2, ny - 2, nx + 24, ny + 18), fill=(30, 30, 38))
     p.d.text((nx + 11, ny + 1), str(i + 1), font=F(15), fill=WHITE, anchor="ma")
-    p.widgets.append('readout cx=%d cy=%d w=%d h=20 label="" key=fader_label_%d box=0 tsize=13 tcolor=24232d tweight=700'
-                     % (cx + 14, ny + 8 + Y86, CW - 40, i + 1))
     top, bot = SY + int(54 * K), SY + int(300 * K)
     p.widgets.append('slider_v cx=%d cy=%d w=%d h=%d label="" key=%s img=images/fader_cap.png base=images/clear.png ns=0 vs=0'
                      % (cx, (top + bot) // 2 + Y86, thumb.width, bot - top + thumb.height, k))
@@ -233,10 +230,10 @@ stamp_ring(p, 1166, 180, 32)
 p.widgets.append('knob cx=1166 cy=%d r=32 label="" key=gain ns=0 vs=18 vy=20 bw=120' % (180 + Y86))
 p.d.text((1166, 262), "VOICES", font=F(17, TITLE), fill=TAN, anchor="ma")
 p.widgets.append('enum_v cx=1166 cy=%d label="" key=voices sw=110 sh=36' % (346 + Y86))
-p.d.text((1110, 396), "MIDI", font=F(15, TITLE), fill=TAN, anchor="ma")
-p.widgets.append('enum_v cx=1110 cy=%d label="" key=midi_mode sw=104 sh=32' % (450 + Y86))
-p.d.text((1222, 396), "FADERS", font=F(15, TITLE), fill=TAN, anchor="ma")
-p.widgets.append('enum_v cx=1222 cy=%d label="" key=fader_mode sw=104 sh=32' % (450 + Y86))
+p.d.text((1110, 382), "MIDI", font=F(15, TITLE), fill=TAN, anchor="ma")
+p.widgets.append('enum_v cx=1110 cy=%d label="" key=midi_mode sw=100 sh=32' % (452 + Y86))
+p.d.text((1222, 382), "FADERS", font=F(15, TITLE), fill=TAN, anchor="ma")
+p.widgets.append('enum_v cx=1222 cy=%d label="" key=fader_mode sw=100 sh=32' % (452 + Y86))
 p.widgets.append('button cx=1110 cy=%d w=104 h=40 label="PANIC" key=all_notes_off' % (550 + Y86))
 p.widgets.append('button cx=1222 cy=%d w=104 h=40 label="RELOAD" key=init_patch' % (550 + Y86))
 p.widgets.append('readout cx=1166 cy=%d w=200 h=26 label="" key=engine_stats box=0 tsize=13 tcolor=bbc8db tweight=700' % (600 + Y86))

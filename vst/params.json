@@ -6196,19 +6196,19 @@
    "key": "midi_mode",
    "name": "MIDI",
    "options": [
-    "All parts",
+    "All",
     "As sent"
    ],
-   "default": "All parts"
+   "default": "All"
   },
   {
    "key": "fader_mode",
    "name": "FADERS",
    "options": [
-    "Quick Edit",
-    "Performance"
+    "Quick",
+    "Perf"
    ],
-   "default": "Quick Edit"
+   "default": "Quick"
   },
   {
    "key": "fader_1",

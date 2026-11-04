@@ -169,9 +169,9 @@ for ln in range(1, 9):
     for c in range(1, 9):
         add(dict(key="lcdst_%d_%d" % (ln, c), name="LCD CELL %d.%d" % (ln, c), min=0, max=31, default=0, display="int", poll=True), "LCD")
 
-add(dict(key="midi_mode", name="MIDI", options=["All parts", "As sent"], default="All parts"), "System")
+add(dict(key="midi_mode", name="MIDI", options=["All", "As sent"], default="All"), "System")
 # the MAIN faders: the Wave's Quick Edit offsets (default) or the Performance faders as each performance assigns them
-add(dict(key="fader_mode", name="FADERS", options=["Quick Edit", "Performance"], default="Quick Edit"), "System")
+add(dict(key="fader_mode", name="FADERS", options=["Quick", "Perf"], default="Quick"), "System")
 for i in range(1, 9):
     add(dict(key="fader_%d" % i, name="FADER %d" % i, min=0, max=127, default=64, display="int"), "System")
 for i in range(1, 9):
