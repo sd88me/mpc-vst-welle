@@ -12,7 +12,7 @@
   },
   {
    "key": "preset",
-   "name": "PROGRAM",
+   "name": "PATCH",
    "min": 0,
    "max": 255,
    "default": 0,
@@ -30,7 +30,7 @@
   },
   {
    "key": "preset_name",
-   "name": "PROGRAM NAME",
+   "name": "PATCH NAME",
    "min": 0,
    "max": 0,
    "default": 0,
@@ -55,7 +55,7 @@
   },
   {
    "key": "preset_prev",
-   "name": "PROGRAM -",
+   "name": "PATCH -",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -63,7 +63,7 @@
   },
   {
    "key": "preset_next",
-   "name": "PROGRAM +",
+   "name": "PATCH +",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4062,7 +4062,7 @@
   },
   {
    "key": "patch_slot_1",
-   "name": "PROGRAM 1",
+   "name": "PATCH 1",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4072,7 +4072,7 @@
   },
   {
    "key": "patch_slot_2",
-   "name": "PROGRAM 2",
+   "name": "PATCH 2",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4082,7 +4082,7 @@
   },
   {
    "key": "patch_slot_3",
-   "name": "PROGRAM 3",
+   "name": "PATCH 3",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4092,7 +4092,7 @@
   },
   {
    "key": "patch_slot_4",
-   "name": "PROGRAM 4",
+   "name": "PATCH 4",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4102,7 +4102,7 @@
   },
   {
    "key": "patch_slot_5",
-   "name": "PROGRAM 5",
+   "name": "PATCH 5",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4112,7 +4112,7 @@
   },
   {
    "key": "patch_slot_6",
-   "name": "PROGRAM 6",
+   "name": "PATCH 6",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4122,7 +4122,7 @@
   },
   {
    "key": "patch_slot_7",
-   "name": "PROGRAM 7",
+   "name": "PATCH 7",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4132,7 +4132,7 @@
   },
   {
    "key": "patch_slot_8",
-   "name": "PROGRAM 8",
+   "name": "PATCH 8",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4142,7 +4142,7 @@
   },
   {
    "key": "patch_slot_9",
-   "name": "PROGRAM 9",
+   "name": "PATCH 9",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4152,7 +4152,7 @@
   },
   {
    "key": "patch_slot_10",
-   "name": "PROGRAM 10",
+   "name": "PATCH 10",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4162,7 +4162,7 @@
   },
   {
    "key": "patch_slot_11",
-   "name": "PROGRAM 11",
+   "name": "PATCH 11",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4172,7 +4172,7 @@
   },
   {
    "key": "patch_slot_12",
-   "name": "PROGRAM 12",
+   "name": "PATCH 12",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4182,7 +4182,7 @@
   },
   {
    "key": "patch_slot_13",
-   "name": "PROGRAM 13",
+   "name": "PATCH 13",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4192,7 +4192,7 @@
   },
   {
    "key": "patch_slot_14",
-   "name": "PROGRAM 14",
+   "name": "PATCH 14",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4202,7 +4202,7 @@
   },
   {
    "key": "patch_slot_15",
-   "name": "PROGRAM 15",
+   "name": "PATCH 15",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4212,7 +4212,7 @@
   },
   {
    "key": "patch_slot_16",
-   "name": "PROGRAM 16",
+   "name": "PATCH 16",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4222,7 +4222,7 @@
   },
   {
    "key": "patch_slot_17",
-   "name": "PROGRAM 17",
+   "name": "PATCH 17",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4232,7 +4232,7 @@
   },
   {
    "key": "patch_slot_18",
-   "name": "PROGRAM 18",
+   "name": "PATCH 18",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4242,7 +4242,7 @@
   },
   {
    "key": "patch_slot_19",
-   "name": "PROGRAM 19",
+   "name": "PATCH 19",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4252,7 +4252,7 @@
   },
   {
    "key": "patch_slot_20",
-   "name": "PROGRAM 20",
+   "name": "PATCH 20",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4262,7 +4262,7 @@
   },
   {
    "key": "patch_slot_21",
-   "name": "PROGRAM 21",
+   "name": "PATCH 21",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4272,7 +4272,7 @@
   },
   {
    "key": "patch_slot_22",
-   "name": "PROGRAM 22",
+   "name": "PATCH 22",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4282,7 +4282,7 @@
   },
   {
    "key": "patch_slot_23",
-   "name": "PROGRAM 23",
+   "name": "PATCH 23",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4292,7 +4292,7 @@
   },
   {
    "key": "patch_slot_24",
-   "name": "PROGRAM 24",
+   "name": "PATCH 24",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4302,7 +4302,7 @@
   },
   {
    "key": "patch_slot_25",
-   "name": "PROGRAM 25",
+   "name": "PATCH 25",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4312,7 +4312,7 @@
   },
   {
    "key": "patch_slot_26",
-   "name": "PROGRAM 26",
+   "name": "PATCH 26",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4322,7 +4322,7 @@
   },
   {
    "key": "patch_slot_27",
-   "name": "PROGRAM 27",
+   "name": "PATCH 27",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4332,7 +4332,7 @@
   },
   {
    "key": "patch_slot_28",
-   "name": "PROGRAM 28",
+   "name": "PATCH 28",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4342,7 +4342,7 @@
   },
   {
    "key": "patch_slot_29",
-   "name": "PROGRAM 29",
+   "name": "PATCH 29",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4352,7 +4352,7 @@
   },
   {
    "key": "patch_slot_30",
-   "name": "PROGRAM 30",
+   "name": "PATCH 30",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4362,7 +4362,7 @@
   },
   {
    "key": "patch_slot_31",
-   "name": "PROGRAM 31",
+   "name": "PATCH 31",
    "min": 0,
    "max": 1,
    "default": 0,
@@ -4372,7 +4372,7 @@
   },
   {
    "key": "patch_slot_32",
-   "name": "PROGRAM 32",
+   "name": "PATCH 32",
    "min": 0,
    "max": 1,
    "default": 0,

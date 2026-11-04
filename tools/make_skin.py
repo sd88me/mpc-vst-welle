@@ -154,7 +154,7 @@ def wordmark(im, x, y, h):
 
 def header(p):
     wordmark(p.im, 16, 18, 52)
-    for x0, t in ((292, "BANK"), (612, "PROGRAM")):
+    for x0, t in ((292, "BANK"), (612, "PATCH")):
         p.d.text((x0, 8), t, font=F(17, TITLE), fill=TAN)
     p.widgets.append('stepper w=290 h=44 cx=440 cy=%d label="" key=bank_index get=bank_name prev=bank_prev next=bank_next style=dotmatrix persistent=1' % (52 + Y86))
     p.widgets.append('stepper w=640 h=44 cx=944 cy=%d label="" key=preset get=preset_name prev=preset_prev next=preset_next style=dotmatrix persistent=1' % (52 + Y86))
@@ -166,10 +166,15 @@ def header(p):
 FADERS = ["fader_%d" % i for i in range(1, 9)]   # Quick Edit offsets or Performance faders (FADERS switch)
 p = Page("MAIN", FADERS + ["gain"])
 header(p)
-LX0, LX1, LY0, LH = 32, 1028, 116, 27
+LX0, LX1, LY0, LH = 96, 1028, 120, 27
 CW = (LX1 - LX0) // 8
 p.d.rounded_rectangle((8, 96, 1052, 620), 10, fill=CENTRE)
-p.d.rounded_rectangle((LX0 - 14, LY0 - 12, LX1 + 14, LY0 + 8 * LH + 12), 6, fill=(30, 40, 46))
+p.d.rounded_rectangle((18, LY0 - 18, LX1 + 14, LY0 + 8 * LH + 12), 6, fill=(30, 40, 46))
+# labels for the Wave's Performance screen: its rows on the bezel's left, its eight instruments along the top
+for row, t in ((0, "SOUND"), (1, "PROG"), (2, "CHAN"), (4, "PATCH"), (6, "FADER"), (7, "VALUE")):
+    p.d.text((LX0 - 10, LY0 + row * LH + LH // 2), t, font=F(13, TITLE), fill=TAN, anchor="rm")
+for c in range(8):
+    p.d.text((LX0 + c * CW + CW // 2, LY0 - 9), "INSTRUMENT %d" % (c + 1), font=F(11, TITLE), fill=TAN, anchor="mm")
 GLASS, DOT, INK_D, BAR = (38, 137, 160), (33, 121, 142), (8, 30, 36), (10, 40, 48)
 
 
@@ -250,8 +255,8 @@ p.done()
 
 # ---------------------------------------------------------------- BANKS
 p = Page("BANKS", ["preset", "bank_index"])
-p.panel(8, 8, 250, 612, "DISKS")
-p.panel(270, 8, 1002, 612, "PERFORMANCES")
+p.panel(8, 8, 250, 612, "BANKS")
+p.panel(270, 8, 1002, 612, "PATCHES")
 p.widgets.append('list x=20 y=%d w=226 h=454 cols=1 rows=10 gap=6 th=40 key=bank_slot color=3c3953 tcolor=ebebf0' % (46 + Y86))
 p.widgets.append('stepper w=226 h=40 cx=133 cy=%d label="" key=bank_page_text get=bank_page_text prev=bank_page_prev next=bank_page_next style=dotmatrix' % (556 + Y86))
 p.widgets.append('stepper w=440 h=40 cx=510 cy=%d label="" key=preset get=preset_name prev=preset_prev next=preset_next style=dotmatrix persistent=1' % (62 + Y86))
