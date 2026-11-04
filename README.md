@@ -6,7 +6,7 @@ with a full touchscreen editor, the Wave's LCD and performance faders, and Q-Lin
 It is built on [Wave Emulation](https://github.com/mo0kid/wave) by mo0kid: a model of the Wave's voice circuits (the 250 kHz 8-bit
 wavetable voices, the ES2 ASIC, the CEM3387 filters) driven by the instrument's own OS 1.700, running on emulated 68000s.
 
-![WAVES page](docs/screenshots/waves.png)
+![MAIN page](docs/screenshots/main.png)
 
 ## Features
 - **The Wave's own OS:** OS 1.700 boots on the emulated master and voice-board CPUs and runs the instrument: performances,
@@ -15,12 +15,16 @@ wavetable voices, the ES2 ASIC, the CEM3387 filters) driven by the instrument's 
   disk of 256 performances, with their names.
 - **The LCD on the MAIN page:** the Wave's 480 x 64 graphic display is read back as text with the fonts of your own OS file and shown on
   its eight columns and text rows, with its inverted bars and boxes, live.
-- **The eight performance faders** under the LCD, as on the instrument, moved as the panel's, so the OS sees them (they do what each
-  performance assigns them to).
+- **Eight faders under the LCD, as on the instrument.** In **Quick** mode (the default) they are whole-performance offsets: Cutoff,
+  Resonance, Filter Env, Timbre, Timbre Mod, Wavescan, Attack and Release, shown by name and value on the LCD and centred again on every
+  performance change (a survey of the factory and artist sets found 99% of the stored performance faders left at their default, so the
+  stored assignments rarely do anything). In **Perf** mode they are the Wave's performance faders, as each performance assigns them.
 - **Favourites in the MPC PRESET menu:** press **+FAV** on DISKS to keep the current sound with all its edits, then pick it from MPC's own
   preset list. **-FAV** removes it. Up to 64 favourites, kept across projects.
 - **A complete editor on the touchscreen:** MAIN, DISKS, WAVES, WAVE ENV, FILTER, AMP, LFO / GLIDE, MOD 1-4, FREE ENV, QUICK. Every one of
-  Wave Emulation's 197 sound parameters, on Q-Links page by page.
+  Wave Emulation's sound parameters, and twelve Quick Edit offsets, on Q-Links page by page.
+
+![WAVES page](docs/screenshots/waves.png)
 - **MIDI "All parts":** performances that put their instruments on separate MIDI channels play whole from one MPC track (or choose
   "As sent" to drive the parts from separate tracks).
 - **Saved with your project:** the disk, performance and every edit come back when the project is reopened.
@@ -58,7 +62,7 @@ Choose on MAIN (VOICES). A performance or disk change takes a moment of silence 
 
 ## Tips
 - The Wave OS boots in about 3 seconds. **PANIC** stops stuck notes; **RELOAD** reloads the stored performance (drops your edits).
-- The faders' cells on the LCD show `???` until a fader is moved: the Wave's faders aren't motorised, so the OS doesn't know their
+- In Perf mode the faders' cells on the LCD show `???` until a fader is moved: the Wave's faders aren't motorised, so the OS doesn't know their
   position until then.
 - Some performances pan or move their sound between the sides on purpose (a random pan, a layer per side).
 

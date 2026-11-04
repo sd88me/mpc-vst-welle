@@ -1,1 +1,1 @@
-Put Wave sound disks here: disk images (.img) or Wave setup files. Each is one bank of 256 performances.
+Put Wave sound sets here: Wave setup files (.set) or disk images (.img). Each is one disk of 256 performances.
