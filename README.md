@@ -22,7 +22,10 @@ wavetable voices, the ES2 ASIC, the CEM3387 filters) driven by the instrument's 
 - **Favourites in the MPC PRESET menu:** press **+FAV** on DISKS to keep the current sound with all its edits, then pick it from MPC's own
   preset list. **-FAV** removes it. Up to 64 favourites, kept across projects.
 - **A complete editor on the touchscreen:** MAIN, DISKS, WAVES, WAVE ENV, FILTER, AMP, LFO / GLIDE, MOD 1-4, FREE ENV, QUICK. Every one of
-  Wave Emulation's sound parameters, and twelve Quick Edit offsets, on Q-Links page by page.
+  Wave Emulation's sound parameters, and twelve Quick Edit offsets, on Q-Links in blocks of four that match the printed sections of each page.
+  Knobs look like the instrument's (red for Wavetable, Cutoff and Volume); choices such as filter mode, LFO shape or a modulation source open a
+  pick-list.
+- **DISKS page:** all your disks on the left, a page of 32 performances on the right, the current performance with +FAV / -FAV.
 
 ![WAVES page](docs/screenshots/waves.png)
 - **MIDI "All parts":** performances that put their instruments on separate MIDI channels play whole from one MPC track (or choose
@@ -44,7 +47,7 @@ voice board, as the instrument has). Measured on an MPC Live III with notes held
 Choose on MAIN (VOICES). A performance or disk change takes a moment of silence while the OS loads the performance.
 
 ## Requirements
-- An MPC Gen2 standalone device (aarch64, e.g. MPC Live III) running **MPC OS 3.10 or later**. Gen1 devices and the Force aren't supported.
+- An MPC Gen2 standalone device (aarch64, e.g. MPC Live III) that loads plugin folders from `VST2 Plugins`. Gen1 devices and the Force aren't supported.
 - **Wave OS 1.700:** `w2sys.bin` and `wdv.sys`. Waldorf publishes the Wave's system files on its
   [legacy Wave page](https://waldorfmusic.com/legacy-wave/). No firmware is included.
 - **Sounds:** Wave setup files or disk images, such as Waldorf's factory set (`wave.set`) and the artist sets from the same page.
@@ -54,11 +57,21 @@ Choose on MAIN (VOICES). A performance or disk change takes a moment of silence 
 1. Download `Welle-<version>-VST2-Plugins.zip` from [Releases](https://github.com/sd88me/mpc-vst-welle/releases) and unzip it.
 2. Copy the `VST2 Plugins` folder to the root of a drive the MPC can see (internal storage, SD card or USB drive). If that drive already has a
    `VST2 Plugins` folder, copy the `sd88me - VST - Welle` folder into it.
-3. Put `w2sys.bin` and `wdv.sys` in `VST2 Plugins/sd88me - VST - Welle/VST/welle/roms/`.
-4. Put your Wave sound sets (`.set` or `.img`) in `.../VST/welle/banks/`. Name them as you want them listed; a set whose name starts with
-   "Factory" comes first. A setup file is turned into a disk image in `.../VST/welle/cache/` the first time it is loaded.
-5. On the MPC, turn on **Preferences > Enhancements (Beta) > Enable Enhancements and VST2 Support**, then restart.
+3. Put `w2sys.bin` and `wdv.sys` in `VST2 Plugins/sd88me - VST - Welle/Content/roms/`.
+4. Put your Wave sound sets (`.set` or `.img`) in `.../Content/banks/`. Name them as you want them listed; a set whose name starts with
+   "Factory" comes first. A setup file is turned into a disk image in `.../Content/cache/` the first time it is loaded.
+5. Restart the MPC. (If Welle isn't listed, check **Preferences > Enhancements (Beta) > Enable Enhancements and VST2 Support**.)
 6. Load **Welle** on a plugin track from the External VST Plugins list.
+
+### Upgrading from 0.1
+Replace the `sd88me - VST - Welle` folder with the new one, but first copy your `VST/welle` folder (your `roms/`, `banks/` and
+`favourites.txt`) somewhere safe. Welle 0.2 still uses `VST/welle/` if it exists, so you can leave it in place, or move `roms/`, `banks/` and
+`favourites.txt` to `Content/`. Your projects load as before.
+
+## What's new in 0.2
+Welle now uses Akai's MPC Plugin SDK: a native skin on every page (live LCD text, fader and knob strips, Q-Link blocks), a DISKS page with all
+your disks and performances, pick-lists for choices, single-press buttons, and the disk, performance and favourite names kept in step with the
+sound. The sound engine and the parameter order are unchanged.
 
 ## Tips
 - The Wave OS boots in about 3 seconds. **PANIC** stops stuck notes; **RELOAD** reloads the stored performance (drops your edits).
@@ -69,13 +82,12 @@ Choose on MAIN (VOICES). A performance or disk change takes a moment of silence 
 ![FILTER page](docs/screenshots/filter.png)
 
 ## Building from source
-You need Docker, Python 3 with Pillow, a C compiler for the build machine, and a checkout of
-[mpc-vst-plugins](https://github.com/open-mpc/mpc-vst-plugins). Point `MPC_VST` at it (the default is `~/mpc-vst-plugins`).
+You need Docker, Python 3 with Pillow, a C compiler for the build machine, and a checkout of Akai's MPC Plugin SDK (point `MPC_SDK` at it).
 ```
-./build.sh all                # fetches JUCE 8.0.15 and Musashi, builds vst/build/aarch64/welle.so and the skin
-./build.sh test               # x86 engine + the wrapper's host test
-tools/package_310.sh 0.1.0    # dist/Welle-0.1.0-VST2-Plugins.zip
-tools/preview.py out/         # offline previews of the pages
+./build-sdk.sh test        # x86 engine + the SDK's host simulator (parameters, programs, state, audio path)
+./build-sdk.sh             # fetches JUCE 8.0.15 and Musashi, builds the aarch64 plugin folder in build/sdk/ (skin from tools/make_tui.py)
+./build-sdk.sh beta        # the same as "Welle 2 Beta", which installs next to the release
+tools/package.sh           # dist/Welle-<version>-VST2-Plugins.zip
 ```
 `build/<arch>/welle_engine_test <dir with roms/>` boots the OS and checks notes, parameters, the LCD, favourites and the saved state;
 with `WV_TEST_BANKS=1` it plays every bank in `<dir>/banks/`. Run the aarch64 one on the device.
@@ -87,7 +99,7 @@ Welle for MPC is built on other people's work. See [CREDITS.md](CREDITS.md) for 
 - **[Wave Emulation](https://github.com/mo0kid/wave)** by mo0kid: the emulation, and the panel artwork the skin's knobs, fader slots and
   section titles come from.
 - **[JUCE](https://juce.com)** and **[Musashi](https://github.com/kstenerud/Musashi)**, which Wave Emulation is built on.
-- **[mpc-vst-plugins](https://github.com/open-mpc/mpc-vst-plugins):** the MPC plugin wrapper and skin tools.
+- **Akai's MPC Plugin SDK** (MIT): the plugin framework and the skin format.
 
 ## Licence
 **GPL-3.0**: see [LICENSE](LICENSE). The bundled components keep their own licences (GPL-3.0, AGPL-3.0, MIT, SIL OFL 1.1), as listed in

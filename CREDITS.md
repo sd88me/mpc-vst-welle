@@ -16,6 +16,7 @@ Welle for MPC stands on the work of others. Each licence applies to its own part
   (thread-local CPU state; `cmake/PrepareMusashi.cmake`).
 - **Liberation Sans** (Red Hat / Google, **SIL OFL 1.1**) for the page text (`vst/fonts/`).
 - **[mpc-vst-plugins](https://github.com/open-mpc/mpc-vst-plugins)**: the plugin wrapper (`wrapper/vst2_wrap.c`), `fast_cores.h` and the skin tools.
+- **Akai MPC Plugin SDK** (MIT): the plugin framework (`mpc_plugin.h`) that `src/sdk/WellePlugin.cpp` builds on, and the TUI.json skin format.
 
 The WELLE wordmark (`skin/wordmark/welle.svg`, `tools/make_wordmark.py`) is original to this project.
 
