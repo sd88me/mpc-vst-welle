@@ -1,0 +1,16 @@
+{
+  "name": "Welle",
+  "manufacturer": "sd88me",
+  "version": "0.2.0",
+  "kind": "instrument",
+  "uid": "WeLe",
+  "numInputs": 0,
+  "numOutputs": 2,
+  "category": "Synth",
+  "file32": "VST/welle-arm32.so",
+  "file64": "VST/welle-arm64.so",
+  "description": "Waldorf Wave emulation (mo0kid Wave Emulation) running the Wave OS. Needs your own Wave OS 1.700 in Content/roms/.",
+  "author": "sd88me",
+  "url": "https://github.com/sd88me/mpc-vst-welle",
+  "license": "GPL-3.0-only"
+}
