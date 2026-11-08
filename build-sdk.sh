@@ -3,10 +3,10 @@
 # engine is Gen2/Live III). The engine archive comes from ./build.sh engine aarch64 (Docker, gcc); the front end is compiled in the same image.
 #   ./build-sdk.sh            gen params, engine archive (if missing), plugin .so, folder (plugin.json, version.xml, Plugin Skins)
 #   ./build-sdk.sh beta       the same as "Welle 2 Beta" (uid WeLB): installs next to the release
-# MPC_SDK: the plugin-vibecode-sdk checkout.
+# MPC_SDK: the mpc-plugin-builder-sdk checkout.
 set -euo pipefail
 cd "$(dirname "$0")"
-SDK="${MPC_SDK:-$HOME/mpc-310-private/plugin-vibecode-sdk/plugin-vibecode-sdk}"
+SDK="${MPC_SDK:-$HOME/mpc-310-private/mpc-plugin-builder-sdk}"
 [ -f "$SDK/framework/mpc_plugin.h" ] || { echo "need the SDK (MPC_SDK)" >&2; exit 1; }
 IMAGE=xenia-a64-builder
 NAME="Welle"; UID_="'W','e','L','e'"; SLUG=welle; EXTRA=()
