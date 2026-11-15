@@ -14,6 +14,9 @@ LOCK = [l.strip() for l in open(os.path.join(ROOT, "vst", "params.lock")) if l.s
 PARAMS = json.load(open(os.path.join(ROOT, "vst", "params.json")))
 if "ui_open" not in LOCK:
     LOCK.append("ui_open")   # UI-only param appended by the plugin (src/sdk/params_gen.h kUiParam)
+KB_CHARS = "1234567890QWERTYUIOPASDFGHJKLZXCVBNM-"   # the +FAV naming keyboard's keys, appended after ui_open (tools/gen_sdk_params.py)
+if "fav_name" not in LOCK:
+    LOCK += ["fav_name", "kb_open"] + ["kb_" + ("dash" if c == "-" else c.lower()) for c in KB_CHARS] + ["kb_space", "kb_bksp", "kb_shift", "kb_cancel", "kb_save"]
 UI_STEPS = 97             # ui_open is 0..96: 0 closed, k+1 = pick-list k open
 
 
@@ -553,6 +556,43 @@ def generic_pages(first_fn):
     return pages
 
 
+KB_ROWS = [("1234567890", ["kb_bksp"]), ("QWERTYUIOP", []), ("ASDFGHJKL-", []), ("ZXCVBNM", ["kb_space"])]
+
+
+def keyboard(p):
+    """The drawn keyboard for naming a favourite (Profit-5's): a full-page panel, the name, 42 keys; shown while kb_open = 1."""
+    ind = ["IndexedEnabling/1/2/%s" % P("kb_open")]
+    panel = Image.new("RGB", (1280, 628), (46, 45, 69))
+    d = ImageDraw.Draw(panel)
+    d.rounded_rectangle((42, 14, 1238, 614), 10, outline=TAN, width=2)
+    d.text((76, 52), "FAVOURITE NAME", font=font(20), fill=TAN, anchor="lm")
+    d.rounded_rectangle((330, 26, 1210, 80), 6, fill=TEAL_DK, outline=TEAL, width=2)
+    p.kids.append(entry("kb panel", "Image", {"version": 2, "imageType": "Regular", "colour": "0", "image": save(panel, "kb_panel.png")},
+                        "0 0 1280 628", ind=ind))
+    p.kids.append(entry("kb name", "Label", {"version": 1, "textStyle": text_style(h=32.0, colour="ffebebf0", style="SemiBold",
+                                                                                 just="left verticallyCentred", case="Original"),
+                                              "type": "Value", "handleName": "Data"}, "346 26 850 54", remap=P("fav_name"), ind=ind))
+    kw, kh, gap, x0, y0 = 98, 84, 8, 70, 104
+
+    def key(k, cap, x, y, w):
+        slug = "c%d" % ord(cap) if len(cap) == 1 else cap.lower()
+        on, off = save(text_button(w, kh, cap, True), "kb_%s_%d_on.png" % (slug, w)), save(text_button(w, kh, cap, False), "kb_%s_%d_off.png" % (slug, w))
+        p.kids.append(entry(k, "Button", {"version": 2, "onImage": on, "offImage": off, "buttonId": 1, "numButtonsInGroup": 1,
+                                           "handleName": "Data", "gestureBehaviour": GESTURE}, "%d %d %d %d" % (x, y, w, kh), remap=P(k), ind=ind))
+    for r, (chars, extra) in enumerate(KB_ROWS):
+        y = y0 + r * (kh + gap)
+        x = x0 + r * 30
+        for c in chars:
+            key("kb_" + ("dash" if c == "-" else c.lower()), c, x, y, kw)
+            x += kw + gap
+        for k in extra:
+            key(k, {"kb_bksp": "DEL", "kb_space": "SPACE"}[k], x, y, 1210 - x)
+    y = y0 + 4 * (kh + gap)
+    key("kb_shift", "SHIFT", x0, y, 200)
+    key("kb_cancel", "CANCEL", 640 - 130, y, 260)
+    key("kb_save", "SAVE", 1210 - 260, y, 260)
+
+
 def disks_page(fn):
     """DISKS: ten disk tiles, 32 performance tiles (4 x 8, filled down the columns), pagers, the current performance, +FAV / -FAV.
     Tile names are Value labels UNDER transparent Buttons (a label on top would swallow the tap)."""
@@ -599,6 +639,7 @@ def disks_page(fn):
     d.rounded_rectangle((1010, 42, 1259, 81), 5, fill=BEZEL)
     stepper("patch_page_prev", "patch_page_next", "patch_page_text", 1010, 42, 249)
     p.qgroup((284, 36, 1000, 90), ["bank_index", "preset"])
+    keyboard(p)   # +FAV opens it over the page
     return p, art
 
 

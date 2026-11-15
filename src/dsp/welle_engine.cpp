@@ -734,10 +734,20 @@ bool fav_write(Inst *in) {            // under fm
 std::string prog_label(Inst *in, int i);
 void restore_state(Inst *in, const char *s);
 
-void fav_save(Inst *in) {
-    const std::string st = state_string(in);
+/* the name +FAV offers (the program's own), and a typed one: printable ASCII only, at most 20 characters (favourites.txt is tab / newline separated) */
+std::string fav_default_name(Inst *in) {
     std::string nm = program_name(in, in->preset);
     while (!nm.empty() && nm.back() == ' ') nm.pop_back();
+    return nm;
+}
+
+void fav_save(Inst *in, const char *given = nullptr) {
+    const std::string st = state_string(in);
+    std::string nm = given ? std::string() : fav_default_name(in);
+    if (given) {
+        for (const char *c = given; *c && nm.size() < 20; ++c) if (*c >= 32 && *c < 127) nm += *c;
+        while (!nm.empty() && nm.back() == ' ') nm.pop_back();
+    }
     std::lock_guard<std::mutex> l(in->fm);
     if ((int)in->favs.size() >= kFavSlots) return;
     for (auto &fv : in->favs) if (fv.second == st) return;
@@ -828,6 +838,7 @@ void eng_set(void *p, const char *key, const char *val) {
     }
     if (!strcmp(key, "state")) { restore_state(in, val); in->load_gen++; return; }
     if (!strcmp(key, "fav_save")) { if (press) { fav_save(in); in->bump(); } return; }
+    if (!strcmp(key, "fav_save_name")) { fav_save(in, val); in->bump(); return; }
     if (!strcmp(key, "fav_delete")) { if (press) { fav_delete(in); in->bump(); } return; }
     if (!strcmp(key, "favourite")) { fav_pick(in, atoi(val)); return; }
     auto it = param_index().find(key);
@@ -944,6 +955,7 @@ int eng_get(void *p, const char *key, char *buf, int n) {
         const int i = atoi(key + 10);
         return put(buf, n, "%s", i >= 0 && i < (int)in->favs.size() ? in->favs[i].first.c_str() : "-");
     }
+    if (!strcmp(key, "fav_default_name")) return put(buf, n, "%s", fav_default_name(in).c_str());
     if (!strcmp(key, "fav_text")) { std::lock_guard<std::mutex> l(in->fm); return put(buf, n, "FAVOURITES %d / %d", (int)in->favs.size(), kFavSlots); }
     // "<key>_display": a float parameter's value in the processor's own words (Hz, s, ...)
     const size_t kl = strlen(key);
