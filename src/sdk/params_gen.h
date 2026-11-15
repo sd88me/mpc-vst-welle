@@ -600,8 +600,9 @@ static const PSpec g_pspecs[] = {
     {"kb_shift", "Key Shift", 0, 1, 0, 33, nullptr, 0},
     {"kb_cancel", "Key Cancel", 0, 1, 0, 33, nullptr, 0},
     {"kb_save", "Key Save", 0, 1, 0, 33, nullptr, 0},
+    {"random_patch", "RANDOM", 0, 1, 0, 1, nullptr, 0},   // kMomentary: an engine verb, a random disk and performance (DISKS page)
 };
-static const int kNumParams = 523;
+static const int kNumParams = 524;
 static const int kUiParam = 478;
 static const int kFavName = 479, kKbOpen = 480, kKbFirst = 481, kKbCount = 42;
 static const char kKbChars[] = "1234567890QWERTYUIOPASDFGHJKLZXCVBNM-";   // the character keys from kKbFirst, then space, delete, shift, cancel, save

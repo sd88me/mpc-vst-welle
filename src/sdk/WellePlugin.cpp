@@ -79,7 +79,7 @@ bool changesSound(const char* key)
 {
     return !strcmp(key, "preset") || !strcmp(key, "bank_index") || !strcmp(key, "preset_next") || !strcmp(key, "preset_prev") ||
            !strcmp(key, "bank_next") || !strcmp(key, "bank_prev") || !strcmp(key, "init_patch") || !strcmp(key, "fader_mode") ||
-           !strncmp(key, "bank_slot_", 10) || !strncmp(key, "patch_slot_", 11) || !strcmp(key, "state") || !strcmp(key, "favourite");
+           !strncmp(key, "bank_slot_", 10) || !strncmp(key, "patch_slot_", 11) || !strcmp(key, "state") || !strcmp(key, "favourite") || !strcmp(key, "random_patch");
 }
 
 } // namespace

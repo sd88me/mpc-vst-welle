@@ -36,7 +36,8 @@ rows.append('    {"fav_name", "Favourite Name", 0, 1023, 0, 34, nullptr, 0},   /
 rows.append('    {"kb_open", "Keyboard", 0, 1, 0, 48, nullptr, 0},             // kUi | kLocal: the drawn keyboard is showing')
 for k, n in KB:
     rows.append('    {%s, %s, 0, 1, 0, 33, nullptr, 0},' % (json.dumps(k), json.dumps(n)))   # kMomentary | kLocal
-nparams = len(P) + 3 + len(KB)
+rows.append('    {"random_patch", "RANDOM", 0, 1, 0, 1, nullptr, 0},   // kMomentary: an engine verb, a random disk and performance (DISKS page)')
+nparams = len(P) + 3 + len(KB) + 1
 out += ["", "static const PSpec g_pspecs[] = {"] + rows + ["};", "static const int kNumParams = %d;" % nparams, "static const int kUiParam = %d;" % len(P),
         "static const int kFavName = %d, kKbOpen = %d, kKbFirst = %d, kKbCount = %d;" % (len(P) + 1, len(P) + 2, len(P) + 3, len(KB)),
         "static const char kKbChars[] = %s;   // the character keys from kKbFirst, then space, delete, shift, cancel, save" % json.dumps(KB_CHARS),

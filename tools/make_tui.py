@@ -16,7 +16,7 @@ if "ui_open" not in LOCK:
     LOCK.append("ui_open")   # UI-only param appended by the plugin (src/sdk/params_gen.h kUiParam)
 KB_CHARS = "1234567890QWERTYUIOPASDFGHJKLZXCVBNM-"   # the +FAV naming keyboard's keys, appended after ui_open (tools/gen_sdk_params.py)
 if "fav_name" not in LOCK:
-    LOCK += ["fav_name", "kb_open"] + ["kb_" + ("dash" if c == "-" else c.lower()) for c in KB_CHARS] + ["kb_space", "kb_bksp", "kb_shift", "kb_cancel", "kb_save"]
+    LOCK += ["fav_name", "kb_open"] + ["kb_" + ("dash" if c == "-" else c.lower()) for c in KB_CHARS] + ["kb_space", "kb_bksp", "kb_shift", "kb_cancel", "kb_save", "random_patch"]
 UI_STEPS = 97             # ui_open is 0..96: 0 closed, k+1 = pick-list k open
 
 
@@ -628,12 +628,13 @@ def disks_page(fn):
             p.button(k, "%d %d 50 40" % (bx, y), save(arrow_button(50, 40, dr, True), "%s_on.png" % k), save(arrow_button(50, 40, dr, False), "%s_off.png" % k))
     d.rounded_rectangle((20, 536, 245, 576), 5, fill=BEZEL)
     stepper("bank_page_prev", "bank_page_next", "bank_page_text", 20, 536, 226)
-    d.rounded_rectangle((290, 42, 729, 81), 5, fill=BEZEL)
-    d.rectangle((340, 46, 679, 78), fill=TEAL)
-    p.kids.append(label("Value", "340 42 340 40", remap=P("preset_name"), just="horizontallyCentred verticallyCentred", colour="ff081e24", style="SemiBold",
+    d.rounded_rectangle((290, 42, 629, 81), 5, fill=BEZEL)
+    d.rectangle((340, 46, 579, 78), fill=TEAL)
+    p.kids.append(label("Value", "340 42 240 40", remap=P("preset_name"), just="horizontallyCentred verticallyCentred", colour="ff081e24", style="SemiBold",
                         case="Original", h=20.0))
-    for k, bx, dr in (("preset_prev", 290, -1), ("preset_next", 679, 1)):
+    for k, bx, dr in (("preset_prev", 290, -1), ("preset_next", 579, 1)):
         p.button(k, "%d 42 50 40" % bx, save(arrow_button(50, 40, dr, True), "%s_on.png" % k), save(arrow_button(50, 40, dr, False), "%s_off.png" % k))
+    p.button("random_patch", "640 42 96 40", save(text_button(96, 40, "RANDOM", True, size=15), "random_on.png"), save(text_button(96, 40, "RANDOM", False, size=15), "random_off.png"))
     p.button("fav_save", "742 42 96 40", save(text_button(96, 40, "+FAV", True), "fav_save_on.png"), save(text_button(96, 40, "+FAV", False), "fav_save_off.png"))
     p.button("fav_delete", "848 42 96 40", save(text_button(96, 40, "-FAV", True), "fav_delete_on.png"), save(text_button(96, 40, "-FAV", False), "fav_delete_off.png"))
     p.kids.append(label("Value", "20 586 226 30", remap=P("fav_text"), just="horizontallyCentred verticallyCentred", colour="ffbbc8db", style="Regular",

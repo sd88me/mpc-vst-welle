@@ -39,8 +39,8 @@ int main(int, char** argv)
     run();
     // names are the display names: find the keys by the table's order instead (kb_save is last)
     std::printf("== naming keyboard (%d params)\n", e->numParams);
-    CHECK(e->numParams == 523, "523 params");
-    const int last = e->numParams - 1;
+    CHECK(e->numParams == 524, "524 params");
+    const int last = e->numParams - 2;   // kb_save (random_patch follows it)
     names.assign((size_t)e->numParams, "");
     const char* ks = "1234567890QWERTYUIOPASDFGHJKLZXCVBNM-";
     const int first = last - 41, open = first - 1, nm = open - 1, fav = -1;
@@ -74,6 +74,10 @@ int main(int, char** argv)
     CHECK(val(open) < 0.5f && prog(2) == "2 --", "CANCEL closes without saving (slot 2 \"%s\")", prog(2).c_str());
     press(ch('A'));
     CHECK(disp(nm) == disp(nm) && val(open) < 0.5f, "keys do nothing while closed");
+    {   // RANDOM is a verb: it drops back to 0 (the engine has no disks here, so the sound itself is not checked)
+        press(e->numParams - 1);
+        CHECK(val(e->numParams - 1) < 0.5f, "RANDOM drops back to 0");
+    }
     e->dispatcher(e, effMainsChanged, 0, 0, nullptr, 0);
     e->dispatcher(e, effClose, 0, 0, nullptr, 0);
     if (g_fail) { std::printf("%d FAILED\n", g_fail); return 1; }

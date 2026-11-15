@@ -450,7 +450,17 @@ void emu_main(Inst *in) {
                 break;
             case C_PROGRAM:
                 in->loading_until = mono_ms() + 3000;
-                if (c.a < proc->getNumPrograms()) proc->setCurrentProgram(c.a);
+                {
+                    int prog = c.a;
+                    if (c.b == 1) {                           // RANDOM: a random performance of the disk just mounted (its size is known only now)
+                        static uint32_t rs = 0x9E3779B9u;
+                        rs ^= (uint32_t)mono_ms() * 2654435761u; rs ^= rs << 13; rs ^= rs >> 17; rs ^= rs << 5;
+                        prog = (int)((rs >> 8) % (uint32_t)std::max(1, proc->getNumPrograms()));
+                        in->preset = prog;
+                        in->page = prog / WV_PATCH_TILES;
+                    }
+                    if (prog < proc->getNumPrograms()) proc->setCurrentProgram(prog);
+                }
                 in->loading_until = mono_ms() + 1000;    // the firmware loads the performance over the next blocks
                 for (auto &v : pending) v = INT32_MIN;     // the program's own values win over edits made before it
                 for (int q = 0; q < WV_NUM_PARAMS; q++)    // and every Quick Edit offset back to the centre: a program sounds as stored
@@ -624,6 +634,20 @@ void select_bank(Inst *in, int bank, int prog) {
     in->bank_page = bank / WV_BANK_TILES;
     if (!in->banks.empty()) in->push(Cmd{C_BANK, {0, 0, 0}, bank, 0});
     select_program(in, prog);
+}
+
+/* RANDOM: a random disk, then a random performance on it (chosen by the engine thread once the disk is mounted) */
+void random_patch(Inst *in) {
+    static uint32_t rs = 0x2545F491u;
+    rs ^= (uint32_t)mono_ms() * 2654435761u; rs ^= rs << 13; rs ^= rs >> 17; rs ^= rs << 5;
+    const int nb = bank_count(in);
+    const int bank = (int)((rs >> 8) % (uint32_t)nb);
+    in->bank = bank;
+    in->bank_page = bank / WV_BANK_TILES;
+    if (!in->banks.empty()) in->push(Cmd{C_BANK, {0, 0, 0}, bank, 0});
+    in->push(Cmd{C_PROGRAM, {0, 0, 0}, 0, 1});
+    in->load_gen++;
+    in->bump();
 }
 
 void eng_midi(void *p, const uint8_t *msg, int len) {
@@ -806,6 +830,7 @@ void eng_set(void *p, const char *key, const char *val) {
     if (!strcmp(key, "patch_page_next")) { if (press && in->page + 1 < pages(in)) { in->page++; in->bump(); } return; }
     if (!strcmp(key, "preset")) { select_program(in, atoi(val)); return; }
     if (!strcmp(key, "bank_index")) { if (atoi(val) != in->bank) select_bank(in, atoi(val), 0); return; }
+    if (!strcmp(key, "random_patch")) { if (press) random_patch(in); return; }
     if (!strcmp(key, "preset_next") || !strcmp(key, "preset_prev")) {
         const int np = num_programs(in);
         if (press) select_program(in, (in->preset + (!strcmp(key, "preset_next") ? 1 : np - 1)) % np);
