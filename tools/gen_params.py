@@ -101,7 +101,7 @@ add(dict(key="init_patch", name="RELOAD", min=0, max=1, default=0, momentary=Tru
 # --- every Wave parameter ---
 # Wave parameters added after the first release of the port (new upstream or MPC-port ones): appended after everything, so the VST
 # indices saved projects bind to never move (vst/params.lock)
-LATE = ["quickCutoff", "quickResonance", "quickFilterEnv", "quickWavePosition"]
+LATE = ["quickCutoff", "quickResonance", "quickFilterEnv", "quickWavePosition", "bank_slot_11"]   # appended last: the frozen order
 late_entries = []
 _add = add
 
@@ -141,7 +141,7 @@ for w in W:
         ROWS.append((pid, 1, 0, 127, int(d)))
 
 # --- browser ---
-N_BANK_TILES, N_TILES = 10, 32
+N_BANK_TILES, N_TILES = 11, 32
 for i in range(1, N_BANK_TILES + 1):
     add(dict(key="bank_slot_%d" % i, name="DISK %d" % i, min=0, max=1, default=0, momentary=True, display="string", poll=True), "Banks")
 for i in range(1, N_TILES + 1):

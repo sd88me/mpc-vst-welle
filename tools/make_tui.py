@@ -14,6 +14,9 @@ LOCK = [l.strip() for l in open(os.path.join(ROOT, "vst", "params.lock")) if l.s
 PARAMS = json.load(open(os.path.join(ROOT, "vst", "params.json")))
 if "ui_open" not in LOCK:
     LOCK.append("ui_open")   # UI-only param appended by the plugin (src/sdk/params_gen.h kUiParam)
+KB_CHARS = "1234567890QWERTYUIOPASDFGHJKLZXCVBNM-"   # the +FAV naming keyboard's keys, appended after ui_open (tools/gen_sdk_params.py)
+if "fav_name" not in LOCK:
+    LOCK += ["fav_name", "kb_open"] + ["kb_" + ("dash" if c == "-" else c.lower()) for c in KB_CHARS] + ["kb_space", "kb_bksp", "kb_shift", "kb_cancel", "kb_save", "random_patch"]
 UI_STEPS = 97             # ui_open is 0..96: 0 closed, k+1 = pick-list k open
 
 
@@ -553,6 +556,45 @@ def generic_pages(first_fn):
     return pages
 
 
+KB_ROWS = [("1234567890", ["kb_bksp"]), ("QWERTYUIOP", []), ("ASDFGHJKL-", []), ("ZXCVBNM", ["kb_space"])]
+
+
+def keyboard(p):
+    """The drawn keyboard for naming a favourite (Profit-5's): a full-page panel, the name, 42 keys; shown while kb_open = 1."""
+    ind = ["IndexedEnabling/1/2/%s" % P("kb_open")]
+    panel = Image.new("RGB", (1280, 628), (46, 45, 69))
+    d = ImageDraw.Draw(panel)
+    d.rounded_rectangle((42, 14, 1238, 614), 10, outline=TAN, width=2)
+    d.text((76, 52), "FAVOURITE NAME", font=font(20), fill=TAN, anchor="lm")
+    d.rounded_rectangle((330, 26, 1210, 80), 6, fill=TEAL_DK, outline=TEAL, width=2)
+    max_chars = int(re.search(r"kFavNameMax = (\d+)", open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../src/sdk/params_gen.h")).read()).group(1))   # the limit the plugin enforces
+    d.text((1196, 53), "MAX %d CHARACTERS" % max_chars, font=font(16), fill=(150, 170, 180), anchor="rm")
+    p.kids.append(entry("kb panel", "Image", {"version": 2, "imageType": "Regular", "colour": "0", "image": save(panel, "kb_panel.png")},
+                        "0 0 1280 628", ind=ind))
+    p.kids.append(entry("kb name", "Label", {"version": 1, "textStyle": text_style(h=32.0, colour="ffebebf0", style="SemiBold",
+                                                                                 just="left verticallyCentred", case="Original"),
+                                              "type": "Value", "handleName": "Data"}, "346 26 850 54", remap=P("fav_name"), ind=ind))
+    kw, kh, gap, x0, y0 = 98, 84, 8, 70, 104
+
+    def key(k, cap, x, y, w):
+        slug = "c%d" % ord(cap) if len(cap) == 1 else cap.lower()
+        on, off = save(text_button(w, kh, cap, True), "kb_%s_%d_on.png" % (slug, w)), save(text_button(w, kh, cap, False), "kb_%s_%d_off.png" % (slug, w))
+        p.kids.append(entry(k, "Button", {"version": 2, "onImage": on, "offImage": off, "buttonId": 1, "numButtonsInGroup": 1,
+                                           "handleName": "Data", "gestureBehaviour": GESTURE}, "%d %d %d %d" % (x, y, w, kh), remap=P(k), ind=ind))
+    for r, (chars, extra) in enumerate(KB_ROWS):
+        y = y0 + r * (kh + gap)
+        x = x0 + r * 30
+        for c in chars:
+            key("kb_" + ("dash" if c == "-" else c.lower()), c, x, y, kw)
+            x += kw + gap
+        for k in extra:
+            key(k, {"kb_bksp": "DEL", "kb_space": "SPACE"}[k], x, y, 1210 - x)
+    y = y0 + 4 * (kh + gap)
+    key("kb_shift", "SHIFT", x0, y, 200)
+    key("kb_cancel", "CANCEL", 640 - 130, y, 260)
+    key("kb_save", "SAVE", 1210 - 260, y, 260)
+
+
 def disks_page(fn):
     """DISKS: ten disk tiles, 32 performance tiles (4 x 8, filled down the columns), pagers, the current performance, +FAV / -FAV.
     Tile names are Value labels UNDER transparent Buttons (a label on top would swallow the tap)."""
@@ -564,8 +606,8 @@ def disks_page(fn):
     ImageDraw.Draw(lit).rounded_rectangle((0, 0, 239, 55), 5, outline=TAN, width=4, fill=(209, 174, 136, 70))
     save(lit, "tile_on_p.png")
     litb = lit.crop((0, 0, 226, 40)).resize((226, 40))
-    ib = Image.new("RGBA", (226, 40), (0, 0, 0, 0))
-    ImageDraw.Draw(ib).rounded_rectangle((0, 0, 225, 39), 5, outline=TAN, width=4, fill=(209, 174, 136, 70))
+    ib = Image.new("RGBA", (226, 36), (0, 0, 0, 0))
+    ImageDraw.Draw(ib).rounded_rectangle((0, 0, 225, 35), 5, outline=TAN, width=4, fill=(209, 174, 136, 70))
     save(ib, "tile_on_b.png")
 
     def tile(key, x, y, w, h, on):
@@ -573,8 +615,8 @@ def disks_page(fn):
         p.kids.append(label("Value", "%d %d %d %d" % (x + 10, y, w - 20, h), remap=P(key), colour="ffebebf0", style="SemiBold", case="Original", h=20.0))
         p.kids.append(entry(key + " tile", "Button", {"version": 2, "onImage": on, "offImage": "tile_off.png", "buttonId": 1, "numButtonsInGroup": 1,
                                                       "handleName": "Data", "gestureBehaviour": GESTURE}, "%d %d %d %d" % (x, y, w, h), remap=P(key), focus="No"))
-    for r in range(10):
-        tile("bank_slot_%d" % (r + 1), 20, 46 + 46 * r, 226, 40, "tile_on_b.png")
+    for r in range(11):      # in line with the performance rows: from y 100 down to the pager, which ends level with the last performance tile
+        tile("bank_slot_%d" % (r + 1), 20, 100 + 40 * r, 226, 36, "tile_on_b.png")
     for c in range(4):
         for r in range(8):
             tile("patch_slot_%d" % (c * 8 + r + 1), 284 + c * 245, 100 + r * 62, 239, 56, "tile_on_p.png")
@@ -584,21 +626,30 @@ def disks_page(fn):
                             colour="ffebebf0", style="SemiBold", case="Original", h=20.0))
         for k, bx, dr in ((prev, x, -1), (nxt, x + w - 50, 1)):
             p.button(k, "%d %d 50 40" % (bx, y), save(arrow_button(50, 40, dr, True), "%s_on.png" % k), save(arrow_button(50, 40, dr, False), "%s_off.png" % k))
-    d.rounded_rectangle((20, 536, 245, 576), 5, fill=BEZEL)
-    stepper("bank_page_prev", "bank_page_next", "bank_page_text", 20, 536, 226)
-    d.rounded_rectangle((290, 42, 729, 81), 5, fill=BEZEL)
-    d.rectangle((340, 46, 679, 78), fill=TEAL)
-    p.kids.append(label("Value", "340 42 340 40", remap=P("preset_name"), just="horizontallyCentred verticallyCentred", colour="ff081e24", style="SemiBold",
-                        case="Original", h=20.0))
-    for k, bx, dr in (("preset_prev", 290, -1), ("preset_next", 679, 1)):
+    d.rounded_rectangle((20, 550, 245, 589), 5, fill=BEZEL)
+    stepper("bank_page_prev", "bank_page_next", "bank_page_text", 20, 550, 226)
+    # the disk readout and stepper, as the performance one: the loaded disk's name between < > (steps the disk)
+    d.rounded_rectangle((20, 42, 246, 81), 5, fill=BEZEL)
+    d.rectangle((70, 46, 196, 78), fill=TEAL)
+    p.kids.append(label("Value", "70 42 126 40", remap=P("bank_name"), just="horizontallyCentred verticallyCentred", colour="ff081e24", style="SemiBold",
+                        case="Original", h=17.0))
+    for k, bx, dr in (("bank_prev", 20, -1), ("bank_next", 196, 1)):
         p.button(k, "%d 42 50 40" % bx, save(arrow_button(50, 40, dr, True), "%s_on.png" % k), save(arrow_button(50, 40, dr, False), "%s_off.png" % k))
+    d.rounded_rectangle((290, 42, 629, 81), 5, fill=BEZEL)
+    d.rectangle((340, 46, 579, 78), fill=TEAL)
+    p.kids.append(label("Value", "340 42 240 40", remap=P("preset_name"), just="horizontallyCentred verticallyCentred", colour="ff081e24", style="SemiBold",
+                        case="Original", h=20.0))
+    for k, bx, dr in (("preset_prev", 290, -1), ("preset_next", 579, 1)):
+        p.button(k, "%d 42 50 40" % bx, save(arrow_button(50, 40, dr, True), "%s_on.png" % k), save(arrow_button(50, 40, dr, False), "%s_off.png" % k))
+    p.button("random_patch", "640 42 96 40", save(text_button(96, 40, "RANDOM", True, size=15), "random_on.png"), save(text_button(96, 40, "RANDOM", False, size=15), "random_off.png"))
     p.button("fav_save", "742 42 96 40", save(text_button(96, 40, "+FAV", True), "fav_save_on.png"), save(text_button(96, 40, "+FAV", False), "fav_save_off.png"))
     p.button("fav_delete", "848 42 96 40", save(text_button(96, 40, "-FAV", True), "fav_delete_on.png"), save(text_button(96, 40, "-FAV", False), "fav_delete_off.png"))
-    p.kids.append(label("Value", "20 586 226 30", remap=P("fav_text"), just="horizontallyCentred verticallyCentred", colour="ffbbc8db", style="Regular",
+    p.kids.append(label("Value", "20 592 226 30", remap=P("fav_text"), just="horizontallyCentred verticallyCentred", colour="ffbbc8db", style="Regular",
                         case="Original", h=16.0))
     d.rounded_rectangle((1010, 42, 1259, 81), 5, fill=BEZEL)
     stepper("patch_page_prev", "patch_page_next", "patch_page_text", 1010, 42, 249)
     p.qgroup((284, 36, 1000, 90), ["bank_index", "preset"])
+    keyboard(p)   # +FAV opens it over the page
     return p, art
 
 

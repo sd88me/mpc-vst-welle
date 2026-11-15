@@ -208,4 +208,4 @@ static const wv_param_t g_wv_params[] = {
 };
 static const int WV_NUM_PARAMS = 201;
 #define WV_PATCH_TILES 32
-#define WV_BANK_TILES 10
+#define WV_BANK_TILES 11

@@ -24,6 +24,7 @@
 #include <atomic>
 #include <chrono>
 #include <cstring>
+#include <mutex>
 #include <string>
 #include <thread>
 #include <vector>
@@ -78,7 +79,7 @@ bool changesSound(const char* key)
 {
     return !strcmp(key, "preset") || !strcmp(key, "bank_index") || !strcmp(key, "preset_next") || !strcmp(key, "preset_prev") ||
            !strcmp(key, "bank_next") || !strcmp(key, "bank_prev") || !strcmp(key, "init_patch") || !strcmp(key, "fader_mode") ||
-           !strncmp(key, "bank_slot_", 10) || !strncmp(key, "patch_slot_", 11) || !strcmp(key, "state") || !strcmp(key, "favourite");
+           !strncmp(key, "bank_slot_", 10) || !strncmp(key, "patch_slot_", 11) || !strcmp(key, "state") || !strcmp(key, "favourite") || !strcmp(key, "random_patch");
 }
 
 } // namespace
@@ -173,6 +174,7 @@ public:
     {
         const PSpec& s = g_pspecs[index];
         if (!inst_) return false;
+        if (index == kFavName) { out = typedName() + "_"; return true; }
         if (s.flags & kText)
         {
             out = engineGet(s.key);
@@ -203,6 +205,8 @@ public:
     {
         pendingState_.assign(reinterpret_cast<const char*>(data), size);   // applied in reset(), on the audio thread
         ignoreProgram_ = true;
+        kbOpen_.store(false);
+        kbDirty_.store(true);   // a project saved with the keyboard open restored kb_open = 1: push it closed
     }
 
     void process(mpc::ProcessContext& ctx) override
@@ -239,6 +243,67 @@ public:
 private:
     static constexpr int kChunk = 128;
     static constexpr int kFavSlots = 64;
+
+    // ---- the +FAV naming keyboard: +FAV opens it on the program's name, SAVE stores the sound under the typed name (engine "fav_save_name") ----
+    std::atomic<bool> kbOpen_{false}, kbDirty_{false};
+    std::mutex kbMu_;
+    std::string kbName_;
+    bool kbShift_ = false;
+    std::vector<long long> lastFire_ = std::vector<long long>((size_t)kNumParams, 0LL);   // audio thread: when each local momentary last fired
+
+    std::string typedName() { std::lock_guard<std::mutex> g(kbMu_); return kbName_; }
+
+    void openKeyboard()   // audio thread, lock_ held
+    {
+        char buf[128] = "";
+        eng_->get_param(inst_, "fav_default_name", buf, sizeof buf);
+        {
+            std::lock_guard<std::mutex> g(kbMu_);
+            kbName_ = buf;
+            if ((int)kbName_.size() > kFavNameMax) kbName_.resize((size_t)kFavNameMax);
+            kbShift_ = false;
+        }
+        kbOpen_.store(true);
+        kbDirty_.store(true);
+    }
+
+    void keyboardKey(int k)   // audio thread, lock_ held; k = 0 .. kKbCount - 1
+    {
+        if (!kbOpen_.load()) return;
+        const int nchars = (int)sizeof kKbChars - 1;
+        if (k == nchars + 3) { kbOpen_.store(false); kbDirty_.store(true); return; }   // CANCEL
+        if (k == nchars + 4)                                                           // SAVE
+        {
+            std::string name = typedName();
+            while (!name.empty() && name.back() == ' ') name.pop_back();
+            if (name.empty()) name = "Favourite";
+            eng_->set_param(inst_, "fav_save_name", name.c_str());
+            kbOpen_.store(false);
+            kbDirty_.store(true);
+            favDirty_.store(true);
+            return;
+        }
+        {
+            std::lock_guard<std::mutex> g(kbMu_);
+            if (k <= nchars)   // a character or space
+            {
+                if ((int)kbName_.size() < kFavNameMax)
+                {
+                    char c = k < nchars ? kKbChars[k] : ' ';
+                    const bool cap = kbName_.empty() || kbName_.back() == ' ';
+                    if (c >= 'A' && c <= 'Z')
+                    {
+                        if (cap == kbShift_) c = (char)(c - 'A' + 'a');   // capital at the start and after a space; SHIFT flips the next letter
+                        kbShift_ = false;
+                    }
+                    kbName_ += c;
+                }
+            }
+            else if (k == nchars + 1) { if (!kbName_.empty()) kbName_.pop_back(); }
+            else if (k == nchars + 2) kbShift_ = !kbShift_;
+        }
+        kbDirty_.store(true);
+    }
 
     std::string engineGet(const char* key)
     {
@@ -304,6 +369,22 @@ private:
         }
     }
 
+    // The DISKS tiles: the selected disk and the selected performance stay lit (the engine's "<tile>_on"). A tile is a momentary button
+    // whose value the host shows as lit, so the lit one is told to the host as 1 and the others as 0.
+    void syncTiles()
+    {
+        for (int i = 0; i < kNumParams; ++i)
+        {
+            const PSpec& s = g_pspecs[i];
+            if (strncmp(s.key, "bank_slot_", 10) && strncmp(s.key, "patch_slot_", 11)) continue;
+            if (dirty_[i].load(std::memory_order_acquire)) continue;
+            const int on = atoi(engineGet((std::string(s.key) + "_on").c_str()).c_str()) ? 1 : 0;
+            if (getInt(i) == on) continue;
+            store(i, (float)on);
+            notify_[i].store(true);
+        }
+    }
+
     // Text params never change value, so the host never asks for their text again: flip the value when the text changes.
     void syncText()
     {
@@ -311,7 +392,7 @@ private:
         {
             const PSpec& s = g_pspecs[i];
             if (!(s.flags & kText) || (s.flags & kMomentary)) continue;
-            const std::string t = engineGet(s.key);
+            const std::string t = i == kFavName ? typedName() : engineGet(s.key);
             if (t == textCache_[(size_t)i]) continue;
             textCache_[(size_t)i] = t;
             const int lo = s.min, hi = s.max > s.min ? s.max : s.min + 1;
@@ -342,6 +423,23 @@ private:
             {
                 bankTarget_ = getInt(0);
                 bankCountdown_ = (int)(0.05 * sampleRate() / std::max(1, frames)) + 1;
+                continue;
+            }
+            if (s.flags & kLocal)   // the naming keyboard's keys
+            {
+                store(i, 0.0f);
+                notify_[i].store(true);
+                const long long now = nowMs();
+                if (now - lastFire_[(size_t)i] < 250) continue;   // the second report of one tap
+                lastFire_[(size_t)i] = now;
+                keyboardKey(i - kKbFirst);
+                continue;
+            }
+            if (!strcmp(s.key, "fav_save"))   // +FAV: open the keyboard on the program's name
+            {
+                store(i, 0.0f);
+                notify_[i].store(true);
+                openKeyboard();
                 continue;
             }
             if (s.flags & kMomentary)
@@ -398,6 +496,14 @@ private:
                 const long long due = a->load();
                 if (due && t >= due) { a->store(0); requestDisplayUpdate(); }
             }
+            if (kbDirty_.exchange(false))   // the keyboard opened or closed, or the typed name changed
+            {
+                store(kKbOpen, kbOpen_.load() ? 1.0f : 0.0f);
+                notify_[kKbOpen].store(true);
+                textCache_[(size_t)kFavName] = "\x01";
+                syncText();
+                requestDisplayUpdate();
+            }
             if (favDirty_.exchange(false))
             {
                 refreshProgramNames();
@@ -410,12 +516,13 @@ private:
             {
                 seenRev = rev;
                 syncLive();
+                syncTiles();
 #ifdef WELLE_REV_UPDATE
                 if (t - lastUpdateMs_ > 250) { lastUpdateMs_ = t; requestDisplayUpdate(); }
 #endif
             }
             (void)did;
-            if (t - lastTextMs_ > 250) { lastTextMs_ = t; syncText(); }
+            if (t - lastTextMs_ > 250) { lastTextMs_ = t; syncText(); syncTiles(); }
             drainNotify();
         }
     }

@@ -19,8 +19,9 @@ wavetable voices, the ES2 ASIC, the CEM3387 filters) driven by the instrument's 
   Resonance, Filter Env, Timbre, Timbre Mod, Wavescan, Attack and Release, shown by name and value on the LCD and centred again on every
   performance change (a survey of the factory and artist sets found 99% of the stored performance faders left at their default, so the
   stored assignments rarely do anything). In **Perf** mode they are the Wave's performance faders, as each performance assigns them.
-- **Favourites in the MPC PRESET menu:** press **+FAV** on DISKS to keep the current sound with all its edits, then pick it from MPC's own
+- **Favourites in the MPC PRESET menu:** press **+FAV** on DISKS, name the sound on the keyboard that opens (up to 20 characters; SHIFT, DEL, SPACE, CANCEL, SAVE) and SAVE keeps it with all its edits; then pick it from MPC's own
   preset list. **-FAV** removes it. Up to 64 favourites, kept across projects.
+- **RANDOM** on DISKS loads a random disk and a random performance from it. The disk list shows the loaded disk in a readout with < > steppers (as the performance one does), and the selected disk and performance stay lit.
 - **A complete editor on the touchscreen:** MAIN, DISKS, WAVES, WAVE ENV, FILTER, AMP, LFO / GLIDE, MOD 1-4, FREE ENV, QUICK. Every one of
   Wave Emulation's sound parameters, and twelve Quick Edit offsets, on Q-Links in blocks of four that match the printed sections of each page.
   Knobs look like the instrument's (red for Wavetable, Cutoff and Volume); choices such as filter mode, LFO shape or a modulation source open a
