@@ -616,7 +616,7 @@ def disks_page(fn):
         p.kids.append(entry(key + " tile", "Button", {"version": 2, "onImage": on, "offImage": "tile_off.png", "buttonId": 1, "numButtonsInGroup": 1,
                                                       "handleName": "Data", "gestureBehaviour": GESTURE}, "%d %d %d %d" % (x, y, w, h), remap=P(key), focus="No"))
     for r in range(10):
-        tile("bank_slot_%d" % (r + 1), 20, 46 + 46 * r, 226, 40, "tile_on_b.png")
+        tile("bank_slot_%d" % (r + 1), 20, 92 + 42 * r, 226, 38, "tile_on_b.png")
     for c in range(4):
         for r in range(8):
             tile("patch_slot_%d" % (c * 8 + r + 1), 284 + c * 245, 100 + r * 62, 239, 56, "tile_on_p.png")
@@ -626,8 +626,15 @@ def disks_page(fn):
                             colour="ffebebf0", style="SemiBold", case="Original", h=20.0))
         for k, bx, dr in ((prev, x, -1), (nxt, x + w - 50, 1)):
             p.button(k, "%d %d 50 40" % (bx, y), save(arrow_button(50, 40, dr, True), "%s_on.png" % k), save(arrow_button(50, 40, dr, False), "%s_off.png" % k))
-    d.rounded_rectangle((20, 536, 245, 576), 5, fill=BEZEL)
-    stepper("bank_page_prev", "bank_page_next", "bank_page_text", 20, 536, 226)
+    d.rounded_rectangle((20, 518, 245, 558), 5, fill=BEZEL)
+    stepper("bank_page_prev", "bank_page_next", "bank_page_text", 20, 518, 226)
+    # the disk readout and stepper, as the performance one: the loaded disk's name between < > (steps the disk)
+    d.rounded_rectangle((20, 42, 246, 81), 5, fill=BEZEL)
+    d.rectangle((70, 46, 196, 78), fill=TEAL)
+    p.kids.append(label("Value", "70 42 126 40", remap=P("bank_name"), just="horizontallyCentred verticallyCentred", colour="ff081e24", style="SemiBold",
+                        case="Original", h=17.0))
+    for k, bx, dr in (("bank_prev", 20, -1), ("bank_next", 196, 1)):
+        p.button(k, "%d 42 50 40" % bx, save(arrow_button(50, 40, dr, True), "%s_on.png" % k), save(arrow_button(50, 40, dr, False), "%s_off.png" % k))
     d.rounded_rectangle((290, 42, 629, 81), 5, fill=BEZEL)
     d.rectangle((340, 46, 579, 78), fill=TEAL)
     p.kids.append(label("Value", "340 42 240 40", remap=P("preset_name"), just="horizontallyCentred verticallyCentred", colour="ff081e24", style="SemiBold",
