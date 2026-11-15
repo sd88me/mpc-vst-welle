@@ -369,6 +369,22 @@ private:
         }
     }
 
+    // The DISKS tiles: the selected disk and the selected performance stay lit (the engine's "<tile>_on"). A tile is a momentary button
+    // whose value the host shows as lit, so the lit one is told to the host as 1 and the others as 0.
+    void syncTiles()
+    {
+        for (int i = 0; i < kNumParams; ++i)
+        {
+            const PSpec& s = g_pspecs[i];
+            if (strncmp(s.key, "bank_slot_", 10) && strncmp(s.key, "patch_slot_", 11)) continue;
+            if (dirty_[i].load(std::memory_order_acquire)) continue;
+            const int on = atoi(engineGet((std::string(s.key) + "_on").c_str()).c_str()) ? 1 : 0;
+            if (getInt(i) == on) continue;
+            store(i, (float)on);
+            notify_[i].store(true);
+        }
+    }
+
     // Text params never change value, so the host never asks for their text again: flip the value when the text changes.
     void syncText()
     {
@@ -500,12 +516,13 @@ private:
             {
                 seenRev = rev;
                 syncLive();
+                syncTiles();
 #ifdef WELLE_REV_UPDATE
                 if (t - lastUpdateMs_ > 250) { lastUpdateMs_ = t; requestDisplayUpdate(); }
 #endif
             }
             (void)did;
-            if (t - lastTextMs_ > 250) { lastTextMs_ = t; syncText(); }
+            if (t - lastTextMs_ > 250) { lastTextMs_ = t; syncText(); syncTiles(); }
             drainNotify();
         }
     }
