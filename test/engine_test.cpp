@@ -89,7 +89,7 @@ int main(int argc, char **argv) {
             printf("bank %2d %-24s %-26s %-26s %-26s rms %.3f  %s\n", b, get(e, i, "bank_name").c_str(), get(e, i, "patch_slot_1").c_str(),
                    get(e, i, "patch_slot_2").c_str(), get(e, i, "patch_slot_32").c_str(), r, get(e, i, "loading_status").c_str());
             CHECK(r > 0.003, "bank %d plays", b);
-            if (b + 1 >= atoi(get(e, i, "bank_page_text").c_str() + 4) * 10 && get(e, i, "bank_slot_10").empty() && b >= 9) break;
+            if (b + 1 >= atoi(get(e, i, "bank_page_text").c_str() + 4) * 11 && get(e, i, "bank_slot_11").empty() && b >= 10) break;
         }
         e->destroy(i);
         printf(fails ? "FAILED (%d)\n" : "ALL OK\n", fails);

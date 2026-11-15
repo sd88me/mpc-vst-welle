@@ -555,6 +555,7 @@ static const PSpec g_pspecs[] = {
     {"quickResonance", "Quick Resonance", 0, 127, 64, 4, nullptr, 0},
     {"quickFilterEnv", "Quick Filter Env", 0, 127, 64, 4, nullptr, 0},
     {"quickWavePosition", "Quick Wave Pos", 0, 127, 64, 4, nullptr, 0},
+    {"bank_slot_11", "DISK 11", 0, 1, 0, 3, nullptr, 0},
     {"ui_open", "POPUP", 0, 96, 0, 16, nullptr, 0},   // UI only (kUi): which drawn pick-list is open; appended last, not an engine key
     {"fav_name", "Favourite Name", 0, 1023, 0, 34, nullptr, 0},   // kText | kLocal: the typed name
     {"kb_open", "Keyboard", 0, 1, 0, 48, nullptr, 0},             // kUi | kLocal: the drawn keyboard is showing
@@ -602,8 +603,8 @@ static const PSpec g_pspecs[] = {
     {"kb_save", "Key Save", 0, 1, 0, 33, nullptr, 0},
     {"random_patch", "RANDOM", 0, 1, 0, 1, nullptr, 0},   // kMomentary: an engine verb, a random disk and performance (DISKS page)
 };
-static const int kNumParams = 524;
-static const int kUiParam = 478;
-static const int kFavName = 479, kKbOpen = 480, kKbFirst = 481, kKbCount = 42;
+static const int kNumParams = 525;
+static const int kUiParam = 479;
+static const int kFavName = 480, kKbOpen = 481, kKbFirst = 482, kKbCount = 42;
 static const char kKbChars[] = "1234567890QWERTYUIOPASDFGHJKLZXCVBNM-";   // the character keys from kKbFirst, then space, delete, shift, cancel, save
 static const int kFavNameMax = 20;

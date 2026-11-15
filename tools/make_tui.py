@@ -606,8 +606,8 @@ def disks_page(fn):
     ImageDraw.Draw(lit).rounded_rectangle((0, 0, 239, 55), 5, outline=TAN, width=4, fill=(209, 174, 136, 70))
     save(lit, "tile_on_p.png")
     litb = lit.crop((0, 0, 226, 40)).resize((226, 40))
-    ib = Image.new("RGBA", (226, 40), (0, 0, 0, 0))
-    ImageDraw.Draw(ib).rounded_rectangle((0, 0, 225, 39), 5, outline=TAN, width=4, fill=(209, 174, 136, 70))
+    ib = Image.new("RGBA", (226, 36), (0, 0, 0, 0))
+    ImageDraw.Draw(ib).rounded_rectangle((0, 0, 225, 35), 5, outline=TAN, width=4, fill=(209, 174, 136, 70))
     save(ib, "tile_on_b.png")
 
     def tile(key, x, y, w, h, on):
@@ -615,8 +615,8 @@ def disks_page(fn):
         p.kids.append(label("Value", "%d %d %d %d" % (x + 10, y, w - 20, h), remap=P(key), colour="ffebebf0", style="SemiBold", case="Original", h=20.0))
         p.kids.append(entry(key + " tile", "Button", {"version": 2, "onImage": on, "offImage": "tile_off.png", "buttonId": 1, "numButtonsInGroup": 1,
                                                       "handleName": "Data", "gestureBehaviour": GESTURE}, "%d %d %d %d" % (x, y, w, h), remap=P(key), focus="No"))
-    for r in range(10):
-        tile("bank_slot_%d" % (r + 1), 20, 92 + 42 * r, 226, 38, "tile_on_b.png")
+    for r in range(11):      # in line with the performance rows: from y 100 down to the pager, which ends level with the last performance tile
+        tile("bank_slot_%d" % (r + 1), 20, 100 + 40 * r, 226, 36, "tile_on_b.png")
     for c in range(4):
         for r in range(8):
             tile("patch_slot_%d" % (c * 8 + r + 1), 284 + c * 245, 100 + r * 62, 239, 56, "tile_on_p.png")
@@ -626,8 +626,8 @@ def disks_page(fn):
                             colour="ffebebf0", style="SemiBold", case="Original", h=20.0))
         for k, bx, dr in ((prev, x, -1), (nxt, x + w - 50, 1)):
             p.button(k, "%d %d 50 40" % (bx, y), save(arrow_button(50, 40, dr, True), "%s_on.png" % k), save(arrow_button(50, 40, dr, False), "%s_off.png" % k))
-    d.rounded_rectangle((20, 518, 245, 558), 5, fill=BEZEL)
-    stepper("bank_page_prev", "bank_page_next", "bank_page_text", 20, 518, 226)
+    d.rounded_rectangle((20, 550, 245, 589), 5, fill=BEZEL)
+    stepper("bank_page_prev", "bank_page_next", "bank_page_text", 20, 550, 226)
     # the disk readout and stepper, as the performance one: the loaded disk's name between < > (steps the disk)
     d.rounded_rectangle((20, 42, 246, 81), 5, fill=BEZEL)
     d.rectangle((70, 46, 196, 78), fill=TEAL)
@@ -644,7 +644,7 @@ def disks_page(fn):
     p.button("random_patch", "640 42 96 40", save(text_button(96, 40, "RANDOM", True, size=15), "random_on.png"), save(text_button(96, 40, "RANDOM", False, size=15), "random_off.png"))
     p.button("fav_save", "742 42 96 40", save(text_button(96, 40, "+FAV", True), "fav_save_on.png"), save(text_button(96, 40, "+FAV", False), "fav_save_off.png"))
     p.button("fav_delete", "848 42 96 40", save(text_button(96, 40, "-FAV", True), "fav_delete_on.png"), save(text_button(96, 40, "-FAV", False), "fav_delete_off.png"))
-    p.kids.append(label("Value", "20 586 226 30", remap=P("fav_text"), just="horizontallyCentred verticallyCentred", colour="ffbbc8db", style="Regular",
+    p.kids.append(label("Value", "20 592 226 30", remap=P("fav_text"), just="horizontallyCentred verticallyCentred", colour="ffbbc8db", style="Regular",
                         case="Original", h=16.0))
     d.rounded_rectangle((1010, 42, 1259, 81), 5, fill=BEZEL)
     stepper("patch_page_prev", "patch_page_next", "patch_page_text", 1010, 42, 249)

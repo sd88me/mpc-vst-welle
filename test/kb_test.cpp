@@ -39,7 +39,7 @@ int main(int, char** argv)
     run();
     // names are the display names: find the keys by the table's order instead (kb_save is last)
     std::printf("== naming keyboard (%d params)\n", e->numParams);
-    CHECK(e->numParams == 524, "524 params");
+    CHECK(e->numParams == 525, "525 params");
     const int last = e->numParams - 2;   // kb_save (random_patch follows it)
     names.assign((size_t)e->numParams, "");
     const char* ks = "1234567890QWERTYUIOPASDFGHJKLZXCVBNM-";
