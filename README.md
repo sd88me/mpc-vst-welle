@@ -26,7 +26,7 @@ wavetable voices, the ES2 ASIC, the CEM3387 filters) driven by the instrument's 
   Wave Emulation's sound parameters, and twelve Quick Edit offsets, on Q-Links in blocks of four that match the printed sections of each page.
   Knobs look like the instrument's (red for Wavetable, Cutoff and Volume); choices such as filter mode, LFO shape or a modulation source open a
   pick-list.
-- **DISKS page:** all your disks on the left, a page of 32 performances on the right, the current performance with +FAV / -FAV.
+- **DISKS page:** the loaded disk in a readout with < > steppers and 11 disk tiles on the left, a page of 32 performances on the right, the current performance with RANDOM, +FAV and -FAV.
 
 ![WAVES page](docs/screenshots/waves.png)
 - **MIDI "All parts":** performances that put their instruments on separate MIDI channels play whole from one MPC track (or choose
