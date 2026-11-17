@@ -48,23 +48,39 @@ voice board, as the instrument has). Measured on an MPC Live III with notes held
 Choose on MAIN (VOICES). A performance or disk change takes a moment of silence while the OS loads the performance.
 
 ## Requirements
-- An MPC Gen2 standalone device (aarch64, e.g. MPC Live III) that loads plugin folders from `VST2 Plugins`. Gen1 devices and the Force aren't supported.
+- An MPC Gen2 standalone device (aarch64, e.g. MPC Live III) on MPC OS 3.x (3.10.1 or later for the SDK-format zip). Gen1 devices and the Force aren't supported.
 - **Wave OS 1.700:** `w2sys.bin` and `wdv.sys`. Waldorf publishes the Wave's system files on its
   [legacy Wave page](https://waldorfmusic.com/legacy-wave/). No firmware is included.
 - **Sounds:** Wave setup files or disk images, such as Waldorf's factory set (`wave.set`) and the artist sets from the same page.
   None are included. Without any, the Wave starts with its initialised memory ("MULTI INIT").
 
 ## Install
-1. Download `Welle-<version>-VST2-Plugins.zip` from [Releases](https://github.com/sd88me/mpc-vst-welle/releases) and unzip it.
-2. Copy the `VST2 Plugins` folder to the root of a drive the MPC can see (internal storage, SD card or USB drive). If that drive already has a
-   `VST2 Plugins` folder, copy the `sd88me - VST - Welle` folder into it.
-3. Put `w2sys.bin` and `wdv.sys` in `VST2 Plugins/sd88me - VST - Welle/Content/roms/`.
-4. Put your Wave sound sets (`.set` or `.img`) in `.../Content/banks/`. Name them as you want them listed; a set whose name starts with
-   "Factory" comes first. A setup file is turned into a disk image in `.../Content/cache/` the first time it is loaded.
-5. Restart the MPC. (If Welle isn't listed, check **Preferences > Enhancements (Beta) > Enable Enhancements and VST2 Support**.)
-6. Load **Welle** on a plugin track from the External VST Plugins list.
+There are two plugin formats. Use one of them, not both: they are the same plugin.
 
-### Upgrading from 0.1
+| Plugin format | How it is installed | Plugin folder |
+|---|---|---|
+| **SDK format** (MPC OS 3.10.1 or later) | By hand: download `Welle-<version>-VST2-Plugins.zip` from [Releases](https://github.com/sd88me/mpc-vst-welle/releases), unzip it and copy the `VST2 Plugins` folder to the root of a drive the MPC can see (internal storage, SD card or USB drive). If that drive already has a `VST2 Plugins` folder, copy the `sd88me - VST - Welle` folder into it. Turn on **Preferences > Enhancements (Beta) > Enable Enhancements** and **External Plugin Support**, and restart the MPC. | `VST2 Plugins/sd88me - VST - Welle/` on that drive |
+| **Older format** (plugins listed in `MPC.settings`) | With the **OpenMPC Plugin Manager**: install Welle from it. | `sd88me - VST - Welle/` in the Synths folder it installed to |
+
+### Adding Wave OS and sound sets
+Both go in the plugin folder's `Content/` (the zip already has the folders):
+- `w2sys.bin` and `wdv.sys` in `Content/roms/`, for example `VST2 Plugins/sd88me - VST - Welle/Content/roms/`.
+- Your Wave sound sets (`.set` or `.img`) in `Content/banks/`. Name them as you want them listed; a set whose name starts with
+  "Factory" comes first. A setup file is turned into a disk image in `Content/cache/` the first time it is loaded.
+
+| Plugin format | How to add them |
+|---|---|
+| SDK format | By hand: over USB, or with the MPC's file browser. |
+| Older format, with the OpenMPC Plugin Manager | Use its **Your ROMs and files** step: it checks each file and copies it into the right folder, saving the two Wave OS files as `w2sys.bin` and `wdv.sys`. Or copy them by hand. |
+
+Then load **Welle** on a plugin track from the External VST Plugins list.
+
+### Upgrading
+- **SDK format:** copy the new `sd88me - VST - Welle` folder over the old one (merge it, don't delete the old folder first) so
+  `Content/` (your Wave OS files, sound sets and favourites) stays.
+- **Older format:** the OpenMPC Plugin Manager updates Welle in place; your Wave OS files and sound sets stay in `Content/`.
+
+#### From 0.1
 Replace the `sd88me - VST - Welle` folder with the new one, but first copy your `VST/welle` folder (your `roms/`, `banks/` and
 `favourites.txt`) somewhere safe. Welle 0.2 still uses `VST/welle/` if it exists, so you can leave it in place, or move `roms/`, `banks/` and
 `favourites.txt` to `Content/`. Your projects load as before.
