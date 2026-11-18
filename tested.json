@@ -10,5 +10,12 @@
     "device": "MPC Live III (Gen2)",
     "firmware": "3.10",
     "date": "2026-11-16"
+  },
+  {
+    "version": "0.3.1",
+    "device": "MPC Live III (Gen2)",
+    "firmware": "MPC OS 3.10.1",
+    "date": "2026-11-18",
+    "note": "Upgraded from 0.3.0 by the OpenMPC Plugin Manager (local zip): a favourite saved with +FAV before the upgrade was kept byte-identical, Wave OS files and sound sets kept. README backup and restore over SSH tried. Not tried after the upgrade: playing every page, project save and reload."
   }
 ]
