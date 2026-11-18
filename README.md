@@ -85,6 +85,52 @@ Replace the `sd88me - VST - Welle` folder with the new one, but first copy your 
 `favourites.txt`) somewhere safe. Welle 0.2 still uses `VST/welle/` if it exists, so you can leave it in place, or move `roms/`, `banks/` and
 `favourites.txt` to `Content/`. Your projects load as before.
 
+## Backing up your favourites and sounds
+
+Your favourites and your own files are kept in the plugin folder on the MPC, not in your projects (a project keeps only the sound its
+track uses). Back them up before you update the plugin or MPC OS, reset the device, or move to another MPC. These are the files to keep,
+inside the plugin folder `sd88me - VST - Welle`:
+
+| File or folder | What it holds |
+|---|---|
+| `Content/favourites.txt` | your favourites |
+| `Content/banks/` | your sound sets |
+| `Content/roms/` | your Wave OS files |
+
+Your ROMs are yours to keep with your backup, but don't share them.
+
+### Where the plugin folder is
+It is in `VST2 Plugins` on one of the MPC's drives, or in a Synths folder (`/sdcard/Synths`, or `/nvme/Synths` on a Live III),
+depending on how Welle was installed. Over SSH (root access), this prints its path:
+
+```bash
+ssh root@<device-ip> 'find /sdcard /nvme /media -maxdepth 3 -type d -name "sd88me - VST - Welle" 2>/dev/null'
+```
+
+### Backing up
+- **The plugin folder is on an SD card or USB drive:** plug the drive into a computer and copy the files above to it.
+- **Over SSH**, from a computer: this copies the whole plugin folder into one file, `welle-backup.tar`. Put the folder that holds the
+  plugin folder (the path above without its last part) in place of `<parent folder>`:
+
+  ```bash
+  ssh root@<device-ip> 'cd "<parent folder>" && tar cf - "sd88me - VST - Welle"' > welle-backup.tar
+  ```
+
+### Restoring
+Install Welle first (on the new device, or after the reset or update), then put back only the files above. Don't copy the whole
+old folder over the new one: that would put the old version of the plugin back too.
+
+- **From a drive:** copy the files back to the same places in the new plugin folder.
+- **Over SSH:** unpack the backup on your computer and send the files back. List only the ones your backup has, and put the new
+  plugin folder's path (found as above) in place of `<plugin folder>`:
+
+  ```bash
+  mkdir welle-backup && tar xf welle-backup.tar -C welle-backup
+  tar cf - -C "welle-backup/sd88me - VST - Welle" "Content/favourites.txt" "Content/banks" "Content/roms" | ssh root@<device-ip> 'cd "<plugin folder>" && tar xf -'
+  ```
+
+Then remove Welle from its tracks and add it again (or reopen the project), so it reads the restored files.
+
 ## What's new in 0.2
 Welle now uses Akai's MPC Plugin SDK: a native skin on every page (live LCD text, fader and knob strips, Q-Link blocks), a DISKS page with all
 your disks and performances, pick-lists for choices, single-press buttons, and the disk, performance and favourite names kept in step with the
