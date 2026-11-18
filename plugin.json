@@ -1,7 +1,7 @@
 {
   "name": "Welle",
   "manufacturer": "sd88me",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "kind": "instrument",
   "uid": "WeLe",
   "numInputs": 0,
