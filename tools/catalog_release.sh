@@ -40,7 +40,7 @@ cat > "$ST/user_files.json" <<'EOF'
 ]
 EOF
 python3 "$TOOLS/release.py" --so "$ST/welle-arm64.so" --skin "$ST/$NAME" --entry "$ST/pluginlist-entry.xml" --version "$VER" \
-  --extra "$ST/content:Content" --user-data Content/roms --user-data Content/banks --user-files "$ST/user_files.json" \
+  --extra "$ST/content:Content" --user-data Content/roms --user-data Content/banks --user-data Content/favourites.txt --user-files "$ST/user_files.json" \
   --id welle --repo sd88me/mpc-vst-welle --license GPL-3.0-only \
   --about "Waldorf Wave emulation running the Wave OS. Needs your own Wave OS 1.700 files." -o dist
 python3 "$TOOLS/catalog_check.py" --catalog "dist/Welle-$VER-mpc-aarch64.zip"
